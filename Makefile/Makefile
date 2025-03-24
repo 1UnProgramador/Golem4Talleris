@@ -10,8 +10,8 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 # Nombre del ejecutable
 TARGET = ../juego
 
-# Archivos fuente en src/
-SRC = ../src/main.cpp ../src/Game.cpp ../src/Player.cpp ../src/Enemy.cpp
+# Solo compilar main.cpp por ahora
+SRC = ../src/main.cpp
 
 # Regla principal: compilar el juego
 all: $(TARGET)
