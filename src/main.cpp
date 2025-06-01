@@ -19,15 +19,25 @@ int main() {
     sf::Sprite Plataforma;
     sf::Texture TPlataforma;
 
+    sf::Sprite Fondo;
+    sf::Sprite FondoCopia;
+    sf::Texture TFondo;
+
     TGolem.loadFromFile("../assets/PJTEMPORAL.png");
     Golem.setTexture(TGolem);
 
-    TPlataforma.loadFromFile("../assets/FONDOTEMPORAL.png");
+    TPlataforma.loadFromFile("../assets/PLATAFORMATEMPORAL.png");
     Plataforma.setTexture(TPlataforma);
 
+    TFondo.loadFromFile("../assets/FONDOTEMPORAL.png");
+    Fondo.setTexture(TFondo);
+    FondoCopia.setTexture(TFondo);
+
     //Indicar la Posicion de los objetos
-    Golem.setPosition((desktopMode.width)/2, (desktopMode.height)/2);
-    Plataforma.setPosition((desktopMode.width/2)-379, (desktopMode.height/2)-309);
+    Golem.setPosition((desktopMode.width) / 2, (desktopMode.height) / 2);
+    Plataforma.setPosition((desktopMode.width / 2) - 379, (desktopMode.height / 2) - 309);
+    FondoCopia.setPosition(0, -FondoCopia.getGlobalBounds().height);
+    
 
 
     
@@ -57,24 +67,41 @@ int main() {
         }
 
         //No se puede salir de la plataforma
-        if (Golem.getPosition().x < (desktopMode.width/2)-379){
-            Golem.setPosition((desktopMode.width/2)-379, Golem.getPosition().y);
+        if (Golem.getPosition().x < (desktopMode.width / 2) - 379){
+            Golem.setPosition((desktopMode.width / 2) - 379, Golem.getPosition().y);
         }
-        if (Golem.getPosition().x > (desktopMode.width/2)+379){
-            Golem.setPosition((desktopMode.width/2)+379, Golem.getPosition().y);
+        if (Golem.getPosition().x + Golem.getGlobalBounds().width > (desktopMode.width / 2) + 379){
+            Golem.setPosition((desktopMode.width / 2) + 379 - Golem.getGlobalBounds().width, Golem.getPosition().y);
         }
-        if (Golem.getPosition().y < (desktopMode.height/2)-309){
-            Golem.setPosition(Golem.getPosition().x, (desktopMode.height/2)-309);
+        if (Golem.getPosition().y < (desktopMode.height / 2) - 309){
+            Golem.setPosition(Golem.getPosition().x, (desktopMode.height / 2) - 309);
         }
-        if (Golem.getPosition().y > (desktopMode.height/2)+309){
-            Golem.setPosition(Golem.getPosition().x, (desktopMode.height/2)+309);
+        if (Golem.getPosition().y + Golem.getGlobalBounds().height > (desktopMode.height /2 ) + 309){
+            Golem.setPosition(Golem.getPosition().x, (desktopMode.height / 2) + 309 - Golem.getGlobalBounds().height);
         }
+
+
+        //El fondo se mueve
+        Fondo.move(0, VelocidadGolem);
+        FondoCopia.move(0, VelocidadGolem);
+
+        if (Fondo.getPosition().y > desktopMode.height)
+        {
+            Fondo.setPosition(0, -FondoCopia.getGlobalBounds().height);
+        }
+        if (FondoCopia.getPosition().y > desktopMode.height)
+        {
+            FondoCopia.setPosition(0, -FondoCopia.getGlobalBounds().height);
+        }
+        
         
 
         //Se limpia la pantalla
         window.clear();
 
         //Se dibujan las cosas
+        window.draw(Fondo);
+        window.draw(FondoCopia);
         window.draw(Plataforma);
         window.draw(Golem);
 
@@ -83,5 +110,6 @@ int main() {
     }
     return 0;
 }
+
 
 
