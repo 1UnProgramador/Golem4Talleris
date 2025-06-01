@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include "../include/Personaje.h"
+
 int main() {
     //Se inicializan las variables necesarias para el juego
     float VelocidadGolem = 10;
@@ -12,10 +14,8 @@ int main() {
     // Limitar el framerate del objeto creado "window"
     window.setFramerateLimit(60);
 
-    //Se llaman a los sprites y sus texturas
-    sf::Sprite Golem;
-    sf::Texture TGolem;
-
+    Golem Golem(desktopMode.width / 2, desktopMode.height / 2);
+    
     sf::Sprite Plataforma;
     sf::Texture TPlataforma;
 
@@ -23,8 +23,6 @@ int main() {
     sf::Sprite FondoCopia;
     sf::Texture TFondo;
 
-    TGolem.loadFromFile("../assets/PJTEMPORAL.png");
-    Golem.setTexture(TGolem);
 
     TPlataforma.loadFromFile("../assets/PLATAFORMATEMPORAL.png");
     Plataforma.setTexture(TPlataforma);
@@ -34,7 +32,6 @@ int main() {
     FondoCopia.setTexture(TFondo);
 
     //Indicar la Posicion de los objetos
-    Golem.setPosition((desktopMode.width) / 2, (desktopMode.height) / 2);
     Plataforma.setPosition((desktopMode.width / 2) - 379, (desktopMode.height / 2) - 309);
     FondoCopia.setPosition(0, -FondoCopia.getGlobalBounds().height);
     
@@ -48,37 +45,7 @@ int main() {
                 window.close();
         }
 
-        //Se verifica si hay alguna tecla presionada
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            Golem.move(0, -VelocidadGolem);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            Golem.move(-VelocidadGolem, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            Golem.move(VelocidadGolem, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            Golem.move(0, VelocidadGolem);
-        }
-
-        //No se puede salir de la plataforma
-        if (Golem.getPosition().x < (desktopMode.width / 2) - 379){
-            Golem.setPosition((desktopMode.width / 2) - 379, Golem.getPosition().y);
-        }
-        if (Golem.getPosition().x + Golem.getGlobalBounds().width > (desktopMode.width / 2) + 379){
-            Golem.setPosition((desktopMode.width / 2) + 379 - Golem.getGlobalBounds().width, Golem.getPosition().y);
-        }
-        if (Golem.getPosition().y < (desktopMode.height / 2) - 309){
-            Golem.setPosition(Golem.getPosition().x, (desktopMode.height / 2) - 309);
-        }
-        if (Golem.getPosition().y + Golem.getGlobalBounds().height > (desktopMode.height /2 ) + 309){
-            Golem.setPosition(Golem.getPosition().x, (desktopMode.height / 2) + 309 - Golem.getGlobalBounds().height);
-        }
+        Golem.update(desktopMode);
 
 
         //El fondo se mueve
