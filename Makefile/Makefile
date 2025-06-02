@@ -11,7 +11,7 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 TARGET = ../juego
 
 # Compilar todos los .cpp
-SRC = ../src/main.cpp ../src/Golem.cpp
+SRC = ../src/main.cpp ../src/Golem.cpp ../src/Obstaculo.cpp
 
 # Regla principal: compilar el juego
 all: $(TARGET)
