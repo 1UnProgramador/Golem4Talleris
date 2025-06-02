@@ -1,9 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include "../include/Personaje.h"
+#include "../include/Obstaculo.h"
 
 int main() {
     //Se inicializan las variables necesarias para el juego
-    float VelocidadGolem = 10;
+    float VelocidadGolem = 15;
+    short duracionCambioColor = 1;
+
 
     // Obtener la resolucion de la pantalla y guardarla en una variable
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
@@ -35,9 +38,17 @@ int main() {
     Plataforma.setPosition((desktopMode.width / 2) - 379, (desktopMode.height / 2) - 309);
     FondoCopia.setPosition(0, -FondoCopia.getGlobalBounds().height);
     
-
-
     
+
+    //Cronómetro para usarlo como una mouskey-herramienta (la usaremos mas tarde)
+    sf::Clock Cronometro;
+    sf::Clock CronometroSpawnEnemigos;
+
+    std::vector<Obstaculo> obstaculos;
+
+    sf::Color colorInicio = sf::Color::Black;
+    sf::Color colorFinal = sf::Color(37, 99, 46, 255);
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -47,10 +58,29 @@ int main() {
 
         Golem.update(desktopMode);
 
+        if (CronometroSpawnEnemigos.getElapsedTime().asSeconds() > 0.3f)
+        {
+            obstaculos.emplace_back(Plataforma.getGlobalBounds().height, Plataforma.getPosition().y);
+            obstaculos.emplace_back(Plataforma.getGlobalBounds().height, Plataforma.getPosition().y);
+        
+            CronometroSpawnEnemigos.restart();
+        }
+        
+
+        float t = Cronometro.getElapsedTime().asSeconds() / duracionCambioColor;
+        if (t > 1.0f) t = 1.0f; // Evita que se pase de 100%
+
+        sf::Uint8 r = colorInicio.r + t * (colorFinal.r - colorInicio.r);
+        sf::Uint8 g = colorInicio.g + t * (colorFinal.g - colorInicio.g);
+        sf::Uint8 b = colorInicio.b + t * (colorFinal.b - colorInicio.b);
+        sf::Uint8 a = colorInicio.a + t * (colorFinal.a - colorInicio.a);
+
+        sf::Color colorActual(r, g, b, a);
 
         //El fondo se mueve
         Fondo.move(0, VelocidadGolem);
         FondoCopia.move(0, VelocidadGolem);
+
 
         if (Fondo.getPosition().y > desktopMode.height)
         {
@@ -61,16 +91,27 @@ int main() {
             FondoCopia.setPosition(0, -FondoCopia.getGlobalBounds().height);
         }
         
+        // Actualiza todos los obstáculos
+        for (auto& obs : obstaculos) {
+            obs.update();
+        }
+
         
 
         //Se limpia la pantalla
-        window.clear();
+        window.clear(colorActual);
 
         //Se dibujan las cosas
         window.draw(Fondo);
         window.draw(FondoCopia);
         window.draw(Plataforma);
         window.draw(Golem);
+        // Dibuja todos los obstáculos
+        for (auto& obs : obstaculos) {
+            window.draw(obs);
+        }
+        
+
 
 
         window.display();
