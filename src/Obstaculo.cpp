@@ -11,13 +11,28 @@ Obstaculo::Obstaculo(int plataformaHeight, float posicionYPlataforma){
 
     texture.loadFromFile("../assets/OBSTACULOTEMPORAL.png");
     sprite.setTexture(texture);
-    sprite.setPosition(20, posicionYPlataforma + nAleatorio(gen));
+    posicionX = 20;
+    posicionY = posicionYPlataforma + nAleatorio(gen);
+    sprite.setPosition(posicionX, posicionY);
 }
 
 void Obstaculo::update(){
     sprite.move(20, 0);
+    posicionX += 20;
 } 
 
 void Obstaculo::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(sprite, states);
+}
+
+sf::FloatRect Obstaculo::getBounds() const{
+    return sprite.getGlobalBounds();
+
+}
+
+float Obstaculo::getPosX() const{
+    return posicionX;
+}
+int Obstaculo::getPosY(){
+    return posicionY;
 }

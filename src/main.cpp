@@ -17,7 +17,7 @@ int main() {
     // Limitar el framerate del objeto creado "window"
     window.setFramerateLimit(60);
 
-    Golem Golem(desktopMode.width / 2, desktopMode.height / 2);
+    Golem jugador(desktopMode.width / 2, desktopMode.height / 2);
     
     sf::Sprite Plataforma;
     sf::Texture TPlataforma;
@@ -56,7 +56,8 @@ int main() {
                 window.close();
         }
 
-        Golem.update(desktopMode);
+        jugador.update(desktopMode);
+
 
         if (CronometroSpawnEnemigos.getElapsedTime().asSeconds() > 0.3f)
         {
@@ -65,7 +66,9 @@ int main() {
         
             CronometroSpawnEnemigos.restart();
         }
-        
+
+        obstaculos.erase(std::remove_if(obstaculos.begin(), obstaculos.end(), [&jugador](const Obstaculo& obs){return jugador.isCollision(obs);}), obstaculos.end());
+        obstaculos.erase(std::remove_if(obstaculos.begin(), obstaculos.end(), [](const Obstaculo& obs) {return obs.getPosX() > 2000;}),obstaculos.end());
 
         float t = Cronometro.getElapsedTime().asSeconds() / duracionCambioColor;
         if (t > 1.0f) t = 1.0f; // Evita que se pase de 100%
@@ -105,7 +108,7 @@ int main() {
         window.draw(Fondo);
         window.draw(FondoCopia);
         window.draw(Plataforma);
-        window.draw(Golem);
+        window.draw(jugador);
         // Dibuja todos los obstáculos
         for (auto& obs : obstaculos) {
             window.draw(obs);
