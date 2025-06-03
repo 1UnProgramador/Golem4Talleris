@@ -45,4 +45,8 @@ void Golem::update(sf::VideoMode desktopMode){
 void Golem::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(sprite, states);
 }
+sf::FloatRect Golem::getBounds() const{
+    return sprite.getGlobalBounds();
+
+}
 

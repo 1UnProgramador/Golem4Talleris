@@ -1,5 +1,8 @@
+#pragma once
 #include <SFML/Graphics.hpp>
-class Golem : public sf::Drawable
+#include "../include/objColisionable.h"
+
+class Golem : public sf::Drawable, public objColisionable
 {
     private:
     sf::Sprite sprite;
@@ -12,5 +15,6 @@ class Golem : public sf::Drawable
     Golem(float pInicialX, float pInicialY);
     void update(sf::VideoMode desktopMode);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    sf::FloatRect getBounds() const override;
 };
 
