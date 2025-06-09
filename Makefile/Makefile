@@ -5,10 +5,10 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -I../include
 
 # Definir opciones de enlace (SFML)
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Nombre del ejecutable
-TARGET = ../juego
+TARGET = ./juego
 
 # Compilar todos los .cpp
 SRC = ../src/main.cpp ../src/Golem.cpp ../src/Obstaculo.cpp ../src/objColisionable.cpp
