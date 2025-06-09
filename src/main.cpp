@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "../include/Personaje.h"
 #include "../include/Obstaculo.h"
 
@@ -10,6 +11,13 @@ int main() {
 
     // Obtener la resolucion de la pantalla y guardarla en una variable
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+
+    
+    sf::Music music;
+    if (!music.openFromFile("../assets/Undertale-Mettaton-EX-Theme-Death-By-Glamour.ogg"))
+        return -1; 
+
+    music.play();
 
     // Crear una ventana en pantalla completa
     sf::RenderWindow window(desktopMode, "Juego", sf::Style::Fullscreen);
