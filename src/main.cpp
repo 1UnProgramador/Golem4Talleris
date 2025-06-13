@@ -6,13 +6,23 @@
 int main() {
     //Se inicializan las variables necesarias para el juego
     float VelocidadGolem = 15;
-    short duracionCambioColor = 1;
+    short duracionCambioColor = 10;
+    int nColisiones =0;
 
 
     // Obtener la resolucion de la pantalla y guardarla en una variable
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
+    sf::Font fuente;
+    if (!fuente.loadFromFile("../assets/Bangers-Regular.ttf"))
+    {
+        return -1;
+    }
     
+    sf::Text TextoNColisiones("0", fuente, 30);
+    TextoNColisiones.setFillColor(sf::Color(255, 255, 255));
+    TextoNColisiones.setPosition(30, 30);
+
     sf::Music music;
     if (!music.openFromFile("../assets/Undertale-Mettaton-EX-Theme-Death-By-Glamour.ogg"))
         return -1; 
@@ -74,9 +84,28 @@ int main() {
         
             CronometroSpawnEnemigos.restart();
         }
+        
+        
+        obstaculos.erase(
+            std::remove_if(
+                obstaculos.begin(), obstaculos.end(), [&jugador, &nColisiones](const Obstaculo& obs){
+                    if(jugador.isCollision(obs)){
+                        nColisiones++;
+                        return true;
+                    } 
+                    return false;
+                }
+            ), obstaculos.end()
+        );
 
-        obstaculos.erase(std::remove_if(obstaculos.begin(), obstaculos.end(), [&jugador](const Obstaculo& obs){return jugador.isCollision(obs);}), obstaculos.end());
-        obstaculos.erase(std::remove_if(obstaculos.begin(), obstaculos.end(), [](const Obstaculo& obs) {return obs.getPosX() > 2000;}),obstaculos.end());
+        obstaculos.erase(
+            std::remove_if(
+                obstaculos.begin(), obstaculos.end(), [](const Obstaculo& obs) {
+                    return obs.getPosX() > 2000;
+                }
+            ),obstaculos.end()
+        );
+        TextoNColisiones.setString(std::to_string(nColisiones));
 
         float t = Cronometro.getElapsedTime().asSeconds() / duracionCambioColor;
         if (t > 1.0f) t = 1.0f; // Evita que se pase de 100%
@@ -121,7 +150,7 @@ int main() {
         for (auto& obs : obstaculos) {
             window.draw(obs);
         }
-        
+        window.draw(TextoNColisiones);
 
 
 
