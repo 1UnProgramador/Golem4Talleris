@@ -2,12 +2,23 @@
 #include <SFML/Graphics.hpp>
 
 Golem::Golem(float pInicialX, float pInicialY){
-    texture.loadFromFile("../assets/PJTEMPORAL.png");
+    texture.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png");
     sprite.setTexture(texture);
     sprite.setPosition(pInicialX, pInicialY);
+    sprite.setScale(4, 4);
 }
 
 void Golem::update(sf::VideoMode desktopMode){
+    
+    bool estaQuieto = !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
     //Se verifica si hay alguna tecla presionada
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
@@ -24,6 +35,12 @@ void Golem::update(sf::VideoMode desktopMode){
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             sprite.move(0, velocidad);
+        }
+
+        if (estaQuieto && relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion){
+            currentFrame = (currentFrame + 1) % tFrames;
+            sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+            relojAnimacion.restart();
         }
 
         //No se puede salir de la plataforma
@@ -50,3 +67,26 @@ sf::FloatRect Golem::getBounds() const{
 
 }
 
+void Golem::setPosition(int x, int y){
+    sprite.setPosition(x, y);
+}
+
+int Golem::getFramewidth(){
+    return frameWidth;
+}
+
+int Golem::getFrameHeight(){
+    return frameHeight;
+}
+
+int Golem::getCurrentFrame(){
+    return currentFrame;
+}
+
+void Golem::setCurrentFrame(int x){
+    currentFrame = x;
+}
+
+int Golem::totalFrames(){
+    return tFrames;
+}
