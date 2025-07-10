@@ -1,13 +1,16 @@
 #pragma once
 #include "Pantalla.h"
+#include "PantallaSeleccionar.h"
+#include "./Personaje.h"
+
 #include <SFML/Graphics.hpp>
 
-class PantallaJuego : public Pantalla{
+class PantallaSeleccionar : public Pantalla{
     private:
-        sf::CircleShape bola;
+        Golem jugador;
 
     public: 
-        PantallaJuego();
+        PantallaSeleccionar();
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;
         void renderizar(sf::RenderWindow& window) override;
