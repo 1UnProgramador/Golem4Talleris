@@ -1,10 +1,10 @@
 #include "../include/Juego.h"
 #include "../include/PantallaMenu.h"
-#include "../include/PantallaJuego.h"
+#include "../include/PantallaSeleccionar.h"
 
-Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Sistema de Pantallas") {
+Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Sistema de Pantallas", sf::Style::Fullscreen) {
     cambiarPantalla(std::make_unique<PantallaMenu>([this]() {
-        cambiarPantalla(std::make_unique<PantallaJuego>());
+        cambiarPantalla(std::make_unique<PantallaSeleccionar>());
     }));
 }
 
@@ -13,6 +13,7 @@ void Juego::cambiarPantalla(std::unique_ptr<Pantalla> nuevaPantalla){
 }
 
 void Juego::run() {
+    window.setFramerateLimit(60);
     while (window.isOpen()) {
         sf::Event evento;
         while (window.pollEvent(evento)) {
