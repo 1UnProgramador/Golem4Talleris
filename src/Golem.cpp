@@ -2,9 +2,11 @@
 #include <SFML/Graphics.hpp>
 
 Golem::Golem(float pInicialX, float pInicialY){
-    texture.loadFromFile("../assets/JugadorGolem/estado-reposo/SGolem.png");
-    sprite.setTexture(texture);
+    texturaQuieto.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png.png");
+    texturaMovLados.loadFromFile("../assets/JugadorGolem/estado-moviendose-lados/JGML.png");
+    sprite.setTexture(texturaQuieto);
     sprite.setPosition(pInicialX, pInicialY);
+    sprite.setOrigin(frameWidth / 2.f, frameHeight / 2.f);
     sprite.setScale(3, 3);
     /* sprite.setOrigin(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2); */
     sprite.setTextureRect(sf::IntRect(1 * frameWidth, 0, frameWidth, frameHeight));
@@ -25,8 +27,11 @@ void Golem::update(sf::VideoMode desktopMode){
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
             sprite.move(0, -velocidad);
+            posicionY -= velocidad;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            sprite.setScale(-3, -3);
+            sprite.setTexture(texturaMovLados);
+            /* sprite.setOrigin((currentFrame * frameWidth) + (frameWidth / 2) , frameHeight / 2); */
+            sprite.setScale(-3, 3);
             if (currentFrame <= 6 || currentFrame > 19){
                 currentFrame = 6;
                 tFrames = 19;
@@ -39,7 +44,10 @@ void Golem::update(sf::VideoMode desktopMode){
                 relojAnimacion.restart();
             }
             sprite.move(-velocidad, 0);
+            posicionX -= velocidad;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+            sprite.setTexture(texturaMovLados);
+            /* sprite.setOrigin((currentFrame * frameWidth) + (frameWidth / 2) , frameHeight / 2); */
             sprite.setScale(3, 3);
             if (currentFrame <= 6 || currentFrame > 19){
                 currentFrame = 6;
@@ -53,10 +61,13 @@ void Golem::update(sf::VideoMode desktopMode){
                 relojAnimacion.restart();
             }
             sprite.move(velocidad, 0);
+            posicionX += velocidad;
 
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
             sprite.move(0, velocidad);
+            posicionY += velocidad;
         } else {
+            sprite.setTexture(texturaQuieto);
             if (currentFrame >= 6){
                 currentFrame = 0;
                 tFrames = 6;
@@ -79,17 +90,17 @@ void Golem::update(sf::VideoMode desktopMode){
         //No se puede salir de la plataforma
         
 
-        if (sprite.getPosition().x < (desktopMode.width / 2) - 379){
-            sprite.setPosition((desktopMode.width / 2) - 379, sprite.getPosition().y);
+        if ((sprite.getPosition().x - sprite.getGlobalBounds().width / 2) < 0){
+            sprite.setPosition(sprite.getGlobalBounds().width / 2, sprite.getPosition().y);
         }
-        if (sprite.getPosition().x + sprite.getGlobalBounds().width > (desktopMode.width / 2) + 379){
-            sprite.setPosition((desktopMode.width / 2) + 379 - sprite.getGlobalBounds().width, sprite.getPosition().y);
+        if ((sprite.getPosition().y - sprite.getGlobalBounds().height / 2) < 0){
+            sprite.setPosition(sprite.getPosition().x, sprite.getGlobalBounds().height / 2);
         }
-        if (sprite.getPosition().y < (desktopMode.height / 2) - 309){
-            sprite.setPosition(sprite.getPosition().x, (desktopMode.height / 2) - 309);
+        if (sprite.getPosition().x + sprite.getGlobalBounds().width / 2 > desktopMode.width){
+            sprite.setPosition(desktopMode.width - (sprite.getGlobalBounds().width / 2), sprite.getPosition().y);
         }
-        if (sprite.getPosition().y + sprite.getGlobalBounds().height > (desktopMode.height /2 ) + 309){
-            sprite.setPosition(sprite.getPosition().x, (desktopMode.height / 2) + 309 - sprite.getGlobalBounds().height);
+        if (sprite.getPosition().y + sprite.getGlobalBounds().height / 2 > desktopMode.height){
+            sprite.setPosition(sprite.getPosition().x, desktopMode.height - sprite.getGlobalBounds().height / 2);
         }
 }
 void Golem::draw(sf::RenderTarget& target, sf::RenderStates states) const{
