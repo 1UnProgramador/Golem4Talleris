@@ -7,14 +7,14 @@ class Golem : public sf::Drawable, public objColisionable
     private:
         sf::Sprite sprite;
         sf::Texture texture;
-        float velocidad = 10;
+        float velocidad = 1;
     
         int frameWidth = 32;
         int frameHeight = 32;
         int currentFrame = 0;
         int tFrames = 6;
         sf::Clock relojAnimacion;
-        float tiempoAnimacion = 0.2;
+        float tiempoAnimacion = 0.1;
 
         float posicionX;
         float posicionY;
