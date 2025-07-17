@@ -2,10 +2,12 @@
 #include <SFML/Graphics.hpp>
 
 Golem::Golem(float pInicialX, float pInicialY){
-    texture.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png");
+    texture.loadFromFile("../assets/JugadorGolem/estado-reposo/SGolem.png");
     sprite.setTexture(texture);
     sprite.setPosition(pInicialX, pInicialY);
-    sprite.setScale(4, 4);
+    sprite.setScale(3, 3);
+    /* sprite.setOrigin(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2); */
+    sprite.setTextureRect(sf::IntRect(1 * frameWidth, 0, frameWidth, frameHeight));
 }
 
 void Golem::update(sf::VideoMode desktopMode){
@@ -23,25 +25,56 @@ void Golem::update(sf::VideoMode desktopMode){
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
             sprite.move(0, -velocidad);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+            sprite.setScale(-3, -3);
+            if (currentFrame <= 6 || currentFrame > 19){
+                currentFrame = 6;
+                tFrames = 19;
+            }
+            if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
+            {
+                currentFrame = (currentFrame + 1) % tFrames;
+                if (currentFrame == 0) currentFrame = 7;
+                sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+                relojAnimacion.restart();
+            }
             sprite.move(-velocidad, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+            sprite.setScale(3, 3);
+            if (currentFrame <= 6 || currentFrame > 19){
+                currentFrame = 6;
+                tFrames = 19;
+            }
+            if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
+            {
+                currentFrame = (currentFrame + 1) % tFrames;
+                if (currentFrame == 0) currentFrame = 7;
+                sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+                relojAnimacion.restart();
+            }
             sprite.move(velocidad, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
+
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
             sprite.move(0, velocidad);
+        } else {
+            if (currentFrame >= 6){
+                currentFrame = 0;
+                tFrames = 6;
+            }
+            if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
+            {
+                currentFrame = (currentFrame + 1) % tFrames;
+                sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+                relojAnimacion.restart();
+            }
+            
         }
 
-        if (estaQuieto && relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion){
+        /* if (estaQuieto && relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion){
             currentFrame = (currentFrame + 1) % tFrames;
             sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
             relojAnimacion.restart();
-        }
+        } */
 
         //No se puede salir de la plataforma
         
