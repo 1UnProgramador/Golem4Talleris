@@ -7,10 +7,9 @@ class PantallaMenu : public Pantalla{
     private:
         sf::Font fuente;
         sf::Text texto;
-        std::function<void()> onStart;
     
     public:
-        PantallaMenu(std::function<void()> onStart);
+        PantallaMenu(Juego* juego);
 
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;

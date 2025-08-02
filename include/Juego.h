@@ -10,5 +10,6 @@ class Juego{
     public:
         Juego();
         void run();
+
         void cambiarPantalla(std::unique_ptr<Pantalla> pantallaNueva);
 };
