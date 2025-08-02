@@ -1,6 +1,6 @@
-#include "../include/Juego.h"
-#include "../include/PantallaMenu.h"
-#include "../include/PantallaSeleccionar.h"
+#include "../../include/logica/Juego.h"
+#include "../../include/pantallas/PantallaMenu.h"
+#include "../../include//pantallas/PantallaSeleccionar.h"
 
 Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Sistema de Pantallas", sf::Style::Fullscreen) {
     pantallaActual = std::make_unique<PantallaMenu>(this);

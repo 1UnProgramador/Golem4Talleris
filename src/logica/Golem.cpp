@@ -1,4 +1,4 @@
-#include "../include/Personaje.h"
+#include "../../include/logica/Personaje.h"
 #include <SFML/Graphics.hpp>
 
 Golem::Golem(float pInicialX, float pInicialY){
