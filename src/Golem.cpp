@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 
 Golem::Golem(float pInicialX, float pInicialY){
-    texturaQuieto.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png.png");
+    texturaQuieto.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png");
     texturaMovLados.loadFromFile("../assets/JugadorGolem/estado-moviendose-lados/JGML.png");
+    texturaMovAbajo.loadFromFile("../assets/JugadorGolem/estado-moviendose-abajo/JGMA.png");
+    texturaMovArriba.loadFromFile("../assets/JugadorGolem/estado-moviendose-arriba/JGMUp.png");
     sprite.setTexture(texturaQuieto);
     sprite.setPosition(pInicialX, pInicialY);
     sprite.setOrigin(frameWidth / 2.f, frameHeight / 2.f);
@@ -14,32 +16,29 @@ Golem::Golem(float pInicialX, float pInicialY){
 
 void Golem::update(sf::VideoMode desktopMode){
     
-    bool estaQuieto = !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-
     //Se verifica si hay alguna tecla presionada
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
+            sprite.setTexture(texturaMovArriba);
+            sprite.setScale(3, 3);
+            tFrames = 10;
+            if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
+            {
+                currentFrame = (currentFrame + 1) % tFrames;
+                sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+                relojAnimacion.restart();
+            }
+
             sprite.move(0, -velocidad);
             posicionY -= velocidad;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             sprite.setTexture(texturaMovLados);
             /* sprite.setOrigin((currentFrame * frameWidth) + (frameWidth / 2) , frameHeight / 2); */
             sprite.setScale(-3, 3);
-            if (currentFrame <= 6 || currentFrame > 19){
-                currentFrame = 6;
-                tFrames = 19;
-            }
+            tFrames = 12;
             if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
             {
                 currentFrame = (currentFrame + 1) % tFrames;
-                if (currentFrame == 0) currentFrame = 7;
                 sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
                 relojAnimacion.restart();
             }
@@ -49,14 +48,10 @@ void Golem::update(sf::VideoMode desktopMode){
             sprite.setTexture(texturaMovLados);
             /* sprite.setOrigin((currentFrame * frameWidth) + (frameWidth / 2) , frameHeight / 2); */
             sprite.setScale(3, 3);
-            if (currentFrame <= 6 || currentFrame > 19){
-                currentFrame = 6;
-                tFrames = 19;
-            }
+            tFrames = 12;
             if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
             {
                 currentFrame = (currentFrame + 1) % tFrames;
-                if (currentFrame == 0) currentFrame = 7;
                 sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
                 relojAnimacion.restart();
             }
@@ -64,14 +59,22 @@ void Golem::update(sf::VideoMode desktopMode){
             posicionX += velocidad;
 
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+            sprite.setTexture(texturaMovAbajo);
+            sprite.setScale(3, 3);
+            tFrames = 10;
+            if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
+            {
+                currentFrame = (currentFrame + 1) % tFrames;
+                sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
+                relojAnimacion.restart();
+            }
+
             sprite.move(0, velocidad);
             posicionY += velocidad;
         } else {
             sprite.setTexture(texturaQuieto);
-            if (currentFrame >= 6){
-                currentFrame = 0;
-                tFrames = 6;
-            }
+            sprite.setScale(3, 3);
+            tFrames = 6;
             if (relojAnimacion.getElapsedTime().asSeconds() > tiempoAnimacion)
             {
                 currentFrame = (currentFrame + 1) % tFrames;

@@ -10,7 +10,8 @@ class PantallaSeleccionar : public Pantalla{
         Golem jugador;
 
     public: 
-        PantallaSeleccionar();
+        PantallaSeleccionar(Juego* juego);
+
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;
         void renderizar(sf::RenderWindow& window) override;

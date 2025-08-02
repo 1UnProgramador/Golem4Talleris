@@ -3,9 +3,7 @@
 #include "../include/PantallaSeleccionar.h"
 
 Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Sistema de Pantallas", sf::Style::Fullscreen) {
-    cambiarPantalla(std::make_unique<PantallaMenu>([this]() {
-        cambiarPantalla(std::make_unique<PantallaSeleccionar>());
-    }));
+    pantallaActual = std::make_unique<PantallaMenu>(this);
 }
 
 void Juego::cambiarPantalla(std::unique_ptr<Pantalla> nuevaPantalla){

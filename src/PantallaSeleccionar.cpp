@@ -1,8 +1,8 @@
 #include "PantallaSeleccionar.h"
 
 
-PantallaSeleccionar::PantallaSeleccionar()
-    : jugador(0, 0)
+PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
+    : Pantalla(juego), jugador(0, 0)
     {
         jugador.setPosition((sf::VideoMode::getDesktopMode().width / 2) - jugador.getBounds().width / 2, (sf::VideoMode::getDesktopMode().height / 2) - jugador.getBounds().height / 2);
     }
