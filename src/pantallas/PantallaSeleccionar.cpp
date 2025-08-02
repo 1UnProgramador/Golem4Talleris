@@ -1,4 +1,4 @@
-#include "PantallaSeleccionar.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 
 
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)

@@ -11,7 +11,7 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 TARGET = ./juego
 
 # Compilar todos los .cpp
-SRC = ../src/main.cpp ../src/Golem.cpp ../src/objColisionable.cpp ../src/Juego.cpp ../src/PantallaSeleccionar.cpp ../src/PantallaMenu.cpp 
+SRC = ../src/logica/main.cpp ../src/logica/Golem.cpp ../src/logica/objColisionable.cpp ../src/logica/Juego.cpp ../src/pantallas/PantallaSeleccionar.cpp ../src/pantallas/PantallaMenu.cpp 
 
 # Regla principal: compilar el juego
 all: $(TARGET)
