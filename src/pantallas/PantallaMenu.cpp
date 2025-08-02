@@ -6,9 +6,10 @@
 PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego){
     fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
     texto.setFont(fuente);
-    texto.setString("Presiona Enter para Comenzar!");
+    texto.setString("Enter para Comenzar!");
     texto.setCharacterSize(70);
-    texto.setPosition(500, 500);
+    texto.setOrigin(texto.getLocalBounds().left + texto.getLocalBounds().width / 2.0f , texto.getLocalBounds().top + texto.getLocalBounds().height / 2.0f);
+    texto.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f);
 }
 
 void PantallaMenu::ManejarEvento(sf::Event evento){
