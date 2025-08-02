@@ -1,10 +1,10 @@
-#include "../include/PantallaMenu.h"
-#include "../include/PantallaSeleccionar.h"
-#include "../include/Juego.h"
+#include "../../include/pantallas/PantallaMenu.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
+#include "../../include/logica/Juego.h"
 #include <memory>
 
 PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego){
-    fuente.loadFromFile("../assets/Bangers-Regular.ttf");
+    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
     texto.setFont(fuente);
     texto.setString("Presiona Enter para Comenzar!");
     texto.setCharacterSize(70);

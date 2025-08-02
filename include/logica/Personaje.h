@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../include/objColisionable.h"
+#include "objColisionable.h"
 
 class Golem : public sf::Drawable, public objColisionable
 {
