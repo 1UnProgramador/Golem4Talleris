@@ -1,5 +1,5 @@
 #pragma once
-#include "Pantalla.h"
+#include "../logica/Pantalla.h"
 #include <SFML/Graphics.hpp>
 #include <functional>
 

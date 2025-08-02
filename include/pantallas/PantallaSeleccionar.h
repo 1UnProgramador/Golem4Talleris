@@ -1,8 +1,6 @@
 #pragma once
-#include "Pantalla.h"
-#include "PantallaSeleccionar.h"
-#include "./Personaje.h"
-
+#include "../logica/Pantalla.h"
+#include "../logica/Personaje.h"
 #include <SFML/Graphics.hpp>
 
 class PantallaSeleccionar : public Pantalla{
