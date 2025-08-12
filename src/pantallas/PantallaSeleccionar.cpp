@@ -1,4 +1,7 @@
 #include "../../include/pantallas/PantallaSeleccionar.h"
+#include "../../include/minijuegoPonchar/minijuegoPonchar.h"
+#include "../../include/logica/Juego.h"
+#include <memory>
 
 
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
@@ -11,6 +14,9 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
     {
         exit(0);
+    }
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
+        juego->cambiarPantalla(std::make_unique<minijuegoPonchar>(juego));
     }
 }
 
