@@ -7,7 +7,7 @@ class PantallaSeleccionar : public Pantalla{
     private:
         Golem jugador;
 
-    public: 
+    public:
         PantallaSeleccionar(Juego* juego);
 
         void ManejarEvento(sf::Event evento) override;

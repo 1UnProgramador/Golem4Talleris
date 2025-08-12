@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "Pantalla.h"
+#include "../../include/logica/Pantalla.h"
 
 class Juego{
     private:
@@ -12,4 +12,5 @@ class Juego{
         void run();
 
         void cambiarPantalla(std::unique_ptr<Pantalla> pantallaNueva);
+        sf::RenderWindow& getWindow() { return window; }
 };
