@@ -7,7 +7,7 @@ class PantallaMenu : public Pantalla{
     private:
         sf::Font fuente;
         sf::Text texto;
-    
+
     public:
         PantallaMenu(Juego* juego);
 
