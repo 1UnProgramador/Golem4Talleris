@@ -11,7 +11,7 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 TARGET = ./juego
 
 # Compilar todos los .cpp
-SRC = ../src/logica/main.cpp ../src/logica/Golem.cpp ../src/logica/objColisionable.cpp ../src/logica/Juego.cpp ../src/pantallas/PantallaSeleccionar.cpp ../src/pantallas/PantallaMenu.cpp ../src/minijuegoPonchar/minijuegoPonchar.cpp
+SRC = ../src/logica/main.cpp ../src/logica/Golem.cpp ../src/logica/objColisionable.cpp ../src/logica/Juego.cpp ../src/pantallas/PantallaSeleccionar.cpp ../src/pantallas/PantallaMenu.cpp ../src/minijuegoPonchar/minijuegoPonchar.cpp ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp
 
 # Regla principal: compilar el juego
 all: $(TARGET)
