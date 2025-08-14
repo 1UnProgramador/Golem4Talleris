@@ -1,4 +1,5 @@
 #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
+#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <memory>
@@ -39,7 +40,9 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
     {
         exit(0);
     }
-
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
+        juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
+    }
     if (evento.type == sf::Event::MouseButtonPressed) {
         // Detecta si el clic está sobre algún cable
         for (int i = 0; i <= 7; i++)
