@@ -16,9 +16,12 @@ class minijuegoPaginaWeb : public Pantalla {
         };
         configuracionWeb objetivo;
         sf::View vistaCodigo;
+        sf::View vistaPanel;
         sf::View vistaPagina;
-        sf::RectangleShape mundo;
-        sf::CircleShape jugador;
+        sf::RectangleShape fondoCodigo;
+        sf::RectangleShape fondoPanel;
+        sf::RectangleShape fondoPagina;
+        sf::Vector2u windowSize;
     public:
         minijuegoPaginaWeb(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
