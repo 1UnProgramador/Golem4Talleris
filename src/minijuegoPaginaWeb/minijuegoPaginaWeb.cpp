@@ -4,8 +4,8 @@
 minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
     int n = 1;
     fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
-    std::vector<std::string> textosBloques = {"fuente", "texto", "color de fondo", "color de texto", "tamano de fuente", "centrado titulo"};
-    for(const auto& texto : textosBloques){
+
+    for(auto& texto : textosBloques){
         Bloque bloque;
         bloque.texto.setString(texto);
         bloque.rectangulo.setSize(sf::Vector2f(500, 200));
@@ -52,6 +52,10 @@ minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
 }
 
 void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
+    {
+        exit(0);
+    }
     if(evento.type == sf::Event::MouseWheelScrolled && fondoPanel.getGlobalBounds().contains(mouseEnPanel)){
         if(evento.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel){
             if (evento.mouseWheelScroll.delta > 0 && moviemientoPanel != 0)
@@ -69,9 +73,26 @@ void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
         for(int i = 0; i <= 5; i++){
             if (bloques[i].rectangulo.getGlobalBounds().contains(mouseEnPanel))
             {
-                bloques[i].seleccionado = true;
-                bloques[i].rectangulo.setFillColor(sf::Color(0, 255, 0));
+                if (bloques[i].seleccionado == false)
+                {
+                    bloques[i].arrastrando = true;
+                    Bloque bloque = bloques[i];
+                    bloque.rectangulo.setPosition(mouseEnPantalla);
+                    bloque.texto.setPosition(bloque.rectangulo.getPosition());
+                    copiaBloques.push_back(bloque);
+                    bloques[i].seleccionado = true;
+                    bloques[i].rectangulo.setFillColor(sf::Color(0, 255, 0));
+                } else {
+                    bloques[i].seleccionado = false;
+                    bloques[i].arrastrando = false;
+                    bloques[i].rectangulo.setFillColor(sf::Color(255, 0, 0));
+                }
             }
+        }
+    } else if(evento.type == sf::Event::MouseButtonReleased){
+        for(auto& bloqueCopia : copiaBloques){
+            bloqueCopia.arrastrando = false;
+
         }
     }
 }
@@ -79,6 +100,7 @@ void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
 void minijuegoPaginaWeb::actualizar(){
     //posicion verdadera del mouse
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
+    mouseEnPantalla = juego->getWindow().mapPixelToCoords(posicionMouse);
 
     //posicion "refinada" en cada pantalla
     mouseEnPanel = juego->getWindow().mapPixelToCoords(posicionMouse, vistaPanel);
@@ -86,11 +108,36 @@ void minijuegoPaginaWeb::actualizar(){
     mouseEnPagina   = juego->getWindow().mapPixelToCoords(posicionMouse, vistaPagina);
 
     juego->getWindow().setView(juego->getWindow().getDefaultView());
+
+    for(auto& bloqueCopia : copiaBloques){
+        if (bloqueCopia.arrastrando)
+        {
+            sf::Vector2u ventana = juego->getWindow().getSize();
+            if(mouseEnPantalla.x < ventana.x / 2 && mouseEnPantalla.y <  ventana.y * 0.7){
+                //VistaCodiigo
+                bloqueCopia.rectangulo.setPosition(mouseEnCodigo);
+                bloqueCopia.texto.setPosition(bloqueCopia.rectangulo.getPosition());
+            } else if(mouseEnPantalla.x < ventana.x / 2 && mouseEnPantalla.y >=  ventana.y * 0.7){
+                //VistaPanel
+                bloqueCopia.rectangulo.setPosition(mouseEnPanel);
+                bloqueCopia.texto.setPosition(bloqueCopia.rectangulo.getPosition());
+            } else {
+                //VistaPágina
+                bloqueCopia.rectangulo.setPosition(mouseEnPagina);
+                bloqueCopia.texto.setPosition(bloqueCopia.rectangulo.getPosition());
+            }
+        }
+    }
 }
 
 void minijuegoPaginaWeb::renderizar(sf::RenderWindow& window){
     window.setView(vistaCodigo);
     window.draw(fondoCodigo);
+    for(auto& bloqueCopias : copiaBloques){
+        window.draw(bloqueCopias.rectangulo);
+        window.draw(bloqueCopias.texto);
+    }
+
 
     window.setView(vistaPagina);
     window.draw(fondoPagina);
@@ -98,12 +145,11 @@ void minijuegoPaginaWeb::renderizar(sf::RenderWindow& window){
 
     window.setView(vistaPanel);
     window.draw(fondoPanel);
-    for(const auto& bloque : bloques){
+    for(auto& bloque : bloques){
         window.draw(bloque.rectangulo);
         window.draw(bloque.texto);
     }
 
 
     window.setView(window.getDefaultView());
-   /*  window.display(); */
 }
