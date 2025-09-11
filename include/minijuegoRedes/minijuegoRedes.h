@@ -9,13 +9,17 @@ class minijuegoRedes : public Pantalla{
     private:
     sf::Vector2i posicionMouse;
     sf::Vector2f posicionEnVentana;
+    
     int prueba = 1;
         struct cuadro {
             std::shared_ptr<sf::Texture> textura;
             sf::Sprite sprite;
-            int rotacion = 0;
+            int rotacionObjetivo;
+            int rotacion;
+            std::string tipo;
         };
         std::vector<cuadro> cuadros;
+        std::vector<std::vector<cuadro>> malla;
     public:
         minijuegoRedes(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
