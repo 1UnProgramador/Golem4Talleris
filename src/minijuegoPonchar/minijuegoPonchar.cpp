@@ -94,7 +94,7 @@ void minijuegoPonchar::actualizar(){
     for (int i = 0; i <= 7; i++)
     {
         if (cables[i].arrastrando) {
-            cables[i].sCable.setPosition(posicionEnVentana.x, posicionEnVentana.y);
+            cables[i].sCable.setPosition(posicionEnVentana);
         } else if (!cables[i].conectado)
         {
             cables[i].sCable.setPosition(100 + (20) * (i + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);

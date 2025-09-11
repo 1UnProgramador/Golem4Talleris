@@ -7,6 +7,7 @@
 class minijuegoPaginaWeb : public Pantalla {
     private:
         sf::Font fuente;
+        std::vector<std::string> textosBloques = {"fuente", "texto", "color de fondo", "color de texto", "tamano de fuente", "centrado titulo"};
         struct configuracionWeb {
             sf::Font fuente;
             sf::Text Texto;
@@ -21,8 +22,10 @@ class minijuegoPaginaWeb : public Pantalla {
             bool seleccionado = false;
             sf::Vector2f offset;
             bool conectado = false;
+            bool arrastrando = false;
         };
         std::vector<Bloque> bloques;
+        std::vector<Bloque> copiaBloques;
         configuracionWeb objetivo;
         sf::View vistaCodigo;
         sf::View vistaPanel;
@@ -30,11 +33,13 @@ class minijuegoPaginaWeb : public Pantalla {
         sf::Vector2f mouseEnPanel;
         sf::Vector2f mouseEnCodigo;
         sf::Vector2f mouseEnPagina;
+        sf::Vector2f mouseEnPantalla;
         sf::RectangleShape fondoCodigo;
         sf::RectangleShape fondoPanel;
         sf::RectangleShape fondoPagina;
         sf::RectangleShape pagina;
         int moviemientoPanel = 0;
+        int posicionBloques = 1;
         sf::Vector2i posicionMouse;
         sf::Vector2f posicionEnVentana;
 
