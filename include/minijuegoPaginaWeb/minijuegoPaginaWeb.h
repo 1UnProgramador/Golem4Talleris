@@ -7,7 +7,8 @@
 class minijuegoPaginaWeb : public Pantalla {
     private:
         sf::Font fuente;
-        std::vector<std::string> textosBloques = {"fuente", "texto", "color de fondo", "color de texto", "tamano de fuente", "centrado titulo"};
+        sf::Texture texturaFlechaSeleccionar;
+        std::vector<std::string> textosBloques = {"fuente: ", "texto: ", "color de fondo: ", "color de texto: ", "tamano de fuente: ", "centrado titulo: "};
         struct configuracionWeb {
             sf::Font fuente;
             sf::Text Texto;
@@ -15,14 +16,19 @@ class minijuegoPaginaWeb : public Pantalla {
             sf::Color textColor;
             int fontSize;
             int layout; // 0 = título izquierda, 1 = título centrado...
+
         };
         struct Bloque {
+            sf::Sprite flecha;
             sf::RectangleShape rectangulo;
             sf::Text texto;
             bool seleccionado = false;
             sf::Vector2f offset;
-            bool conectado = false;
+            bool conectadoU = false;
+            bool  conectadoD = false;
             bool arrastrando = false;
+            sf::Vector2f grabOffset{0.f, 0.f};
+            int pantalla = 0;
         };
         std::vector<Bloque> bloques;
         std::vector<Bloque> copiaBloques;
@@ -41,9 +47,11 @@ class minijuegoPaginaWeb : public Pantalla {
         int moviemientoPanel = 0;
         int posicionBloques = 1;
         sf::Vector2i posicionMouse;
+        sf::Vector2f mouseEnPantallaRelativa;
         sf::Vector2f posicionEnVentana;
 
     public:
+        /* bool dentroVista(const sf::Vector2f& pos, const sf::View& vista, const sf::RenderWindow& window); */
         minijuegoPaginaWeb(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;
