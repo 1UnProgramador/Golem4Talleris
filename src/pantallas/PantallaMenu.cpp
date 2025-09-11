@@ -1,5 +1,6 @@
 #include "../../include/pantallas/PantallaMenu.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
+#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/logica/Juego.h"
 #include <memory>
 
@@ -14,7 +15,8 @@ PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego){
 
 void PantallaMenu::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
-        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
+        juego->instrucciones = "Hola y Bienvenido a\nGollem4Talleris!";
+        juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
     }
 }
 
