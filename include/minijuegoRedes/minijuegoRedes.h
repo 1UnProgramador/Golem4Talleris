@@ -4,11 +4,21 @@
 #include "../logica/objColisionable.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <SFML/Audio.hpp>
 
 class minijuegoRedes : public Pantalla{
     private:
+    sf::Texture texturaFlecha;
+    sf::Sprite flecha1;
+    sf::Sprite flecha2;
+
+
     sf::Vector2i posicionMouse;
     sf::Vector2f posicionEnVentana;
+
+    sf::SoundBuffer bufferClick;
+    sf::Sound click;
+    
     
     int prueba = 1;
         struct cuadro {
