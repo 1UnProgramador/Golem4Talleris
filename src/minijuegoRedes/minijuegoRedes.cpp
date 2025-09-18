@@ -1,5 +1,7 @@
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
+#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
 #include "../../include/logica/Juego.h"
+#include <cmath>
 
 /* #include <SFML/Audio.hpp> */
 
@@ -21,6 +23,17 @@ std::vector<std::vector<int>> orientacionObjetivo = {
     {270,  0, 0, 90, 90, 0, 270, 90},
     {0, 180, 180, 90, 90, 90, 0, 0},
     {0, 180, 90, 270, 90, 90, 270, 90}
+};
+
+std::vector<std::vector<int>> orientacionObjetivo2 = {
+    {270, 0, 270, 0, 270, 0, 0, 0},
+    {180, 180, 0, 180, 0, 0, 90, 180},
+    {270, 90, 180, 0, 0, 0, 180, 90},
+    {0, 90, 0, 0, 0, 270, 90, 0},
+    {0, 270, 90, 0, 180, 0, 180, 90},
+    {180,  0, 90, 180, 270, 0, 90, 0},
+    {270, 90, 270, 0, 90, 180, 0, 0},
+    {180, 90, 90, 180, 0, 90, 270, 90}
 };
 
 /* std::vector<std::vector<int>> orientacionDefault = {
@@ -59,6 +72,7 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
     fallo.setFillColor(sf::Color(255, 0, 0, 0));
     fallo.setOrigin(fallo.getGlobalBounds().width / 2, fallo.getGlobalBounds().height / 2);
     fallo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
 
 
     texturaFlecha.loadFromFile("../assets/minijuegoRedes/flecha.png");
@@ -104,16 +118,17 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
 
             fila.push_back(c);
 
-            if(malla[i][j].tipo == "tipoLineaI"){
-                flecha1.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
+            /* if(malla[i][j].tipo == "tipoLineaI"){
 
-                flecha2.setPosition(malla[0][7].sprite.getPosition().x /* + (flecha2.getGlobalBounds().width + 25) */, malla[0][0].sprite.getPosition().y);
-            }
+            } */
         }
         malla.push_back(fila);
     }
-
-
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 }
 
 void minijuegoRedes::ManejarEvento(sf::Event evento){
@@ -123,7 +138,9 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
     {
         for (size_t j = 0; j < pieza[i].size(); j++)
         {
-            if(malla[i][j].tipo != "tipoLineaI"){
+            if(malla[i][j].tipo == "tipoLineaI" || malla[i][j].tipo == "tipoInterseccionI" || malla[i][j].tipo == "tipoLI"){
+
+            } else {
                 if(malla[i][j].sprite.getGlobalBounds().contains(posicionEnVentana)){
                     if(evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button ==    sf::Mouse::Left){
                         malla[i][j].sprite.rotate(90);
@@ -142,81 +159,86 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                     } */
 
                 }
-            } else {
-
             }
         }
 
     }
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter)
+{
+    bool iguales = true;
+
+    // 1. Comprobar TODA la malla contra el objetivo
+    for (size_t i = 0; i < pieza.size() && iguales; i++)
     {
-        for (size_t i = 0; i < pieza.size(); i++)
+        for (size_t j = 0; j < pieza[i].size(); j++)
         {
-            for (size_t j = 0; j < pieza[i].size(); j++)
+            if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
             {
-                if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
-                {
-                    iguales = false;
-                } else {
-                    iguales = true;
-                }
+                iguales = false;
+                break; // ya no hace falta seguir
             }
         }
-        if (iguales)
+    }
+
+    // 2. Si son iguales
+    if (iguales)
+    {
+        // Primera fase → pasar a pieza2
+        if (pieza != pieza2)
         {
-            /* malla.assign(pieza2.begin(), pieza2.end()); */
+            orientacionObjetivo = orientacionObjetivo2;
+            pieza = pieza2;
+
+            malla.clear();
             malla.resize(pieza.size());
             for (size_t i = 0; i < pieza.size(); i++)
             {
                 malla[i].resize(pieza[i].size());
-                std::vector<cuadro> fila;
                 for (size_t j = 0; j < pieza[i].size(); j++)
                 {
                     cuadro c;
-                    c.tipo = pieza2[i][j];
-                    /* c.rotacionObjetivo = orientacionObjetivo[i][j];
-                    c.rotacion = orientacionDefault[i][j]; */
+                    c.tipo = pieza[i][j];
 
                     c.textura = std::make_shared<sf::Texture>();
-                    c.textura->loadFromFile("../assets/minijuegoRedes/"+ c.tipo +".png");
+                    c.textura->loadFromFile("../assets/minijuegoRedes/" + c.tipo + ".png");
 
                     c.sprite.setTexture(*c.textura);
-                    c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
-                    c.sprite.setScale(2, 2);
+                    c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2.f,
+                                    c.sprite.getGlobalBounds().height / 2.f);
+                    c.sprite.setScale(2.f, 2.f);
 
                     float cellW = c.sprite.getGlobalBounds().width;
                     float cellH = c.sprite.getGlobalBounds().height;
 
-                    float offsetX = (sf::VideoMode::getDesktopMode().width  / 2) - (pieza[j].size() / 2.f) * cellW;
-                    float offsetY = (sf::VideoMode::getDesktopMode().height / 2) - (pieza.size() / 2.f) * cellH;
+                    float offsetX = (sf::VideoMode::getDesktopMode().width  / 2.f) - (pieza[i].size() / 2.f) * cellW;
+                    float offsetY = (sf::VideoMode::getDesktopMode().height / 2.f) - (pieza.size() / 2.f) * cellH;
 
                     c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
 
-                    /* c.sprite.setPosition(((sf::VideoMode::getDesktopMode().width / 2) - 2 * c.sprite.getGlobalBounds().width) + ((j % (pieza[j].size() + 1)) * c.sprite.getGlobalBounds().width), (sf::VideoMode::getDesktopMode().height / 2) - 2 * c.sprite.getGlobalBounds().height + ((i % (pieza.size() + 1))) * c.sprite.getGlobalBounds().height); */
-
-                    /* c.sprite.setRotation(c.rotacion); */
-
-                    malla[i][j] = c;
-
-                    fila.push_back(c);
-
-                    if(malla[i][j].tipo == "tipoInterseccionI" ){
-                        flecha1.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
-                    } else if(malla[i][j].tipo == "tipoLI"){
-                        flecha2.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
-                    }
+                    malla[i][j] = c;  // ¡ya está!
                 }
-                malla.push_back(fila);
             }
-        } else {
-            falloEvento = 1;
-            fallo.setFillColor(sf::Color(255, 0, 0, 255));
+
+            tiempoRestante.restart();
+            tiempo.setString(std::to_string(tiempoInt));
+        }
+        // Segunda fase → cambiar de pantalla
+        else
+        {
+            juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
         }
     }
+    else
+    {
+        falloEvento = 1;
+        fallo.setFillColor(sf::Color(255, 0, 0, 255));
+    }
+}
 
 }
 
 void minijuegoRedes::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
     /* cuadros.at(0).sprite.rotate(90); */
@@ -236,6 +258,13 @@ void minijuegoRedes::actualizar(){
             fallo.setFillColor(colorActual); // Aplicamos el nuevo color
         }
     }
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
+
 
 }
 
@@ -249,9 +278,10 @@ void minijuegoRedes::renderizar(sf::RenderWindow& window){
         }
 
     }
-    window.draw(flecha1);
-    window.draw(flecha2);
+    /* window.draw(flecha1);
+    window.draw(flecha2); */
     window.draw(fallo);
+    window.draw(tiempo);
     /* for(auto& cuadrito : cuadros){
         window.draw(cuadrito.sprite);
     } */
