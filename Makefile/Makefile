@@ -8,7 +8,7 @@ CXXFLAGS = -std=c++17 -Wall -I../include
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Nombre del ejecutable
-TARGET = ./juego
+TARGET = ./Gollem4Talleris
 
 # Compilar todos los .cpp
 SRC = ../src/logica/main.cpp ../src/logica/Golem.cpp ../src/logica/objColisionable.cpp ../src/logica/Juego.cpp ../src/pantallas/PantallaSeleccionar.cpp ../src/pantallas/PantallaMenu.cpp ../src/minijuegoPonchar/minijuegoPonchar.cpp ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp ../src/pantallas/PantallaCarga.cpp ../src/minijuegoRedes/minijuegoRedes.cpp
