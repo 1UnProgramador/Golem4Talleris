@@ -11,23 +11,27 @@ class minijuegoRedes : public Pantalla{
     sf::Texture texturaFlecha;
     sf::Sprite flecha1;
     sf::Sprite flecha2;
-
+    sf::RectangleShape fallo;
+    float velocidadFallo;
+    sf::Clock clock;
 
     sf::Vector2i posicionMouse;
     sf::Vector2f posicionEnVentana;
 
     sf::SoundBuffer bufferClick;
     sf::Sound click;
-    
-    
-    int prueba = 1;
+
+
+    int falloEvento = 0;
         struct cuadro {
             std::shared_ptr<sf::Texture> textura;
             sf::Sprite sprite;
             int rotacionObjetivo;
             int rotacion;
             std::string tipo;
+
         };
+        bool iguales = false;
         std::vector<cuadro> cuadros;
         std::vector<std::vector<cuadro>> malla;
     public:
