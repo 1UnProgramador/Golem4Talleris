@@ -14,6 +14,10 @@ class minijuegoRedes : public Pantalla{
     sf::RectangleShape fallo;
     float velocidadFallo;
     sf::Clock clock;
+    sf::Clock tiempoRestante;
+    sf::Font fuente;
+    sf::Text tiempo;
+    int tiempoInt = 120;
 
     sf::Vector2i posicionMouse;
     sf::Vector2f posicionEnVentana;
