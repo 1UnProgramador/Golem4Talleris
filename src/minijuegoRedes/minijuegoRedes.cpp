@@ -12,18 +12,26 @@ const std::string dirCuadros [] = {
     "../assets/minijuegoRedes/interseccionIzquierda.png",
 };
 
-/* std::vector<std::vector<int>> orientacionObjetivo = {
-    {270, 90, 90, 90},
-    {0,  180, 90, 0},
-    {180, 0, 90, 0},
-    {270, 90, 90, 90}
+std::vector<std::vector<int>> orientacionObjetivo = {
+    {270, 90, 90, 90, 0, 270, 0, 0},
+    {0, 270, 90, 0, 180, 90, 0, 90},
+    {0, 0, 0, 180, 0, 270, 270, 0},
+    {0, 270, 270, 0, 0, 180, 90, 180},
+    {180, 90, 0, 180, 270, 90, 90, 0},
+    {270,  0, 0, 90, 90, 0, 270, 90},
+    {0, 180, 180, 90, 90, 90, 0, 0},
+    {0, 180, 90, 270, 90, 90, 270, 90}
 };
 
-std::vector<std::vector<int>> orientacionDefault = {
-    {0, 0, 0, 0},
-    {0,  0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0}
+/* std::vector<std::vector<int>> orientacionDefault = {
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0,  0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0,  0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0}
 }; */
 std::vector<std::vector<std::string>> pieza = {
     {"tipoL", "tipoLinea", "tipoInterseccion", "tipoInterseccion", "tipoL", "tipoL", "tipoL", "tipoLineaI"},
@@ -47,6 +55,12 @@ std::vector<std::vector<std::string>> pieza2 = {
 };
 
 minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
+    fallo.setSize(sf::Vector2f(2000, 2000));
+    fallo.setFillColor(sf::Color(255, 0, 0, 0));
+    fallo.setOrigin(fallo.getGlobalBounds().width / 2, fallo.getGlobalBounds().height / 2);
+    fallo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+
+
     texturaFlecha.loadFromFile("../assets/minijuegoRedes/flecha.png");
     flecha1.setTexture(texturaFlecha);
     flecha2.setTexture(texturaFlecha);
@@ -72,8 +86,8 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
 
             c.sprite.setTexture(*c.textura);
             c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
-            c.sprite.setScale(3, 3);
-            
+            c.sprite.setScale(2, 2);
+
             float cellW = c.sprite.getGlobalBounds().width;
             float cellH = c.sprite.getGlobalBounds().height;
 
@@ -89,11 +103,16 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
             malla[i][j] = c;
 
             fila.push_back(c);
+
+            if(malla[i][j].tipo == "tipoLineaI"){
+                flecha1.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
+
+                flecha2.setPosition(malla[0][7].sprite.getPosition().x /* + (flecha2.getGlobalBounds().width + 25) */, malla[0][0].sprite.getPosition().y);
+            }
         }
         malla.push_back(fila);
     }
-    flecha1.setPosition(malla[0][0].sprite.getPosition().x /* - (flecha1.getGlobalBounds().width + 25) */, malla[7][0].sprite.getPosition().y);
-    flecha2.setPosition(malla[0][7].sprite.getPosition().x /* + (flecha2.getGlobalBounds().width + 25) */, malla[0][0].sprite.getPosition().y);
+
 
 }
 
@@ -106,59 +125,92 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
         {
             if(malla[i][j].tipo != "tipoLineaI"){
                 if(malla[i][j].sprite.getGlobalBounds().contains(posicionEnVentana)){
-                    if(evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button == sf::Mouse::Left){
-                    malla[i][j].sprite.rotate(90);
-                    click.play();
-                    /* malla[i][j].rotacion++; */
-                } else if (evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button == sf::Mouse::Right){
-                    malla[i][j].sprite.rotate(-90);
-                    click.play();
-                    /* malla[i][j].rotacion--; */
+                    if(evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button ==    sf::Mouse::Left){
+                        malla[i][j].sprite.rotate(90);
+                        click.play();
+                        /* malla[i][j].rotacion++; */
+                    } else if (evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton. button == sf::Mouse::Right){
+                        malla[i][j].sprite.rotate(-90);
+                        click.play();
+                        /* malla[i][j].rotacion--; */
+                    }
+                    /* if (malla[i][j].sprite.getRotation() == malla[i][j].rotacionObjetivo)
+                    {
+                        iguales = true;
+                    } else {
+                        iguales  = false;
+                    } */
+
                 }
+            } else {
+
             }
         }
-        }
-        
+
     }
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter)
     {
-        /* malla.assign(pieza2.begin(), pieza2.end()); */
-        malla.resize(pieza.size());
         for (size_t i = 0; i < pieza.size(); i++)
         {
-            malla[i].resize(pieza[i].size());
-            std::vector<cuadro> fila;
             for (size_t j = 0; j < pieza[i].size(); j++)
             {
-                cuadro c;
-                c.tipo = pieza2[i][j];
-                /* c.rotacionObjetivo = orientacionObjetivo[i][j];
-                c.rotacion = orientacionDefault[i][j]; */
-
-                c.textura = std::make_shared<sf::Texture>();
-                c.textura->loadFromFile("../assets/minijuegoRedes/"+ c.tipo +".png");
-
-                c.sprite.setTexture(*c.textura);
-                c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
-                c.sprite.setScale(3, 3);
-            
-                float cellW = c.sprite.getGlobalBounds().width;
-                float cellH = c.sprite.getGlobalBounds().height;
-
-                float offsetX = (sf::VideoMode::getDesktopMode().width  / 2) - (pieza[j].size() / 2.f) * cellW;
-                float offsetY = (sf::VideoMode::getDesktopMode().height / 2) - (pieza.size() / 2.f) * cellH;
-
-                c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
-
-                /* c.sprite.setPosition(((sf::VideoMode::getDesktopMode().width / 2) - 2 * c.sprite.getGlobalBounds().width) + ((j % (pieza[j].size() + 1)) * c.sprite.getGlobalBounds().width), (sf::VideoMode::getDesktopMode().height / 2) - 2 * c.sprite.getGlobalBounds().height + ((i % (pieza.size() + 1))) * c.sprite.getGlobalBounds().height); */
-
-                /* c.sprite.setRotation(c.rotacion); */
-
-                malla[i][j] = c;
-
-                fila.push_back(c);
+                if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
+                {
+                    iguales = false;
+                } else {
+                    iguales = true;
                 }
-            malla.push_back(fila);
+            }
+        }
+        if (iguales)
+        {
+            /* malla.assign(pieza2.begin(), pieza2.end()); */
+            malla.resize(pieza.size());
+            for (size_t i = 0; i < pieza.size(); i++)
+            {
+                malla[i].resize(pieza[i].size());
+                std::vector<cuadro> fila;
+                for (size_t j = 0; j < pieza[i].size(); j++)
+                {
+                    cuadro c;
+                    c.tipo = pieza2[i][j];
+                    /* c.rotacionObjetivo = orientacionObjetivo[i][j];
+                    c.rotacion = orientacionDefault[i][j]; */
+
+                    c.textura = std::make_shared<sf::Texture>();
+                    c.textura->loadFromFile("../assets/minijuegoRedes/"+ c.tipo +".png");
+
+                    c.sprite.setTexture(*c.textura);
+                    c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
+                    c.sprite.setScale(2, 2);
+
+                    float cellW = c.sprite.getGlobalBounds().width;
+                    float cellH = c.sprite.getGlobalBounds().height;
+
+                    float offsetX = (sf::VideoMode::getDesktopMode().width  / 2) - (pieza[j].size() / 2.f) * cellW;
+                    float offsetY = (sf::VideoMode::getDesktopMode().height / 2) - (pieza.size() / 2.f) * cellH;
+
+                    c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
+
+                    /* c.sprite.setPosition(((sf::VideoMode::getDesktopMode().width / 2) - 2 * c.sprite.getGlobalBounds().width) + ((j % (pieza[j].size() + 1)) * c.sprite.getGlobalBounds().width), (sf::VideoMode::getDesktopMode().height / 2) - 2 * c.sprite.getGlobalBounds().height + ((i % (pieza.size() + 1))) * c.sprite.getGlobalBounds().height); */
+
+                    /* c.sprite.setRotation(c.rotacion); */
+
+                    malla[i][j] = c;
+
+                    fila.push_back(c);
+
+                    if(malla[i][j].tipo == "tipoInterseccionI" ){
+                        flecha1.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
+                    } else if(malla[i][j].tipo == "tipoLI"){
+                        flecha2.setPosition(malla[i][j].sprite.getPosition().x, malla[i][j].sprite.getPosition().y);
+                    }
+                }
+                malla.push_back(fila);
+            }
+        } else {
+            falloEvento = 1;
+            fallo.setFillColor(sf::Color(255, 0, 0, 255));
         }
     }
 
@@ -168,9 +220,27 @@ void minijuegoRedes::actualizar(){
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
     /* cuadros.at(0).sprite.rotate(90); */
+    if (falloEvento == 1)
+    {
+        float totalAnimacion = 2.0f;
+        float decrementoAlpha = 255.0f / totalAnimacion;
+        float deltaTime = clock.restart().asSeconds();
+        sf::Color colorActual = fallo.getFillColor();
+
+        if (colorActual.a > 0) {
+            colorActual.a -= decrementoAlpha * deltaTime;
+            if (colorActual.a < 0) {
+                colorActual.a = 0;
+                falloEvento = 0;
+            }
+            fallo.setFillColor(colorActual); // Aplicamos el nuevo color
+        }
+    }
+
 }
 
 void minijuegoRedes::renderizar(sf::RenderWindow& window){
+
     for (size_t i = 0; i < pieza.size(); i++)
     {
         for (size_t j = 0; j < pieza[i].size(); j++)
@@ -181,6 +251,7 @@ void minijuegoRedes::renderizar(sf::RenderWindow& window){
     }
     window.draw(flecha1);
     window.draw(flecha2);
+    window.draw(fallo);
     /* for(auto& cuadrito : cuadros){
         window.draw(cuadrito.sprite);
     } */
