@@ -1,18 +1,17 @@
+#include "../../include/minijuegoTangram/minijuegoTangram.h"
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
-#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
 #include "../../include/logica/Juego.h"
 #include <cmath>
 
-/* #include <SFML/Audio.hpp> */
 
-const std::string dirCuadros [] = {
+/* const std::string dirCuadros [] = {
     "../assets/minijuegoRedes/linea.png",
     "../assets/minijuegoRedes/interseccion.png",
     "../assets/minijuegoRedes/giroIzquierda.png",
     "../assets/minijuegoRedes/giroDerecha.png",
     "../assets/minijuegoRedes/interseccionDerecha.png",
     "../assets/minijuegoRedes/interseccionIzquierda.png",
-};
+}; */
 
 std::vector<std::vector<int>> orientacionObjetivo = {
     {270, 90, 90, 90, 0, 270, 0, 0},
@@ -132,108 +131,113 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
 }
 
 void minijuegoRedes::ManejarEvento(sf::Event evento){
-    bufferClick.loadFromFile("../assets/minijuegoRedes/click.mp3");
-    click.setBuffer(bufferClick);
-    for (size_t i = 0; i < pieza.size(); i++)
-    {
-        for (size_t j = 0; j < pieza[i].size(); j++)
+    if (evento.type == sf::Event::MouseButtonPressed) {
+        bufferClick.loadFromFile("../assets/minijuegoRedes/click.mp3");
+        click.setBuffer(bufferClick);
+        for (size_t i = 0; i < pieza.size(); i++)
         {
-            if(malla[i][j].tipo == "tipoLineaI" || malla[i][j].tipo == "tipoInterseccionI" || malla[i][j].tipo == "tipoLI"){
+            for (size_t j = 0; j < pieza[i].size(); j++)
+            {
+                if(malla[i][j].tipo == "tipoLineaI" || malla[i][j].tipo == "tipoInterseccionI" || malla[i][j].tipo == "tipoLI"){
 
-            } else {
-                if(malla[i][j].sprite.getGlobalBounds().contains(posicionEnVentana)){
-                    if(evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button ==    sf::Mouse::Left){
-                        malla[i][j].sprite.rotate(90);
-                        click.play();
-                        /* malla[i][j].rotacion++; */
-                    } else if (evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton. button == sf::Mouse::Right){
-                        malla[i][j].sprite.rotate(-90);
-                        click.play();
-                        /* malla[i][j].rotacion--; */
+                } else {
+                    if(malla[i][j].sprite.getGlobalBounds().contains(posicionEnVentana)){
+                        if(evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton.button ==    sf::Mouse::Left){
+                            malla[i][j].sprite.rotate(90);
+                            click.play();
+
+                            /* malla[i][j].rotacion++; */
+                        } else if (evento.type == sf::Event::MouseButtonPressed  && evento.mouseButton. button == sf::Mouse::Right){
+                            malla[i][j].sprite.rotate(-90);
+                            click.play();
+
+                        }
+                        if (malla[i][j].tipo == "tipoLinea" && (malla[i][j].sprite.getRotation() == orientacionObjetivo[i][j] * 2))
+                        {
+                            malla[i][j].sprite.setRotation(orientacionObjetivo[i][j]);
+                        } else if (malla[i][j].tipo == "tipoCruz" && (malla[i][j].sprite.getRotation() == 0 || malla[i][j].sprite.getRotation() == 90 || malla[i][j].sprite.getRotation() == 180 || malla[i][j].sprite.getRotation() == 270))
+                        {
+                            malla[i][j].sprite.setRotation(orientacionObjetivo[i][j]);
+                        }
+
                     }
-                    /* if (malla[i][j].sprite.getRotation() == malla[i][j].rotacionObjetivo)
-                    {
-                        iguales = true;
-                    } else {
-                        iguales  = false;
-                    } */
-
                 }
             }
-        }
 
+        }
     }
+
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter)
-{
-    bool iguales = true;
-
-    // 1. Comprobar TODA la malla contra el objetivo
-    for (size_t i = 0; i < pieza.size() && iguales; i++)
     {
-        for (size_t j = 0; j < pieza[i].size(); j++)
-        {
-            if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
-            {
-                iguales = false;
-                break; // ya no hace falta seguir
-            }
-        }
-    }
+        bool iguales = true;
 
-    // 2. Si son iguales
-    if (iguales)
-    {
-        // Primera fase → pasar a pieza2
-        if (pieza != pieza2)
+        // 1. Comprobar TODA la malla contra el objetivo
+        for (size_t i = 0; i < pieza.size() && iguales; i++)
         {
-            orientacionObjetivo = orientacionObjetivo2;
-            pieza = pieza2;
-
-            malla.clear();
-            malla.resize(pieza.size());
-            for (size_t i = 0; i < pieza.size(); i++)
+            for (size_t j = 0; j < pieza[i].size(); j++)
             {
-                malla[i].resize(pieza[i].size());
-                for (size_t j = 0; j < pieza[i].size(); j++)
+                if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
                 {
-                    cuadro c;
-                    c.tipo = pieza[i][j];
-
-                    c.textura = std::make_shared<sf::Texture>();
-                    c.textura->loadFromFile("../assets/minijuegoRedes/" + c.tipo + ".png");
-
-                    c.sprite.setTexture(*c.textura);
-                    c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2.f,
-                                    c.sprite.getGlobalBounds().height / 2.f);
-                    c.sprite.setScale(2.f, 2.f);
-
-                    float cellW = c.sprite.getGlobalBounds().width;
-                    float cellH = c.sprite.getGlobalBounds().height;
-
-                    float offsetX = (sf::VideoMode::getDesktopMode().width  / 2.f) - (pieza[i].size() / 2.f) * cellW;
-                    float offsetY = (sf::VideoMode::getDesktopMode().height / 2.f) - (pieza.size() / 2.f) * cellH;
-
-                    c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
-
-                    malla[i][j] = c;  // ¡ya está!
+                    iguales = false;
+                    break; // ya no hace falta seguir
                 }
             }
-
-            tiempoRestante.restart();
-            tiempo.setString(std::to_string(tiempoInt));
         }
-        // Segunda fase → cambiar de pantalla
+
+        // 2. Si son iguales
+        if (iguales)
+        {
+            // Primera fase → pasar a pieza2
+            if (pieza != pieza2)
+            {
+                orientacionObjetivo = orientacionObjetivo2;
+                pieza = pieza2;
+
+                malla.clear();
+                malla.resize(pieza.size());
+                for (size_t i = 0; i < pieza.size(); i++)
+                {
+                    malla[i].resize(pieza[i].size());
+                    for (size_t j = 0; j < pieza[i].size(); j++)
+                    {
+                        cuadro c;
+                        c.tipo = pieza[i][j];
+
+                        c.textura = std::make_shared<sf::Texture>();
+                        c.textura->loadFromFile("../assets/minijuegoRedes/" + c.tipo + ".png");
+
+                        c.sprite.setTexture(*c.textura);
+                        c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2.f,
+                                        c.sprite.getGlobalBounds().height / 2.f);
+                        c.sprite.setScale(2.f, 2.f);
+
+                        float cellW = c.sprite.getGlobalBounds().width;
+                        float cellH = c.sprite.getGlobalBounds().height;
+
+                        float offsetX = (sf::VideoMode::getDesktopMode().width  / 2.f) - (pieza[i].size() / 2.f) * cellW;
+                        float offsetY = (sf::VideoMode::getDesktopMode().height / 2.f) - (pieza.size() / 2.f) * cellH;
+
+                        c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
+
+                        malla[i][j] = c;  // ¡ya está!
+                    }
+                }
+
+                tiempoRestante.restart();
+                tiempo.setString(std::to_string(tiempoInt));
+            }
+            // Segunda fase → cambiar de pantalla
+            else
+            {
+                juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
+            }
+        }
         else
         {
-            juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
+            falloEvento = 1;
+            fallo.setFillColor(sf::Color(255, 0, 0, 255));
         }
     }
-    else
-    {
-        falloEvento = 1;
-        fallo.setFillColor(sf::Color(255, 0, 0, 255));
-    }
-}
 
 }
 
