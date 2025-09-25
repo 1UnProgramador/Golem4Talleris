@@ -3,7 +3,7 @@
 #include "../../include/logica/Juego.h"
 #include <cmath>
 
-
+bool rotacionValida(const std::string& tipo, float rotacion, int objetivo);
 /* const std::string dirCuadros [] = {
     "../assets/minijuegoRedes/linea.png",
     "../assets/minijuegoRedes/interseccion.png",
@@ -152,13 +152,13 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                             click.play();
 
                         }
-                        if (malla[i][j].tipo == "tipoLinea" && (malla[i][j].sprite.getRotation() == orientacionObjetivo[i][j] * 2))
+                        /* if (malla[i][j].tipo == "tipoLinea" && (malla[i][j].sprite.getRotation() == orientacionObjetivo[i][j] * 2))
                         {
                             malla[i][j].sprite.setRotation(orientacionObjetivo[i][j]);
                         } else if (malla[i][j].tipo == "tipoCruz" && (malla[i][j].sprite.getRotation() == 0 || malla[i][j].sprite.getRotation() == 90 || malla[i][j].sprite.getRotation() == 180 || malla[i][j].sprite.getRotation() == 270))
                         {
                             malla[i][j].sprite.setRotation(orientacionObjetivo[i][j]);
-                        }
+                        } */
 
                     }
                 }
@@ -167,17 +167,13 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
         }
     }
 
-    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter)
-    {
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
         bool iguales = true;
 
         // 1. Comprobar TODA la malla contra el objetivo
-        for (size_t i = 0; i < pieza.size() && iguales; i++)
-        {
-            for (size_t j = 0; j < pieza[i].size(); j++)
-            {
-                if (malla[i][j].sprite.getRotation() != orientacionObjetivo[i][j])
-                {
+        for (size_t i = 0; i < pieza.size() && iguales; i++){
+            for (size_t j = 0; j < pieza[i].size(); j++){
+                if (!rotacionValida(malla[i][j].tipo, malla[i][j].sprite.getRotation(), orientacionObjetivo[i][j])){
                     iguales = false;
                     break; // ya no hace falta seguir
                 }
@@ -188,8 +184,7 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
         if (iguales)
         {
             // Primera fase → pasar a pieza2
-            if (pieza != pieza2)
-            {
+            if (pieza != pieza2) {
                 orientacionObjetivo = orientacionObjetivo2;
                 pieza = pieza2;
 
@@ -198,8 +193,7 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                 for (size_t i = 0; i < pieza.size(); i++)
                 {
                     malla[i].resize(pieza[i].size());
-                    for (size_t j = 0; j < pieza[i].size(); j++)
-                    {
+                    for (size_t j = 0; j < pieza[i].size(); j++) {
                         cuadro c;
                         c.tipo = pieza[i][j];
 
@@ -219,26 +213,38 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
 
                         c.sprite.setPosition(offsetX + j * cellW, offsetY + i * cellH);
 
-                        malla[i][j] = c;  // ¡ya está!
+                        malla[i][j] = c;
                     }
                 }
 
                 tiempoRestante.restart();
                 tiempo.setString(std::to_string(tiempoInt));
-            }
-            // Segunda fase → cambiar de pantalla
-            else
-            {
+            } else {
                 juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
             }
         }
-        else
-        {
+        else {
             falloEvento = 1;
             fallo.setFillColor(sf::Color(255, 0, 0, 255));
         }
     }
 
+}
+
+bool rotacionValida(const std::string& tipo, float rotacion, int objetivo) {
+    int r = static_cast<int>(rotacion) % 360;
+    int obj = objetivo % 360;
+
+    if (tipo == "tipoLinea") {
+        return (r == obj || (r + 180) % 360 == obj);
+    }
+    else if (tipo == "tipoCruz") {
+        return true;
+    }
+
+    else {
+        return (r == obj);
+    }
 }
 
 void minijuegoRedes::actualizar(){
