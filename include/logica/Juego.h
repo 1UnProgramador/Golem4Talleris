@@ -7,6 +7,7 @@ class Juego{
     private:
         sf::RenderWindow window;
         std::unique_ptr<Pantalla> pantallaActual;
+
     public:
         std::string instrucciones;
         Juego();
