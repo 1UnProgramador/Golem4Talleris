@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 std::vector<std::vector<int>> posicionesObjetivos = {
     {{200, 200}},
@@ -27,7 +28,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     tG1.formaFigura.setPoint(0, sf::Vector2f(0, 0));
     tG1.formaFigura.setPoint(1, sf::Vector2f(200, 0));
     tG1.formaFigura.setPoint(2, sf::Vector2f(0, 200));
-    tG1.formaFigura.setFillColor(sf::Color::Red);
+    tG1.colorOriginal = sf::Color(255, 85, 0);
     tG1.formaFigura.setPosition(sf::Vector2f(200, 200));
     tG1.formaFigura.setOrigin(tG1.formaFigura.getGlobalBounds().width / 2, tG1.formaFigura.getGlobalBounds().height / 2);
 
@@ -35,7 +36,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     tG2.formaFigura.setPoint(0, sf::Vector2f(0, 0));
     tG2.formaFigura.setPoint(1, sf::Vector2f(200, 0));
     tG2.formaFigura.setPoint(2, sf::Vector2f(0, 200));
-    tG2.formaFigura.setFillColor(sf::Color::Red);
+    tG2.colorOriginal = sf::Color::Red;
     tG2.formaFigura.setPosition(sf::Vector2f(400, 200));
     tG2.formaFigura.setOrigin(tG2.formaFigura.getGlobalBounds().width / 2, tG2.formaFigura.getGlobalBounds().height / 2);
 
@@ -43,7 +44,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     tM1.formaFigura.setPoint(0, sf::Vector2f(0, 0));
     tM1.formaFigura.setPoint(1, sf::Vector2f(141, 0));
     tM1.formaFigura.setPoint(2, sf::Vector2f(0, 141));
-    tM1.formaFigura.setFillColor(sf::Color::Green);
+    tM1.colorOriginal = sf::Color::Green;
     tM1.formaFigura.setPosition(sf::Vector2f(541, 141));
     tM1.formaFigura.setOrigin(tM1.formaFigura.getGlobalBounds().width / 2, tM1.formaFigura.getGlobalBounds().height / 2);
 
@@ -51,7 +52,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     tP1.formaFigura.setPoint(0, sf::Vector2f(0, 0));
     tP1.formaFigura.setPoint(1, sf::Vector2f(100, 0));
     tP1.formaFigura.setPoint(2, sf::Vector2f(0, 100));
-    tP1.formaFigura.setFillColor(sf::Color::Yellow);
+    tP1.colorOriginal = sf::Color(76, 0, 255);
     tP1.formaFigura.setPosition(sf::Vector2f(641, 100));
     tP1.formaFigura.setOrigin(tP1.formaFigura.getGlobalBounds().width / 2, tP1.formaFigura.getGlobalBounds().height / 2);
 
@@ -59,7 +60,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     tP2.formaFigura.setPoint(0, sf::Vector2f(0, 0));
     tP2.formaFigura.setPoint(1, sf::Vector2f(100, 0));
     tP2.formaFigura.setPoint(2, sf::Vector2f(0, 100));
-    tP2.formaFigura.setFillColor(sf::Color::Yellow);
+    tP2.colorOriginal = sf::Color::Yellow;
     tP2.formaFigura.setPosition(sf::Vector2f(741, 100));
     tP2.formaFigura.setOrigin(tP2.formaFigura.getGlobalBounds().width / 2, tP2.formaFigura.getGlobalBounds().height / 2);
 
@@ -68,7 +69,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     c1.formaFigura.setPoint(1, sf::Vector2f(100, 0));
     c1.formaFigura.setPoint(2, sf::Vector2f(100, 100));
     c1.formaFigura.setPoint(3, sf::Vector2f(0, 100));
-    c1.formaFigura.setFillColor(sf::Color::Blue);
+    c1.colorOriginal = sf::Color::Blue;
     c1.formaFigura.setPosition(sf::Vector2f(841, 100));
     c1.formaFigura.setOrigin(c1.formaFigura.getGlobalBounds().width / 2, c1.formaFigura.getGlobalBounds().height / 2);
 
@@ -77,7 +78,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     p1.formaFigura.setPoint(1, sf::Vector2f(141, 0));
     p1.formaFigura.setPoint(2, sf::Vector2f(212, 71));
     p1.formaFigura.setPoint(3, sf::Vector2f(71, 71));
-    p1.formaFigura.setFillColor(sf::Color::White);
+    p1.colorOriginal = sf::Color::Magenta;
     p1.formaFigura.setPosition(sf::Vector2f(1000, 71));
     p1.formaFigura.setOrigin(p1.formaFigura.getGlobalBounds().width / 2, p1.formaFigura.getGlobalBounds().height / 2);
 
@@ -88,6 +89,36 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     figuras.push_back(tP2);
     figuras.push_back(c1);
     figuras.push_back(p1);
+
+    figurasObjetivo = figuras;
+    figurasObjetivo[0].formaFigura.setPosition(sf::Vector2f(455, 333));
+    figurasObjetivo[0].formaFigura.setRotation(225);
+    figurasObjetivo[0].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[1].formaFigura.setPosition(sf::Vector2f(415, 433));
+    figurasObjetivo[1].formaFigura.setRotation(270);
+    figurasObjetivo[1].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[2].formaFigura.setPosition(sf::Vector2f(315, 433));
+    figurasObjetivo[2].formaFigura.setRotation(315);
+    figurasObjetivo[2].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[3].formaFigura.setPosition(sf::Vector2f(215, 362));
+    figurasObjetivo[3].formaFigura.setRotation(135);
+    figurasObjetivo[3].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[4].formaFigura.setPosition(sf::Vector2f(235.5, 130));
+    figurasObjetivo[4].formaFigura.setRotation(180);
+    figurasObjetivo[4].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[5].formaFigura.setPosition(sf::Vector2f(286, 292));
+    figurasObjetivo[5].formaFigura.setRotation(45);
+    figurasObjetivo[5].formaFigura.setFillColor(sf::Color(34, 113,179));
+
+    figurasObjetivo[6].formaFigura.setPosition(sf::Vector2f(321, 186));
+    figurasObjetivo[6].formaFigura.setScale(1, -1);
+    figurasObjetivo[6].formaFigura.setRotation(90);
+    figurasObjetivo[6].formaFigura.setFillColor(sf::Color(34, 113,179));
 }
 
 
@@ -134,7 +165,6 @@ bool overlap(float minA, float maxA, float minB, float maxB) {
     return maxA >= minB && maxB >= minA;
 }
 
-// 🔹 Devuelve true si colisionan y además calcula el MTV
 bool checkCollisionSAT(const sf::ConvexShape& shapeA, const sf::ConvexShape& shapeB, Vector2& mtv) {
     std::vector<Vector2> verticesA = getVertices(shapeA);
     std::vector<Vector2> verticesB = getVertices(shapeB);
@@ -176,10 +206,21 @@ bool checkCollisionSAT(const sf::ConvexShape& shapeA, const sf::ConvexShape& sha
 }
 
 void minijuegoTangram::ManejarEvento(sf::Event evento){
-    if (evento.type == sf::Event::MouseButtonPressed) {
+    if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
+        for (auto &figura : figurasObjetivo)
+        {
+            figura.seleccionada = false;
+        }
+
         for (auto &figura : figuras)
         {
-            (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) ? figura.arrastrando = true : figura.arrastrando = false;
+            if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)){
+                figura.arrastrando = true;
+                figura.seleccionada = true;
+            }else {
+                figura.arrastrando = false;
+                figura.seleccionada = false;
+            }
         }
     } else if (evento.type == sf::Event::MouseMoved) {
         for (auto &figura : figuras)
@@ -189,7 +230,7 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
             }
         }
 
-    } else if (evento.type == sf::Event::MouseButtonReleased){
+    } else if (evento.type == sf::Event::MouseButtonReleased && evento.mouseButton.button == sf::Mouse::Left){
         for (auto &figuraA : figuras)
         {
             if(figuraA.arrastrando == true){
@@ -209,6 +250,10 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
             }
         }
     } else if(evento.type == sf::Event::MouseWheelScrolled){
+        for(auto &figura : figuras)
+        {
+            figura.seleccionada = false;
+        }
         for (auto &figura : figuras)
         {
             if(evento.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel && figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)){
@@ -217,17 +262,46 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
                 } else if (evento.mouseWheelScroll.delta < 0){
                     figura.formaFigura.rotate(-1);
                 }
+                figura.seleccionada = true;
             }
         }
-    } else if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::G){
+    } else if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Right){
+        for (auto &figura : figuras)
+        {
+            if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) figura.formaFigura.rotate(90);
+            figura.seleccionada = true;
+        }
+    } else if(evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Middle){
         for (auto &figura : figuras)
         {
             if (figura.orientacion == 1){
-                if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) figura.formaFigura.setScale(1, -1);
+                if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) {
+                    figura.formaFigura.setScale(1, -1);
+                    figura.seleccionada = true;
+                }
                 figura.orientacion = 2;
             } else {
-                if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) figura.formaFigura.setScale(1, 1);
+                if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)) {
+                    figura.formaFigura.setScale(1, 1);
+                    figura.seleccionada = true;
+                }
                 figura.orientacion = 1;
+            }
+        }
+    }
+    if (evento.type == sf::Event::KeyPressed) {
+        for (auto &figura : figuras)
+        {
+            if (figura.seleccionada){
+                if (evento.key.code == sf::Keyboard::Up) {
+                    figura.formaFigura.move(0, -1);
+                } else if (evento.key.code == sf::Keyboard::Down) {
+                    figura.formaFigura.move(0, 1);
+                } else if (evento.key.code == sf::Keyboard::Left) {
+                    figura.formaFigura.move(-1, 0);
+                } else if (evento.key.code == sf::Keyboard::Right) {
+                    figura.formaFigura.move(1, 0);
+                }
             }
         }
     }
@@ -237,15 +311,22 @@ void minijuegoTangram::actualizar(){
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
+    for (auto& figura : figuras) {
+        if (figura.seleccionada)
+        {
+            figura.formaFigura.setFillColor(sf::Color(255, 255, 255));
+        } else {
+            figura.formaFigura.setFillColor(figura.colorOriginal);
+        }
 
+    }
 }
 
 void minijuegoTangram::renderizar(sf::RenderWindow& window){
-    window.draw(figuras.at(0).formaFigura);
-    window.draw(figuras.at(1).formaFigura);
-    window.draw(figuras.at(2).formaFigura);
-    window.draw(figuras.at(3).formaFigura);
-    window.draw(figuras.at(4).formaFigura);
-    window.draw(figuras.at(5).formaFigura);
-    window.draw(figuras.at(6).formaFigura);
+    for (const auto& figura : figurasObjetivo) {
+        window.draw(figura.formaFigura);
+    }
+    for (const auto& figura : figuras) {
+        window.draw(figura.formaFigura);
+    }
 }
