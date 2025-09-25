@@ -2,7 +2,7 @@
 #include "../../include/pantallas/PantallaMenu.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 
-Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Sistema de Pantallas", sf::Style::Fullscreen) {
+Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Gollem4Talleris", sf::Style::Fullscreen/* , sf::ContextSettings(8) */) {
     pantallaActual = std::make_unique<PantallaMenu>(this);
 }
 
