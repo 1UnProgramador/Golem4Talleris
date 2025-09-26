@@ -8,25 +8,27 @@
 
 class minijuegoRedes : public Pantalla{
     private:
-    sf::Texture texturaFlecha;
-    sf::Sprite flecha1;
-    sf::Sprite flecha2;
-    sf::RectangleShape fallo;
-    float velocidadFallo;
-    sf::Clock clock;
-    sf::Clock tiempoRestante;
-    sf::Font fuente;
-    sf::Text tiempo;
-    int tiempoInt = 120;
+        sf::Texture tFondo;
+        sf::Sprite fondo;
+        sf::Texture texturaFlecha;
+        sf::Sprite flecha1;
+        sf::Sprite flecha2;
+        sf::RectangleShape fallo;
+        float velocidadFallo;
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt = 120;
 
-    sf::Vector2i posicionMouse;
-    sf::Vector2f posicionEnVentana;
+        sf::Vector2i posicionMouse;
+        sf::Vector2f posicionEnVentana;
 
-    sf::SoundBuffer bufferClick;
-    sf::Sound click;
+        sf::SoundBuffer bufferClick;
+        sf::Sound click;
 
 
-    int falloEvento = 0;
+        int falloEvento = 0;
         struct cuadro {
             std::shared_ptr<sf::Texture> textura;
             sf::Sprite sprite;
