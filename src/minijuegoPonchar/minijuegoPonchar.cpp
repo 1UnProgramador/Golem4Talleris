@@ -5,42 +5,23 @@
 #include <memory>
 #include <cmath>
 #include <string>
-
+std::vector<sf::Vector2f> posiciones{
+    {0, 0}
+};
 /* #include "../../assets/minijuegoPonchar/naranjaBlanco.png" */
 minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondo.png");
-    fondo.setTexture(tFondo);
-    /* fondo2.setTexture(tFondo);
-    fondo3.setTexture(tFondo);
-    fondo4.setTexture(tFondo); */
-
-    /* fondo2.setScale(0.8, 0.8);
-    fondo3.setScale(0.8, 0.8);
-    fondo4.setScale(0.8, 0.8); */
-
-    fondo.setPosition(0, 0);
-    /* fondo2.setPosition(fondo.getGlobalBounds().width, 0);
-    fondo3.setPosition(0, fondo.getGlobalBounds().height);
-    fondo4.setPosition(fondo2.getPosition().x, fondo3.getPosition().y); */
-
-    float fX = sf::VideoMode::getDesktopMode().width / fondo.getGlobalBounds().width;
-    float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
-
-    fondo.setScale(fX, fY);
+    tConector.loadFromFile("../assets/minijuegoPonchar/conector.png");
+    conector.setTexture(tConector);
+    conector.setScale(0.5, 0.5);
+    conector.setPosition(1000, 0);
 
     int nCable = 1;
-    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
-    texto.setFont(fuente);
-    texto.setString("");
-    texto.setCharacterSize(24);
-    texto.setFillColor(sf::Color::White);
-    texto.setPosition(10, 10);
     std::vector<std::string> nombresCables = {"naranjaBlanco", "naranja", "verdeBlanco", "azul", "azulBlanco", "verde", "cafeBlanco", "cafe"};
     for (const auto& nombre : nombresCables) {
         Cable cable;
         cable.tCable = std::make_shared<sf::Texture>();
 
-        cable.pObjetivo.setPosition(1000 + (20) * nCable, 75);
+        cable.pObjetivo.setPosition(1013 + (22) * nCable, 79);
         cable.pObjetivo.setSize(sf::Vector2f(11, 16));
         cable.pObjetivo.setFillColor(sf::Color::Red);
 
@@ -49,10 +30,16 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
         }
         cable.pinObjetivo = nCable;
         cable.sCable.setScale(3, 3);
-        cable.sCable.setTexture(*cable.tCable); // se desreferencia al puntero
+        cable.sCable.setTexture(*cable.tCable);
         cables.push_back(cable);
         nCable += 1;
     }
+    cables.at(0).pObjetivo.move(-1, 0);
+    cables.at(1).pObjetivo.move(-1, 0);
+    cables.at(2).pObjetivo.move(-2, 0);
+    cables.at(5).pObjetivo.move(1, 0);
+    cables.at(6).pObjetivo.move(2, 0);
+    cables.at(7).pObjetivo.move(2, 0);
 }
 
 void minijuegoPonchar::ManejarEvento(sf::Event evento){
@@ -73,12 +60,11 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
         // Si dragging == true, actualiza la posición del cable al mouse
     } else if (evento.type == sf::Event::MouseButtonReleased)
     {
-
         for (int i = 0; i <= 7; i++)
         {
             for (int j = 0; j <= 7; j++)
             {
-                if (cables[i].sCable.getGlobalBounds().intersects(cables[j].pObjetivo.getGlobalBounds()))
+                if (cables[i].sCable.getGlobalBounds().intersects(cables[j].pObjetivo.getGlobalBounds()) && cables[j].objetivoOcupado == false)
                 {
                     cables[i].sCable.setPosition(cables[j].pObjetivo.getPosition().x - 5, cables[j].pObjetivo.getPosition().y);
                     cables[i].arrastrando = false;
@@ -86,14 +72,10 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
 
                     if (cables[i].sCable.getGlobalBounds().intersects(cables[i].pObjetivo.getGlobalBounds())){
                         cables[i].correcto = true;
-                        cables[j].pObjetivo.setFillColor(sf::Color::Green);
-                        tIncorrectos--;
                     } else {
                         cables[i].correcto = false;
-                        cables[j].pObjetivo.setFillColor(sf::Color::Red);
-                        tIncorrectos++;
                     }
-
+                    cables[j].objetivoOcupado = true;
                     break;
                 }
             }
@@ -108,6 +90,23 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
 
 
 void minijuegoPonchar::actualizar(){
+    for (auto &cable : cables)
+    {
+        if (cable.objetivoOcupado == true)
+        {
+            for (auto &cableB : cables)
+            {
+                if (!cable.pObjetivo.getGlobalBounds().intersects(cableB.sCable.getGlobalBounds())){
+                    cable.objetivoOcupado = false;
+                }
+            }
+
+        }
+        if (cable.objetivoOcupado){
+            cable.pObjetivo.setFillColor(sf::Color::Green);
+        }
+    }
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -121,17 +120,18 @@ void minijuegoPonchar::actualizar(){
         }
 
     }
-    texto.setString("Estas haciendolo genial! Actualmente tienes:\n"+std::to_string(tIncorrectos)+" cables incorrectos");
+
 }
 
 void minijuegoPonchar::renderizar(sf::RenderWindow& window){
-    window.draw(fondo);
+    window.draw(conector);
     /* window.draw(fondo2);
     window.draw(fondo3);
     window.draw(fondo4); */
-    for (int i = 0; i <= 7; i++){
-        window.draw(cables[i]);
-        window.draw(cables[i].pObjetivo);
+    for (auto &cable : cables){
+        window.draw(cable.pObjetivo);
     }
-    window.draw(texto);
+    for (auto &cable : cables){
+        window.draw(cable);
+    }
 }

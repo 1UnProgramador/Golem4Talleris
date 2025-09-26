@@ -1,4 +1,5 @@
 #include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/minijuegoRedes/minijuegoRedes.h"
 #include "../../include/logica/Juego.h"
 #include <vector>
 #include <cmath>
@@ -300,6 +301,9 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         }
     }
     if (evento.type == sf::Event::KeyPressed) {
+        if(evento.key.code == sf::Keyboard::Enter){
+            juego->cambiarPantalla(std::make_unique<minijuegoRedes>(juego));
+        }
         for (auto &figura : figuras)
         {
             if (figura.seleccionada){
