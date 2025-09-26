@@ -8,6 +8,26 @@
 
 /* #include "../../assets/minijuegoPonchar/naranjaBlanco.png" */
 minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
+    tFondo.loadFromFile("../assets/fondo.png");
+    fondo.setTexture(tFondo);
+    /* fondo2.setTexture(tFondo);
+    fondo3.setTexture(tFondo);
+    fondo4.setTexture(tFondo); */
+
+    /* fondo2.setScale(0.8, 0.8);
+    fondo3.setScale(0.8, 0.8);
+    fondo4.setScale(0.8, 0.8); */
+
+    fondo.setPosition(0, 0);
+    /* fondo2.setPosition(fondo.getGlobalBounds().width, 0);
+    fondo3.setPosition(0, fondo.getGlobalBounds().height);
+    fondo4.setPosition(fondo2.getPosition().x, fondo3.getPosition().y); */
+
+    float fX = sf::VideoMode::getDesktopMode().width / fondo.getGlobalBounds().width;
+    float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
+
+    fondo.setScale(fX, fY);
+
     int nCable = 1;
     fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
     texto.setFont(fuente);
@@ -105,6 +125,10 @@ void minijuegoPonchar::actualizar(){
 }
 
 void minijuegoPonchar::renderizar(sf::RenderWindow& window){
+    window.draw(fondo);
+    /* window.draw(fondo2);
+    window.draw(fondo3);
+    window.draw(fondo4); */
     for (int i = 0; i <= 7; i++){
         window.draw(cables[i]);
         window.draw(cables[i].pObjetivo);

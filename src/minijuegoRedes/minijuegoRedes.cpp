@@ -67,6 +67,16 @@ std::vector<std::vector<std::string>> pieza2 = {
 };
 
 minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
+    tFondo.loadFromFile("../assets/fondo.png");
+    fondo.setTexture(tFondo);
+
+    fondo.setPosition(0, 0);
+
+    float fX = sf::VideoMode::getDesktopMode().width / fondo.getGlobalBounds().width;
+    float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
+
+    fondo.setScale(fX, fY);
+
     fallo.setSize(sf::Vector2f(2000, 2000));
     fallo.setFillColor(sf::Color(255, 0, 0, 0));
     fallo.setOrigin(fallo.getGlobalBounds().width / 2, fallo.getGlobalBounds().height / 2);
@@ -279,7 +289,7 @@ void minijuegoRedes::actualizar(){
 }
 
 void minijuegoRedes::renderizar(sf::RenderWindow& window){
-
+    window.draw(fondo);
     for (size_t i = 0; i < pieza.size(); i++)
     {
         for (size_t j = 0; j < pieza[i].size(); j++)

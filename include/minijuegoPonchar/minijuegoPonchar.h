@@ -36,6 +36,12 @@ class minijuegoPonchar : public Pantalla{
         std::vector<Cable> cables;
         std::vector<sf::RectangleShape> pines;
 
+        sf::Texture tFondo;
+        sf::Sprite fondo;
+        /* sf::Sprite fondo2;
+        sf::Sprite fondo3;
+        sf::Sprite fondo4; */
+
     public:
         minijuegoPonchar(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
