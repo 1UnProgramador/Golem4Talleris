@@ -16,6 +16,16 @@ std::vector<std::vector<int>> posicionesObjetivos = {
 };
 
 minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
+    tFondo.loadFromFile("../assets/fondo.png");
+    fondo.setTexture(tFondo);
+
+    fondo.setPosition(0, 0);
+
+    float fX = sf::VideoMode::getDesktopMode().width / fondo.getGlobalBounds().width;
+    float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
+
+    fondo.setScale(fX, fY);
+
     figura tG1;
     figura tG2;
     figura tM1;
@@ -323,6 +333,7 @@ void minijuegoTangram::actualizar(){
 }
 
 void minijuegoTangram::renderizar(sf::RenderWindow& window){
+    window.draw(fondo);
     for (const auto& figura : figurasObjetivo) {
         window.draw(figura.formaFigura);
     }
