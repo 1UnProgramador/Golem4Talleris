@@ -6,6 +6,8 @@
 
 class minijuegoTangram : public Pantalla{
     private:
+        sf::Texture tFondo;
+        sf::Sprite fondo;
         struct figura{
             sf::ConvexShape formaFigura;
             bool arrastrando = false;
