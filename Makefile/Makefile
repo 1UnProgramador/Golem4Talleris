@@ -1,30 +1,65 @@
-# Definir el compilador
-CXX = g++
+# =========================
+# Makefile portable con SFML
+# =========================
 
-# Rutas a SFML (al lado del Makefile)
-SFML_INC = ./SFML/include
-SFML_LIB = ./SFML/lib
+# Carpeta local de MinGW portable
+MINGW   = ./mingw64
+CXX     = $(MINGW)/bin/g++
+WINDRES = $(MINGW)/bin/windres
+
+# Carpeta local de SFML portable
+SFML    = ./SFML
+
+# -------------------------
+# Configuración
+# -------------------------
+
+# Cambia a 1 si quieres compilación estática (sin DLLs)
+USE_STATIC = 0
 
 # Opciones de compilación
-CXXFLAGS = -std=c++17 -Wall -I../include -I$(SFML_INC)
-
-# Opciones de enlace (SFML)
-LDFLAGS = -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-
-# Compilador de recursos
-WINDRES = windres
+CXXFLAGS = -std=c++17 -Wall -Iinclude -I$(SFML)/include
 
 # Nombre del ejecutable
-TARGET = ./Gollem4Talleris.exe
+TARGET = Gollem4Talleris.exe
 
 # Archivos fuente
-SRC = ../src/logica/main.cpp ../src/logica/Golem.cpp ../src/logica/objColisionable.cpp ../src/logica/Juego.cpp ../src/pantallas/PantallaSeleccionar.cpp ../src/pantallas/PantallaMenu.cpp ../src/minijuegoPonchar/minijuegoPonchar.cpp ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp ../src/pantallas/PantallaCarga.cpp ../src/minijuegoRedes/minijuegoRedes.cpp ../src/minijuegoTangram/minijuegoTangram.cpp
+SRC = ../src/logica/main.cpp \
+      ../src/logica/Golem.cpp \
+      ../src/logica/objColisionable.cpp \
+      ../src/logica/Juego.cpp \
+      ../src/pantallas/PantallaSeleccionar.cpp \
+      ../src/pantallas/PantallaMenu.cpp \
+      ../src/minijuegoPonchar/minijuegoPonchar.cpp \
+      ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp \
+      ../src/pantallas/PantallaCarga.cpp \
+      ../src/minijuegoRedes/minijuegoRedes.cpp \
+      ../src/minijuegoTangram/minijuegoTangram.cpp
 
 # Recursos
 RES = recursos.res
 RC  = recursos.rc
 
-# Regla principal
+# -------------------------
+# Enlace dinámico vs estático
+# -------------------------
+ifeq ($(USE_STATIC),1)
+    CXXFLAGS += -DSFML_STATIC
+    LDFLAGS = -L$(SFML)/lib -L$(MINGW)/lib \
+              -lsfml-graphics-s -lsfml-window-s -lsfml-audio-s -lsfml-system-s \
+              -lopengl32 -lgdi32 -lfreetype -lwinmm -lopenal32 \
+              -lflac -lvorbisenc -lvorbisfile -lvorbis -logg \
+              -static-libgcc -static-libstdc++
+else
+    LDFLAGS = -L$(SFML)/lib -L$(MINGW)/lib \
+              -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system \
+              -lopengl32 -lgdi32 -lfreetype -lwinmm
+endif
+
+# -------------------------
+# Reglas
+# -------------------------
+
 all: $(TARGET)
 
 $(TARGET): $(SRC) $(RES)
@@ -33,6 +68,5 @@ $(TARGET): $(SRC) $(RES)
 $(RES): $(RC)
 	$(WINDRES) $(RC) -O coff -o $(RES)
 
-# Limpiar
 clean:
 	rm -f $(TARGET) $(RES)
