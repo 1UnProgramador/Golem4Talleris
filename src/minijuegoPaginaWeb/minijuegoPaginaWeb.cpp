@@ -56,7 +56,7 @@ minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
     objetivo.fontSize = 12;
     objetivo.layout = 1;
 
-
+    bool borrar = false;
 }
 
 void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
