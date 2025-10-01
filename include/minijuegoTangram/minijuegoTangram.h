@@ -20,8 +20,6 @@ class minijuegoTangram : public Pantalla{
         std::vector<figura> figurasObjetivo;
         sf::Vector2i posicionMouse;
         sf::Vector2f posicionEnVentana;
-
-
     public:
         minijuegoTangram(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
