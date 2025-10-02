@@ -14,7 +14,7 @@ class minijuegoAutotronica : public Pantalla{
             bool arreglado = false;
         };
         struct Opcion{
-            sf::Texture textura;
+            std::shared_ptr<sf::Texture> textura;;
             sf::Sprite sprite;
             sf::RectangleShape cuadro;
             bool seleccionado = false;
