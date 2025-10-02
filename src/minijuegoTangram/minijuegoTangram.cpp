@@ -1,22 +1,19 @@
 #include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
 #include "../../include/logica/Juego.h"
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <iostream>
 
-std::vector<std::vector<int>> posicionesObjetivos = {
-    {{200, 200}},
-    {{0, 0}},
-    {{0, 0}},
-    {{0, 0}},
-    {{0, 0}},
-    {{0, 0}},
-    {{0, 0}}
-};
+std::vector<sf::Vector2f> posicionesObjetivos;
+std::vector<float> rotacionObjetivos;
+
+std::vector<sf::Vector2f> posicionesObjetivos2;
+std::vector<float> rotacionObjetivos2;
 
 minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondo.png");
+    tFondo.loadFromFile("../assets/fondoInformatica.png");
     fondo.setTexture(tFondo);
 
     fondo.setPosition(0, 0);
@@ -101,34 +98,62 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     figuras.push_back(p1);
 
     figurasObjetivo = figuras;
-    figurasObjetivo[0].formaFigura.setPosition(sf::Vector2f(455, 333));
-    figurasObjetivo[0].formaFigura.setRotation(225);
+    figurasObjetivo[0].formaFigura.setPosition(sf::Vector2f(229.5, 441.4));
+    figurasObjetivo[0].formaFigura.setRotation(135);
     figurasObjetivo[0].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[0].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[0].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(370, 442));
+    rotacionObjetivos2.push_back(315);
 
-    figurasObjetivo[1].formaFigura.setPosition(sf::Vector2f(415, 433));
-    figurasObjetivo[1].formaFigura.setRotation(270);
+    figurasObjetivo[1].formaFigura.setPosition(sf::Vector2f(370.5, 582));
+    figurasObjetivo[1].formaFigura.setRotation(315);
     figurasObjetivo[1].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[1].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[1].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(229, 584));
+    rotacionObjetivos2.push_back(135);
 
-    figurasObjetivo[2].formaFigura.setPosition(sf::Vector2f(315, 433));
-    figurasObjetivo[2].formaFigura.setRotation(315);
+    figurasObjetivo[2].formaFigura.setPosition(sf::Vector2f(300, 370.5)); /* */
+    figurasObjetivo[2].formaFigura.setRotation(90);
     figurasObjetivo[2].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[2].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[2].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(300, 371));
+    rotacionObjetivos2.push_back(0);
 
-    figurasObjetivo[3].formaFigura.setPosition(sf::Vector2f(215, 362));
-    figurasObjetivo[3].formaFigura.setRotation(135);
+    figurasObjetivo[3].formaFigura.setPosition(sf::Vector2f(300, 300)); /* */
+    figurasObjetivo[3].formaFigura.setRotation(45);
     figurasObjetivo[3].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[3].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[3].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(300, 300.5));
+    rotacionObjetivos2.push_back(45);
 
-    figurasObjetivo[4].formaFigura.setPosition(sf::Vector2f(235.5, 130));
-    figurasObjetivo[4].formaFigura.setRotation(180);
+    figurasObjetivo[4].formaFigura.setPosition(sf::Vector2f(158.7, 723.8));
+    figurasObjetivo[4].formaFigura.setRotation(135);
     figurasObjetivo[4].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[4].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[4].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(441.64, 724.64));
+    rotacionObjetivos2.push_back(315);
 
-    figurasObjetivo[5].formaFigura.setPosition(sf::Vector2f(286, 292));
+    figurasObjetivo[5].formaFigura.setPosition(sf::Vector2f(229.5, 653));
     figurasObjetivo[5].formaFigura.setRotation(45);
     figurasObjetivo[5].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[5].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[5].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(371.9, 652.9));
+    rotacionObjetivos2.push_back(45);
 
-    figurasObjetivo[6].formaFigura.setPosition(sf::Vector2f(321, 186));
+    figurasObjetivo[6].formaFigura.setPosition(sf::Vector2f(406, 688));
     figurasObjetivo[6].formaFigura.setScale(1, -1);
     figurasObjetivo[6].formaFigura.setRotation(90);
     figurasObjetivo[6].formaFigura.setFillColor(sf::Color(34, 113,179));
+    posicionesObjetivos.push_back(figurasObjetivo[6].formaFigura.getPosition());
+    rotacionObjetivos.push_back(figurasObjetivo[6].formaFigura.getRotation());
+    posicionesObjetivos2.push_back(sf::Vector2f(195, 689));
+    rotacionObjetivos2.push_back(90);
 }
 
 
@@ -237,6 +262,8 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         {
             if (figura.arrastrando == true) {
                 figura.formaFigura.setPosition(posicionEnVentana);
+                std::cout << "Posicion X: " << std::to_string(figura.formaFigura.getPosition().x) << std::endl;
+                std::cout << "Posicion Y: " << std::to_string(figura.formaFigura.getPosition().y) << std::endl;
             }
         }
 
@@ -268,10 +295,11 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         {
             if(evento.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel && figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)){
                 if (evento.mouseWheelScroll.delta > 0){
-                    figura.formaFigura.rotate(1);
+                    figura.formaFigura.rotate(5);
                 } else if (evento.mouseWheelScroll.delta < 0){
-                    figura.formaFigura.rotate(-1);
+                    figura.formaFigura.rotate(-5);
                 }
+                std::cout << "Rotacion: " << std::to_string(figura.formaFigura.getRotation()) << std::endl;
                 figura.seleccionada = true;
             }
         }
@@ -300,6 +328,9 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         }
     }
     if (evento.type == sf::Event::KeyPressed) {
+        if(evento.key.code == sf::Keyboard::Enter){
+            juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
+        }
         for (auto &figura : figuras)
         {
             if (figura.seleccionada){
@@ -312,6 +343,8 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
                 } else if (evento.key.code == sf::Keyboard::Right) {
                     figura.formaFigura.move(1, 0);
                 }
+                std::cout << "Posicion X: " << std::to_string(figura.formaFigura.getPosition().x) << std::endl;
+                std::cout << "Posicion Y: " << std::to_string(figura.formaFigura.getPosition().y) << std::endl;
             }
         }
     }
@@ -328,7 +361,138 @@ void minijuegoTangram::actualizar(){
         } else {
             figura.formaFigura.setFillColor(figura.colorOriginal);
         }
+    }
+    for (int i = 0; i <= 6; i++)
+    {
 
+        if (i == 5 && (figuras[i].formaFigura.getRotation() == rotacionObjetivos[i] * 3 || figuras[i].formaFigura.getRotation() == rotacionObjetivos[i] * 5 || figuras[i].formaFigura.getRotation() == rotacionObjetivos[i] * 7)){
+            figuras[i].formaFigura.setRotation(rotacionObjetivos[i]);
+        } else if(i == 6 && (figuras[i].formaFigura.getRotation() == 270)){
+            figuras[i].formaFigura.setRotation(90);
+        }
+
+        float diferenciaPosX  = std::abs(posicionesObjetivos[i].x - figuras[i].formaFigura.getPosition().x);
+        float diferenciaPosY  = std::abs(posicionesObjetivos[i].y - figuras[i].formaFigura.getPosition().y);
+        float diferenciaGrados = std::abs(rotacionObjetivos[i] - figuras[i].formaFigura.getRotation());
+
+        if (i == 0){
+            float diferenciaPosX  = std::abs(posicionesObjetivos[1].x - figuras[i].formaFigura.getPosition().x);
+            float diferenciaPosY  = std::abs(posicionesObjetivos[1].y - figuras[i].formaFigura.getPosition().y);
+            float diferenciaGrados = std::abs(rotacionObjetivos[1] - figuras[i].formaFigura.getRotation());
+            if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+            {
+                figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+            } else {
+                figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+            }
+        } else if (i == 1){
+            float diferenciaPosX  = std::abs(posicionesObjetivos[0].x - figuras[i].formaFigura.getPosition().x);
+            float diferenciaPosY  = std::abs(posicionesObjetivos[0].y - figuras[i].formaFigura.getPosition().y);
+            float diferenciaGrados = std::abs(rotacionObjetivos[0] - figuras[i].formaFigura.getRotation());
+            if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+            {
+                figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+            } else {
+                figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+            }
+        } else if (i == 3){
+            float diferenciaPosX  = std::abs(posicionesObjetivos[4].x - figuras[i].formaFigura.getPosition().x);
+            float diferenciaPosY  = std::abs(posicionesObjetivos[4].y - figuras[i].formaFigura.getPosition().y);
+            float diferenciaGrados = std::abs(rotacionObjetivos[4] - figuras[i].formaFigura.getRotation());
+            if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+            {
+                figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+            } else {
+                figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+            }
+        } else if (i == 4){
+            float diferenciaPosX  = std::abs(posicionesObjetivos[3].x - figuras[i].formaFigura.getPosition().x);
+            float diferenciaPosY  = std::abs(posicionesObjetivos[3].y - figuras[i].formaFigura.getPosition().y);
+            float diferenciaGrados = std::abs(rotacionObjetivos[3] - figuras[i].formaFigura.getRotation());
+            if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+            {
+                figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+            } else {
+                figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+            }
+        }
+
+        if (figuras[i].formaFigura.getFillColor() != sf::Color::Cyan)
+        {
+            if (((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0))
+            {
+                if(i == 6){
+                    if (figuras[i].formaFigura.getScale() != sf::Vector2f(1.f, -1.f)){
+                        figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                        continue;
+                    }
+                }
+                figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+            } else {
+                float diferenciaPosX  = std::abs(posicionesObjetivos2[i].x - figuras[i].formaFigura.getPosition().x);
+                float diferenciaPosY  = std::abs(posicionesObjetivos2[i].y - figuras[i].formaFigura.getPosition().y);
+                float diferenciaGrados = std::abs(rotacionObjetivos2[i] - figuras[i].formaFigura.getRotation());
+                if (i == 0){
+                    float diferenciaPosX  = std::abs(posicionesObjetivos2[1].x - figuras[i].formaFigura.getPosition().x);
+                    float diferenciaPosY  = std::abs(posicionesObjetivos2[1].y - figuras[i].formaFigura.getPosition().y);
+                    float diferenciaGrados = std::abs(rotacionObjetivos2[1] - figuras[i].formaFigura.getRotation());
+                    if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+                    {
+                        figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                    } else {
+                        figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                    }
+                } else if (i == 1){
+                    float diferenciaPosX  = std::abs(posicionesObjetivos2[0].x - figuras[i].formaFigura.getPosition().x);
+                    float diferenciaPosY  = std::abs(posicionesObjetivos2[0].y - figuras[i].formaFigura.getPosition().y);
+                    float diferenciaGrados = std::abs(rotacionObjetivos2[0] - figuras[i].formaFigura.getRotation());
+                    if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+                    {
+                        figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                    } else {
+                        figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                    }
+                } else if (i == 3){
+                    float diferenciaPosX  = std::abs(posicionesObjetivos2[4].x - figuras[i].formaFigura.getPosition().x);
+                    float diferenciaPosY  = std::abs(posicionesObjetivos2[4].y - figuras[i].formaFigura.getPosition().y);
+                    float diferenciaGrados = std::abs(rotacionObjetivos2[4] - figuras[i].formaFigura.getRotation());
+                    if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+                    {
+                        figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                    } else {
+                        figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                    }
+                } else if (i == 4){
+                    float diferenciaPosX  = std::abs(posicionesObjetivos2[3].x - figuras[i].formaFigura.getPosition().x);
+                    float diferenciaPosY  = std::abs(posicionesObjetivos2[3].y - figuras[i].formaFigura.getPosition().y);
+                    float diferenciaGrados = std::abs(rotacionObjetivos2[3] - figuras[i].formaFigura.getRotation());
+                    if ((diferenciaPosX <= 2 && diferenciaPosY <= 2) && diferenciaGrados == 0)
+                    {
+                        figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                    } else {
+                        figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                    }
+                }
+                if (((diferenciaPosX <= 3 && diferenciaPosY <= 3) && diferenciaGrados == 0))
+                {
+                    figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                } else {
+                    figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                }
+                if (((diferenciaPosX <= 3 && diferenciaPosY <= 3) && diferenciaGrados == 0))
+                {
+                    if(i == 6){
+                        if (figuras[i].formaFigura.getScale() == sf::Vector2f(1.f, -1.f)){
+                            figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                            continue;
+                    }
+                }
+                    figuras[i].formaFigura.setFillColor(sf::Color::Cyan);
+                } else {
+                    figuras[i].formaFigura.setFillColor(figuras[i].colorOriginal);
+                }
+            }
+        }
     }
 }
 

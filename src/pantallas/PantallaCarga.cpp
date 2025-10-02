@@ -20,6 +20,24 @@ const std::string Instrumentalizacion [] = {
 };
 
 PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
+    tFondo.loadFromFile("../assets/fondo.png");
+    tFondo.setRepeated(true);
+    tFondo.setSmooth(false);
+
+    fondo.setTexture(tFondo);
+    w = juego->getWindow().getSize().x;
+    h = juego->getWindow().getSize().y;
+
+    fondo.setTextureRect(sf::IntRect(0, 0, w, h));
+
+    float fX = sf::VideoMode::getDesktopMode().width / fondo.getGlobalBounds().width;
+    float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
+
+    fondo.setScale(fX, fY);
+
+
+    fondo.setPosition(0, 0);
+
     fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
     imagen.loadFromFile("../assets/temporales/imagenPantallaCarga.png");
     sImagen.setTexture(imagen);
@@ -35,9 +53,9 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     cBorde.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f , (sf::VideoMode::getDesktopMode().height / 2.0f) - 50);
 
 
-    sImagen.setOrigin(sImagen.getGlobalBounds().width / 2, sImagen.getGlobalBounds().height / 2);
-    sImagen.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, (cRelleno.getPosition().y - (cRelleno.getGlobalBounds().height / 2)) + (sImagen.getGlobalBounds().height / 2) + 5);
-    /* sImagen.setScale(1.5, 1.5); */
+    sImagen.setScale(1.57, 1.57);
+    sImagen.setOrigin(sImagen.getLocalBounds().width / 2, 0);
+    sImagen.setPosition(cRelleno.getPosition().x, (cRelleno.getPosition().y - (cRelleno.getGlobalBounds().height / 2)) + 5 /* + (sImagen.getGlobalBounds().height) + 5 */);
 
     bienvenida.setFont(fuente);
     bienvenida.setString(juego->instrucciones);
@@ -65,9 +83,21 @@ void PantallaCarga::ManejarEvento(sf::Event evento){
 
 void PantallaCarga::actualizar(){
 
+
+    offsetX = (offsetX + speedX) % tFondo.getSize().x;
+    offsetY = (offsetY + speedY) % tFondo.getSize().y;
+    if (offsetX < 0) offsetX += tFondo.getSize().x;
+    if (offsetY < 0) offsetY += tFondo.getSize().y;
+
+    // aplicar el desplazamiento al textureRect
+    fondo.setTextureRect(sf::IntRect(offsetX, offsetY, w, h));
+
 }
 
 void PantallaCarga::renderizar(sf::RenderWindow& window){
+    window.draw(fondo);
+
+
     window.draw(texto);
     window.draw(barraCarga);
     window.draw(cBorde);
@@ -77,6 +107,7 @@ void PantallaCarga::renderizar(sf::RenderWindow& window){
     float time=eje.getElapsedTime().asSeconds()/10.0;
     barraCarga.setSize({window.getSize().x*time, 50});
     if(time>=1.0){
-        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
+        /* juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego)); */
+        barraCarga.setFillColor(sf::Color::Transparent);
     }
 }
