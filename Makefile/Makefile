@@ -3,9 +3,9 @@
 # =========================
 
 # Carpeta local de MinGW portable
-MINGW   = ./mingw64
-CXX     = $(MINGW)/bin/g++
-WINDRES = $(MINGW)/bin/windres
+MINGW   = $(CURDIR)/mingw64
+CXX     = "$(MINGW)/bin/g++.exe"
+WINDRES = "$(MINGW)/bin/windres.exe"
 
 # Carpeta local de SFML portable
 SFML    = ./SFML
@@ -34,7 +34,8 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp \
       ../src/pantallas/PantallaCarga.cpp \
       ../src/minijuegoRedes/minijuegoRedes.cpp \
-      ../src/minijuegoTangram/minijuegoTangram.cpp
+      ../src/minijuegoTangram/minijuegoTangram.cpp \
+      ../src/minijuegoAutotronica/minijuegoAutotronica.cpp
 
 # Recursos
 RES = recursos.res
