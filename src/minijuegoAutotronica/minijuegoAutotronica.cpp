@@ -18,7 +18,7 @@ std::vector<std::string> nombresObjetosE3 = {
 
 minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     std::vector<std::string> nombresObjetos = {"silenciadorE2", "frenoE2", "bateriaE2", "lucesE2"};
-    std::vector<std::string> nombresOpciones = {"energia", "fusible", "llaveInglesa"};
+    std::vector<std::string> nombresOpciones = {"energia", "fusible", "llaveInglesa", "cajaRepuestos"};
     for (const auto& nombre : nombresObjetos) {
         Objeto o;
         o.textura = std::make_shared<sf::Texture>();
@@ -152,6 +152,11 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionD.cuadro.setFillColor(sf::Color::Cyan);
     opcionD.cuadro.setOrigin(opcionD.cuadro.getLocalBounds().width / 2, opcionD.cuadro.getLocalBounds().height / 2);
     opcionD.cuadro.setPosition(carro.getPosition().x + (separacion / 2) + opcionA.cuadro.getLocalBounds().width + separacion + (opcionA.cuadro.getLocalBounds().width / 2), opcionA.cuadro.getPosition().y);
+    opcionD.textura = std::make_shared<sf::Texture>();
+    opcionD.textura->loadFromFile("../assets/minijuegoAutotronica/cajaRepuestos.png");
+    opcionD.sprite.setTexture(*opcionD.textura);
+    opcionD.sprite.setOrigin(opcionD.sprite.getLocalBounds().width / 2, opcionD.sprite.getLocalBounds().height / 2);
+    opcionD.sprite.setPosition(opcionD.cuadro.getPosition());
 
     opciones.push_back(opcionA);
     opciones.push_back(opcionB);
