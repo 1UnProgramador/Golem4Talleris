@@ -8,6 +8,15 @@ class PantallaMenu : public Pantalla{
         sf::Font fuente;
         sf::Text texto;
 
+        sf::Texture tPlay;
+        sf::Sprite play;
+        sf::Texture tExtra;
+        sf::Sprite Extra;
+        sf::Texture tExit;
+        sf::Sprite Exit;
+        sf::Texture tFondoMenu;
+        sf::Sprite FondoMenu;
+
     public:
         PantallaMenu(Juego* juego);
 
