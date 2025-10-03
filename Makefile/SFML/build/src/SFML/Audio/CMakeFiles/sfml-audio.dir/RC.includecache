@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/SFML-2.6.1/build/src/SFML/Audio/sfml-audio.rc
+winresrc.h
+C:/SFML-2.6.1/build/src/SFML/Audio/winresrc.h
+
