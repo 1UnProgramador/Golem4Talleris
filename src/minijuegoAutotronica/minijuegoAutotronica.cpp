@@ -1,5 +1,6 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
+#include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
 #include <vector>
 #include <cmath>
 #include <memory>
@@ -56,20 +57,20 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
 
     /* objetoSeleccionado.setPosition(carro.getPosition().x, carro.getPosition().y + 100); */
 
-    objetos[0].sprite.setPosition(420, 254);
+    objetos[0].sprite.setPosition(carro.getPosition().x - 263, carro.getPosition().y + 65);
 
     posicionesObjetos.push_back(objetos[0].sprite.getPosition());
     /* silenciador.setTexture(tSilenciador); */
     /* silenciador.setPosition(420, 254); */
 
-    objetos[1].sprite.setPosition(788, 241);
+    objetos[1].sprite.setPosition(carro.getPosition().x + 105, carro.getPosition().y + 52);
 
     posicionesObjetos.push_back(objetos[1].sprite.getPosition());
     /* freno.setTexture(tFreno); */
     /* freno.setPosition(788, 241); */
 
-    objetos[2].sprite.setPosition(803, 200);
-    objetos[3].sprite.setPosition(874, 219);
+    objetos[2].sprite.setPosition(carro.getPosition().x + 120, carro.getPosition().y + 11);
+    objetos[3].sprite.setPosition(carro.getPosition().x + 191, carro.getPosition().y + 30);
 
     posicionesObjetos.push_back(objetos[2].sprite.getPosition());
     /* bateria.setTexture(tBateria);
@@ -99,9 +100,9 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     luces.sprite.setPosition(objetos[3].sprite.getPosition());
 
     objetosE1.push_back(silenciador);
-    objetosE1[0].sprite.setPosition(objetos[0].sprite.getPosition().x - 1, objetos[0].sprite.getPosition().y + 2);
+    objetosE1[0].sprite.setPosition(objetos[0].sprite.getPosition().x, objetos[0].sprite.getPosition().y + 2);
     objetosE1.push_back(freno);
-    objetosE1[1].sprite.setPosition(objetos[1].sprite.getPosition().x, objetos[1].sprite.getPosition().y + 5);
+    objetosE1[1].sprite.setPosition(objetos[1].sprite.getPosition().x, objetos[1].sprite.getPosition().y + 6);
     objetosE1.push_back(bateria);
     objetosE1[2].sprite.setPosition(objetos[2].sprite.getPosition().x, objetos[2].sprite.getPosition().y - 1);
     objetosE1.push_back(luces);
@@ -225,6 +226,20 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
                 objetos[0].arreglado = true;
             }
         }
+        int i=0;
+        for (auto &objeto : objetos){
+            if(!objeto.arreglado){
+                break;
+            } else {
+                if (i == 3)
+                {
+                    juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
+                }
+
+            }
+            i++;
+        }
+        i = 0;
         /* if (evento.key.code == sf::Keyboard::Up) {
             objetos[3].sprite.move(0, -1);
         } else if (evento.key.code == sf::Keyboard::Down) {

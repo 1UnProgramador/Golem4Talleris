@@ -1,0 +1,1 @@
+-I"C:/SFML-2.6.1/include" -I"C:/SFML-2.6.1/src" -isystem "C:/SFML-2.6.1/extlibs/headers/minimp3" -isystem "C:/SFML-2.6.1/extlibs/headers/AL" -isystem "C:/SFML-2.6.1/extlibs/headers"
