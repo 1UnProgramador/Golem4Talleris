@@ -8,8 +8,14 @@
 
 /* #include "../../assets/minijuegoPonchar/naranjaBlanco.png" */
 minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondo.png");
+    tFondo.loadFromFile("../assets/fondoInformatica.png");
     fondo.setTexture(tFondo);
+
+    tRj45.loadFromFile("../assets/minijuegoPonchar/rj-45.png");
+    rj45.setTexture(tRj45);
+
+
+    rj45.setPosition(935, -15);
     /* fondo2.setTexture(tFondo);
     fondo3.setTexture(tFondo);
     fondo4.setTexture(tFondo); */
@@ -40,7 +46,7 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
         Cable cable;
         cable.tCable = std::make_shared<sf::Texture>();
 
-        cable.pObjetivo.setPosition(1000 + (20) * nCable, 75);
+        cable.pObjetivo.setPosition(1000 + (50) * nCable, 75);
         cable.pObjetivo.setSize(sf::Vector2f(11, 16));
         cable.pObjetivo.setFillColor(sf::Color::Red);
 
@@ -76,31 +82,56 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
 
         for (int i = 0; i <= 7; i++)
         {
+            cables[i].arrastrando = false;
             for (int j = 0; j <= 7; j++)
             {
                 if (cables[i].sCable.getGlobalBounds().intersects(cables[j].pObjetivo.getGlobalBounds()))
                 {
-                    cables[i].sCable.setPosition(cables[j].pObjetivo.getPosition().x - 5, cables[j].pObjetivo.getPosition().y);
-                    cables[i].arrastrando = false;
-                    cables[i].conectado = true;
+                    if(!cables[j].pOcupado){
+                        cables[i].sCable.setPosition(cables[j].pObjetivo.getPosition().x - 5, cables[j].pObjetivo.getPosition().y);
+                        cables[i].arrastrando = false;
+                        cables[i].conectado = true;
+                        cables[j].pOcupado = true;
 
-                    if (cables[i].sCable.getGlobalBounds().intersects(cables[i].pObjetivo.getGlobalBounds())){
-                        cables[i].correcto = true;
-                        cables[j].pObjetivo.setFillColor(sf::Color::Green);
-                        tIncorrectos--;
-                    } else {
-                        cables[i].correcto = false;
-                        cables[j].pObjetivo.setFillColor(sf::Color::Red);
-                        tIncorrectos++;
+                        if (cables[i].sCable.getGlobalBounds().intersects(cables[i].pObjetivo.getGlobalBounds())){
+                            cables[i].correcto = true;
+                            cables[j].pObjetivo.setFillColor(sf::Color::Green);
+                            tIncorrectos--;
+                        } else {
+                            cables[i].correcto = false;
+                            cables[j].pObjetivo.setFillColor(sf::Color::Red);
+                            tIncorrectos++;
+                        }
+
+                        break;
                     }
-
-                    break;
+                } else {
+                    if (j == 7){
+                        cables[i].sCable.setPosition(100 + (20) * (i + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);
+                        cables[i].conectado = false;
+                    }
                 }
             }
             if (!cables[i].conectado) {
                 cables[i].sCable.setPosition(100 + (20) * i, sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);
                 cables[i].arrastrando = false;
                 cables[i].conectado = false;
+            }
+        }
+        for (int i = 0; i <= 7; i++)
+        {
+            for (int j = 0; j <= 7; j++)
+            {
+                if (cables[i].pObjetivo.getGlobalBounds().intersects(cables[j].sCable.getGlobalBounds()))
+                {
+                    cables[i].pOcupado = true;
+                    break;
+                } else {
+                    if (j == 7){
+                        cables[i].pOcupado = false;
+                    }
+                }
+
             }
         }
     }
@@ -113,6 +144,14 @@ void minijuegoPonchar::actualizar(){
 
     for (int i = 0; i <= 7; i++)
     {
+        for (int j = 0; j <= 7; j++)
+        {
+            if (cables[i].sCable.getGlobalBounds().intersects(cables[i].pObjetivo.getGlobalBounds())){
+                cables[i].pObjetivo.setFillColor(sf::Color::Green);
+            } else {
+                cables[i].pObjetivo.setFillColor(sf::Color::Red);
+            }
+        }
         if (cables[i].arrastrando) {
             cables[i].sCable.setPosition(posicionEnVentana);
         } else if (!cables[i].conectado)
@@ -126,9 +165,8 @@ void minijuegoPonchar::actualizar(){
 
 void minijuegoPonchar::renderizar(sf::RenderWindow& window){
     window.draw(fondo);
-    /* window.draw(fondo2);
-    window.draw(fondo3);
-    window.draw(fondo4); */
+    window.draw(rj45);
+
     for (int i = 0; i <= 7; i++){
         window.draw(cables[i]);
         window.draw(cables[i].pObjetivo);

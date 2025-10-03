@@ -8,6 +8,17 @@
 
 class PantallaCarga : public Pantalla{
     private:
+        sf::Texture tFondo;
+        sf::Sprite fondo;
+
+        int offsetX = 0;
+        int offsetY = 0;
+        int speedX = 1;
+        int speedY = 1;
+
+        int w;
+        int h;
+
         sf::Font fuente;
         sf::Text texto;
         sf::Text bienvenida;

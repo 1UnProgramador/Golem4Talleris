@@ -8,6 +8,9 @@ class minijuegoPonchar : public Pantalla{
     private:
         sf::Font fuente;
         sf::Text texto;
+
+        sf::Texture tRj45;
+        sf::Sprite rj45;
         int tIncorrectos = 0;
         struct Cable : public sf::Drawable, public objColisionable{
             std::vector<std::string> nombresCables;
@@ -20,6 +23,7 @@ class minijuegoPonchar : public Pantalla{
             bool arrastrando = false;
             sf::Vector2f offset;
             int pinObjetivo;
+            bool pOcupado = false;
             bool conectado = false;
             bool correcto = false;
 

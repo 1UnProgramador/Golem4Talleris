@@ -3,9 +3,9 @@
 # =========================
 
 # Carpeta local de MinGW portable
-MINGW   = ./mingw64
-CXX     = $(MINGW)/bin/g++
-WINDRES = $(MINGW)/bin/windres
+MINGW   = $(CURDIR)/mingw64
+CXX     = "$(MINGW)/bin/g++.exe"
+WINDRES = "$(MINGW)/bin/windres.exe"
 
 # Carpeta local de SFML portable
 SFML    = ./SFML
@@ -34,7 +34,9 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp \
       ../src/pantallas/PantallaCarga.cpp \
       ../src/minijuegoRedes/minijuegoRedes.cpp \
-      ../src/minijuegoTangram/minijuegoTangram.cpp
+      ../src/minijuegoTangram/minijuegoTangram.cpp \
+      ../src/minijuegoAutotronica/minijuegoAutotronica.cpp \
+      ../src/minijuegoMecatronica/minijuegoMecatronica.cpp
 
 # Recursos
 RES = recursos.res
@@ -51,7 +53,7 @@ ifeq ($(USE_STATIC),1)
               -lflac -lvorbisenc -lvorbisfile -lvorbis -logg \
               -static-libgcc -static-libstdc++
 else
-    LDFLAGS = -L$(SFML)/lib -L$(MINGW)/lib \
+    LDFLAGS = -L$(SFML)/build/lib -L$(MINGW)/lib \
               -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system \
               -lopengl32 -lgdi32 -lfreetype -lwinmm
 endif
