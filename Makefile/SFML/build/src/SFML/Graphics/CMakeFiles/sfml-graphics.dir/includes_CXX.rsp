@@ -1,0 +1,1 @@
+-I"C:/SFML-2.6.1/include" -I"C:/SFML-2.6.1/src" -isystem "C:/SFML-2.6.1/extlibs/headers/stb_image" -isystem "C:/SFML-2.6.1/extlibs/headers/glad/include" -isystem "C:/SFML-2.6.1/extlibs/headers/freetype2"

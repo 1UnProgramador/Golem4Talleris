@@ -35,7 +35,8 @@ SRC = ../src/logica/main.cpp \
       ../src/pantallas/PantallaCarga.cpp \
       ../src/minijuegoRedes/minijuegoRedes.cpp \
       ../src/minijuegoTangram/minijuegoTangram.cpp \
-      ../src/minijuegoAutotronica/minijuegoAutotronica.cpp
+      ../src/minijuegoAutotronica/minijuegoAutotronica.cpp \
+      ../src/minijuegoMecatronica/minijuegoMecatronica.cpp
 
 # Recursos
 RES = recursos.res
@@ -52,7 +53,7 @@ ifeq ($(USE_STATIC),1)
               -lflac -lvorbisenc -lvorbisfile -lvorbis -logg \
               -static-libgcc -static-libstdc++
 else
-    LDFLAGS = -L$(SFML)/lib -L$(MINGW)/lib \
+    LDFLAGS = -L$(SFML)/build/lib -L$(MINGW)/lib \
               -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system \
               -lopengl32 -lgdi32 -lfreetype -lwinmm
 endif
