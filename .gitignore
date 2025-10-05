@@ -1,3 +1,16 @@
-*.exe
-.exe
-*.exe
+*.exe .exe
+/bin/
+/obj/
+/.vscode/
+.vs/
+*.VC.db
+*.VC.opendb
+*.pdb
+*.obj
+*.idb
+*.ipch
+*.log
+*.tlog
+*.db
+*.obj
+
