@@ -2,15 +2,22 @@
 #include "../logica/Pantalla.h"
 #include "../logica/Personaje.h"
 #include <SFML/Graphics.hpp>
+#include <vector>
 
-class PantallaSeleccionar : public Pantalla{
-    private:
-        Golem jugador;
+class PantallaSeleccionar : public Pantalla {
+private:
+    Golem jugador;
+    std::vector<sf::RectangleShape> puertas;
+    int puertaCercana = -1; // detectar puerta xd
 
-    public:
-        PantallaSeleccionar(Juego* juego);
+    // Fondo
+    sf::Texture tFondoNexus;
+    sf::Sprite FondoNexus;
 
-        void ManejarEvento(sf::Event evento) override;
-        void actualizar() override;
-        void renderizar(sf::RenderWindow& window) override;
+public:
+    PantallaSeleccionar(Juego* juego);
+
+    void ManejarEvento(sf::Event evento) override;
+    void actualizar() override;
+    void renderizar(sf::RenderWindow& window) override;
 };

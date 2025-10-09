@@ -4,58 +4,89 @@
 #include "../../include/logica/Juego.h"
 #include <memory>
 
-PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego){
-
+PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
+    // Fondo
     tFondoMenu.loadFromFile("../assets/menu/dibujo fondo menu.jpg");
     FondoMenu.setTexture(tFondoMenu);
-    tPlay.loadFromFile("../assets/menu/boton play.png");
-    play.setTexture(tPlay);
-    play.setOrigin(play.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
-    tExtra.loadFromFile("../assets/menu/boton Extra.png");
-    Extra.setTexture(tExtra);
-    Extra.setOrigin(Extra.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
-    tExit.loadFromFile("../assets/menu/boton exit.png");
-    Exit.setTexture(tExit);
-    Exit.setOrigin(Exit.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
-   
-
-    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
-    texto.setFont(fuente);
-    texto.setString("Enter para Comenzar!");
-    texto.setCharacterSize(70);
-    texto.setOrigin(texto.getLocalBounds().left + texto.getLocalBounds().width / 2.0f , texto.getLocalBounds().top + texto.getLocalBounds().height / 2.0f);
-    texto.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f);
-
-    play.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.8);
-    play.setScale(3.5, 3.5);
-    
-    Extra.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.6);
-    Extra.setScale(3.5, 3.5);
-
-    Exit.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.45);
-    Exit.setScale(3.5, 3.5);
 
     float fX = sf::VideoMode::getDesktopMode().width / FondoMenu.getGlobalBounds().width;
     float fY = sf::VideoMode::getDesktopMode().height / FondoMenu.getGlobalBounds().height;
-
     FondoMenu.setScale(fX, fY);
+
+   // --- Titulo xd ---
+    tTitulo.loadFromFile("../assets/menu/titulo juego.png");
+    Titulo.setTexture(tTitulo);
+    Titulo.setOrigin(Titulo.getGlobalBounds().width / 2, Titulo.getGlobalBounds().height / 2);
+    Titulo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 5);
+    Titulo.setScale(1, 1);
+   
+    // --- Botón Play ---
+    tPlay.loadFromFile("../assets/menu/boton play.png");
+    tPlayselec.loadFromFile("../assets/menu/boton play selec.png");
+    play.setTexture(tPlay);
+    play.setOrigin(play.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
+    play.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.6);
+    play.setScale(4.5, 4.5);
+
+    // --- Botón Extra ---
+    tExtra.loadFromFile("../assets/menu/boton extra.png");
+    tExtraselec.loadFromFile("../assets/menu/boton extra selec.png");
+    Extra.setTexture(tExtra);
+    Extra.setOrigin(Extra.getGlobalBounds().width / 2, Extra.getGlobalBounds().height / 2);
+    Extra.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.4);
+    Extra.setScale(4.5, 4.5);
+
+    // --- Botón Exit ---
+    tExit.loadFromFile("../assets/menu/boton exit.png");
+    tExitselec.loadFromFile("../assets/menu/boton exit selec.png");
+    Exit.setTexture(tExit);
+    Exit.setOrigin(Exit.getGlobalBounds().width / 2, Exit.getGlobalBounds().height / 2);
+    Exit.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.25);
+    Exit.setScale(4.5, 4.5);
 }
 
-void PantallaMenu::ManejarEvento(sf::Event evento){
-    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
-        juego->instrucciones = "Hola y Bienvenido a\nGollem4Talleris!";
-        juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+void PantallaMenu::ManejarEvento(sf::Event evento) {
+    if (evento.type == sf::Event::KeyPressed) {
+        if (evento.key.code == sf::Keyboard::Up) {
+            opcionSeleccionada--;
+            if (opcionSeleccionada < 0) opcionSeleccionada = 2;
+        }
+        else if (evento.key.code == sf::Keyboard::Down) {
+            opcionSeleccionada++;
+            if (opcionSeleccionada > 2) opcionSeleccionada = 0;
+        }
+        else if (evento.key.code == sf::Keyboard::Enter) {
+            if (opcionSeleccionada == 0) {
+                juego->instrucciones = "Hola y Bienvenido a\nGollem4Talleris!";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+            }
+            else if (opcionSeleccionada == 1) {
+                // Extra todavía no hace nada
+            }
+            else if (opcionSeleccionada == 2) {
+                juego->getWindow().close();
+            }
+        }
     }
 }
 
-void PantallaMenu::actualizar(){
+void PantallaMenu::actualizar() {
+    // Cambiar textura según selección
+    if (opcionSeleccionada == 0) play.setTexture(tPlayselec);
+    else play.setTexture(tPlay);
 
+    if (opcionSeleccionada == 1) Extra.setTexture(tExtraselec);
+    else Extra.setTexture(tExtra);
+
+    if (opcionSeleccionada == 2) Exit.setTexture(tExitselec);
+    else Exit.setTexture(tExit);
 }
 
-void PantallaMenu::renderizar(sf::RenderWindow& window){
-    /* window.draw(texto); */
+void PantallaMenu::renderizar(sf::RenderWindow& window) {
     window.draw(FondoMenu);
+    window.draw(Titulo);
     window.draw(play);
     window.draw(Extra);
     window.draw(Exit);
+    window.draw(texto);
 }
