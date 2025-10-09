@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../../include/pantallas/PantallaCarga.h"
-#include "../../include/pantallas/PantallaSeleccionar.h"
+/* #include "../../include/pantallas/PantallaSeleccionar.h" */
+#include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
 #include "../../include/logica/Juego.h"
 #include <memory>
 
@@ -77,7 +78,7 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
 
 void PantallaCarga::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
-        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
+        juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
     }
 }
 

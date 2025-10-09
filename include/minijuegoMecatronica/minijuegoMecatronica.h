@@ -9,18 +9,52 @@ class minijuegoMecatronica : public Pantalla{
         sf::Texture tFondo;
         sf::Sprite fondo;
 
+        bool agarrado = false;
+
         sf::Texture tLente;
         sf::Sprite lente;
 
         sf::Texture tLa;
         sf::Sprite lA;
 
+        sf::Texture tLaz;
+        sf::Sprite lAz;
+
+        sf::Texture tLr;
+        sf::Sprite lR;
+
+        sf::Texture tLv;
+        sf::Sprite lV;
+
+        sf::Vector2i posicionMouse;
+        sf::Vector2f posicionEnVentana;
+        struct Objeto{
+            std::vector<std::string> nombresObjetos;
+            std::shared_ptr<sf::Texture> tObjeto;
+            sf::Sprite sObjeto;
+            bool actual = false;
+            bool agarrado = false;
+            bool cayendo = false;
+            bool reciclado = false;
+        };
+
+        std::vector<Objeto> objetos;
+        int i = 0;
+        std::vector<sf::Vector2f> posicionesObjetos;
 
         sf::Texture tPalo;
         sf::Sprite palo;
 
         sf::Texture tGarra;
         sf::Sprite garra;
+
+        struct led{
+            std::vector<std::string> nombresObjetos;
+            std::shared_ptr<sf::Texture> tLed;
+            sf::Sprite sLed;
+            bool activo;
+        };
+        std::vector<led> leds;
 
         sf::Texture tB1;
         sf::Texture tB2;
