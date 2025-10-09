@@ -8,7 +8,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
     // Fondo del Nexus
-    if (!tFondoNexus.loadFromFile("../assets/nexus/fondo nexus.png")) {
+    if (!tFondoNexus.loadFromFile("../assets/nexusxd/fondo nexus.png")) {
         printf("Error al cargar fondo nexus\n");
     }
     FondoNexus.setTexture(tFondoNexus);
@@ -30,7 +30,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     float separacion = 200.f;
 
     float startX = (width / 2) - (puertaWidth * 2 + separacion * 1.5f);
-    float posY = 100.f; // parte superior
+    float posY = 100.f; 
 
     for (int i = 0; i < 4; i++) {
         sf::RectangleShape puerta(sf::Vector2f(puertaWidth, puertaHeight));
