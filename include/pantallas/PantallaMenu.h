@@ -3,10 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 
-class PantallaMenu : public Pantalla {
+
+class PantallaMenu : public Pantalla{
+
     private:
         sf::Font fuente;
         sf::Text texto;
+
 
         //Titulo
         sf::Texture tTitulo;
@@ -30,10 +33,13 @@ class PantallaMenu : public Pantalla {
 
         int opcionSeleccionada = 0; // 0 = Play, 1 = Extra, 2 = Exit
 
+
     public:
         PantallaMenu(Juego* juego);
 
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;
         void renderizar(sf::RenderWindow& window) override;
+
 };
+

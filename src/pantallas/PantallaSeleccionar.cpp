@@ -2,6 +2,7 @@
 #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
 #include "../../include/logica/Juego.h"
 #include <memory>
+
 #include <cmath>
 
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
@@ -30,7 +31,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     float separacion = 200.f;
 
     float startX = (width / 2) - (puertaWidth * 2 + separacion * 1.5f);
-    float posY = 100.f; 
+    float posY = 100.f;
 
     for (int i = 0; i < 4; i++) {
         sf::RectangleShape puerta(sf::Vector2f(puertaWidth, puertaHeight));
