@@ -25,7 +25,13 @@ class minijuegoElectronicaYControl : public Pantalla{
         std::vector<sf::RectangleShape> lineasHorizontales;
         std::vector<sf::RectangleShape> lineasVerticales;
 
-        std::vector<sf::RectangleShape> cubos;
+    struct cubo{
+        sf::RectangleShape forma;
+        bool encajado = false;
+    };
+
+        std::vector<cubo> cubos;
+        std::vector<cubo> cubosObjetivo;
 
     public:
         minijuegoElectronicaYControl(Juego* juego);
