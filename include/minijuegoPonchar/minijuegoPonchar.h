@@ -46,6 +46,7 @@ class minijuegoPonchar : public Pantalla{
         /* sf::Sprite fondo2;
         sf::Sprite fondo3;
         sf::Sprite fondo4; */
+        std::vector<sf::Vector2f> posiciones;
 
     public:
         minijuegoPonchar(Juego* juego);
