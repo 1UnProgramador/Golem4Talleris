@@ -8,9 +8,8 @@ class PantallaSeleccionar : public Pantalla {
 private:
     Golem jugador;
     std::vector<sf::RectangleShape> puertas;
-    int puertaCercana = -1; // detectar puerta xd
+    int puertaCercana = -1;
 
-    // Fondo
     sf::Texture tFondoNexus;
     sf::Sprite FondoNexus;
 
