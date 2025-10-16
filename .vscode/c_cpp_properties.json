@@ -1,21 +1,26 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "SFML-2.6.1",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/msys64/ucrt64/include"
+                "C:/Users/elver/SFML/include/SFML"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "C:/Users/elver/SFML/include/SFML"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
         }
     ],
     "version": 4
