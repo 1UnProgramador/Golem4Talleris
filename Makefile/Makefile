@@ -37,7 +37,8 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoTangram/minijuegoTangram.cpp \
       ../src/minijuegoAutotronica/minijuegoAutotronica.cpp \
       ../src/minijuegoMecatronica/minijuegoMecatronica.cpp \
-      ../src/minijuegoElectronicaYControl/minijuegoElectronicaYControl.cpp
+      ../src/minijuegoElectronicaYControl/minijuegoElectronicaYControl.cpp \
+      ../src/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.cpp
 
 
 # Recursos
