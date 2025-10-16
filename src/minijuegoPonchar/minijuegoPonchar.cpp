@@ -5,6 +5,8 @@
 #include <memory>
 #include <cmath>
 #include <string>
+#include <random>
+#include <algorithm>
 
 /* #include "../../assets/minijuegoPonchar/naranjaBlanco.png" */
 minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
@@ -65,9 +67,31 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
         nCable += 1;
 
     }
+    
+
+
+    for (int i = 0; i < 8; i++) {
+        posiciones.push_back(sf::Vector2f(100 + (20 * i), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height));
+    }
+
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(posiciones.begin(), posiciones.end(), gen);
+
+    for (int i = 0; i < 8; i++) {
+        cables[i].sCable.setPosition(posiciones[i]);
+    }
+
     for (int i = 0; i <= 7; i++)
     {
-        cables[i].sCable.setPosition(100 + (20) * (i + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);
+        /* cables[i].sCable.setPosition(100 + (20) * (i + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height); */
+        std::random_device rd;  // semilla aleatoria del sistema
+        std::mt19937 gen(rd()); // motor Mersenne Twister (muy bueno)
+        std::uniform_int_distribution<> dist(0, 7); // rango entre 1 y 10
+        int numero = dist(gen);
+
+        posiciones.push_back(sf::Vector2f(100 + (20) * (numero + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height));
     }
     cables[1].pObjetivo.setPosition(cables[0].pObjetivo.getPosition().x + 25, cables[0].pObjetivo.getPosition().y);
     cables[2].pObjetivo.setPosition(cables[1].pObjetivo.getPosition().x + 27, cables[0].pObjetivo.getPosition().y);
@@ -126,13 +150,13 @@ void minijuegoPonchar::ManejarEvento(sf::Event evento){
                     }
                 } else {
                     if (j == 7){
-                        cables[i].sCable.setPosition(100 + (20) * (i + 1), sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);
+                        cables[i].sCable.setPosition(posiciones[i]);
                         cables[i].conectado = false;
                     }
                 }
             }
             if (!cables[i].conectado) {
-                cables[i].sCable.setPosition(100 + (20) * i, sf::VideoMode::getDesktopMode().height - cables[i].sCable.getGlobalBounds().height);
+                cables[i].sCable.setPosition(posiciones[i]);
                 cables[i].arrastrando = false;
                 cables[i].conectado = false;
             }

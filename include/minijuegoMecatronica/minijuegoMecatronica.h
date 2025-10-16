@@ -44,6 +44,8 @@ class minijuegoMecatronica : public Pantalla{
         int i = 0;
         std::vector<sf::Vector2f> posicionesObjetos;
 
+        
+
 
         sf::Texture tPalo;
         sf::Sprite palo;
