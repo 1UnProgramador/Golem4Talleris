@@ -24,6 +24,7 @@ class minijuegoPonchar : public Pantalla{
             sf::Vector2f offset;
             int pinObjetivo;
             bool pOcupado = false;
+            int pOapuntaA = -1;
             bool conectado = false;
             bool correcto = false;
 

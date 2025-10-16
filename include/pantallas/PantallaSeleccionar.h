@@ -19,4 +19,5 @@ public:
     void ManejarEvento(sf::Event evento) override;
     void actualizar() override;
     void renderizar(sf::RenderWindow& window) override;
+
 };

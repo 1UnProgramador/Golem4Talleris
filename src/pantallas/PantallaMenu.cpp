@@ -4,6 +4,7 @@
 #include "../../include/logica/Juego.h"
 #include <memory>
 
+
 PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
     // Fondo
     tFondoMenu.loadFromFile("../assets/menu/dibujo fondo menu.jpg");
@@ -19,7 +20,7 @@ PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
     Titulo.setOrigin(Titulo.getGlobalBounds().width / 2, Titulo.getGlobalBounds().height / 2);
     Titulo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 5);
     Titulo.setScale(1, 1);
-   
+
     // --- Botón Play ---
     tPlay.loadFromFile("../assets/menu/boton play.png");
     tPlayselec.loadFromFile("../assets/menu/boton play selec.png");
