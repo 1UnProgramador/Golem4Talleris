@@ -3,6 +3,7 @@
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
 #include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 
 #include <iostream>
@@ -81,7 +82,7 @@ Electricidad::Electricidad(Juego* juego)
 void Electricidad::ManejarEvento(sf::Event evento) {
     // ESC siempre sale
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
     }
 
     // Si estamos ignorando inputs, levantamos el flag cuando hay KeyReleased

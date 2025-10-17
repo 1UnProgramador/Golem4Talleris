@@ -1,4 +1,4 @@
-#include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/pantallas/electricidad.h"
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
 #include "../../include/logica/Juego.h"
 #include <cmath>
@@ -141,6 +141,10 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
 }
 
 void minijuegoRedes::ManejarEvento(sf::Event evento){
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
+    {
+        juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+    }
     if (evento.type == sf::Event::MouseButtonPressed) {
         bufferClick.loadFromFile("../assets/minijuegoRedes/click.mp3");
         click.setBuffer(bufferClick);
@@ -230,7 +234,7 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                 tiempoRestante.restart();
                 tiempo.setString(std::to_string(tiempoInt));
             } else {
-                juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
+                juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
             }
         }
         else {

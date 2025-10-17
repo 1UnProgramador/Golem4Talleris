@@ -1,5 +1,5 @@
 #include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
-#include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/pantallas/informatica.h"
 #include "../../include/logica/Juego.h"
 
 bool dentroVista(const sf::Vector2f& pos, const sf::View& vista/* , const sf::RenderWindow& window */);
@@ -62,9 +62,9 @@ minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
 void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
     {
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<Informatica>(juego));
     } else if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
-        juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
+        juego->cambiarPantalla(std::make_unique<Informatica>(juego));
     } else if(evento.type == sf::Event::MouseWheelScrolled && fondoPanel.getGlobalBounds().contains(mouseEnPanel)){
         if(evento.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel){
             if (evento.mouseWheelScroll.delta > 0 && moviemientoPanel != 0)

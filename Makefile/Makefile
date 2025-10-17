@@ -33,7 +33,7 @@ SRC = ../src/logica/main.cpp \
       ../src/pantallas/PantallaCarga.cpp \
       ../src/pantallas/Informatica.cpp \
       ../src/pantallas/Electricidad.cpp \
-      ../src/pantallas/DiseñoTecnico.cpp \
+      ../src/pantallas/DisenoTecnico.cpp \
       ../src/pantallas/Metalmecanica.cpp \
       ../src/minijuegoPonchar/minijuegoPonchar.cpp \
       ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp \
