@@ -1,5 +1,5 @@
 #include "../../include/pantallas/PantallaSeleccionar.h"
-#include "../../include/minijuegoPonchar/minijuegoPonchar.h"
+#include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
 #include "../../include/logica/Juego.h"
 #include <memory>
 
@@ -49,7 +49,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter) {
         // Si hay una puerta cercana, cambiar de pantalla
         if (puertaCercana != -1) {
-            juego->cambiarPantalla(std::make_unique<minijuegoPonchar>(juego));
+            juego->cambiarPantalla(std::make_unique<minijuegoMecanicaIndustrial>(juego));
         }
     }
 }
