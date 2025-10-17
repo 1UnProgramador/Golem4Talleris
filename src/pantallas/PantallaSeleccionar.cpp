@@ -111,7 +111,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
                     juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
                     break;
                 case 2:
-                    juego->cambiarPantalla(std::make_unique<DiseñoTecnico>(juego));
+                    juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
                     break;
                 case 3:
                     juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));

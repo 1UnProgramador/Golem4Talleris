@@ -23,7 +23,7 @@ DisenoTecnico::DisenoTecnico(Juego* juego)
                         (height / 2) - jugador.getBounds().height / 2);
 
     // Textura de las puertas (Diseño Técnico)
-    std::string rutaPuerta = "../assets/nexusxd/puerta diseno.png";
+    std::string rutaPuerta = "../assets/nexusxd/puerta diseno3.png";
 
     coloresBrillo = {
         sf::Color(0, 180, 255, 220),
