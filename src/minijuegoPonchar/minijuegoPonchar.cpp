@@ -1,5 +1,5 @@
 #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
-#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
+#include "../../include/pantallas/informatica.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <memory>
@@ -67,7 +67,7 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
         nCable += 1;
 
     }
-    
+
 
 
     for (int i = 0; i < 8; i++) {
@@ -106,7 +106,7 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
 void minijuegoPonchar::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
     {
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<Informatica>(juego));
     }
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
 
@@ -213,7 +213,7 @@ void minijuegoPonchar::actualizar(){
     {
         if(cable.correcto){
             if(x == 7){
-                juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
+                juego->cambiarPantalla(std::make_unique<Informatica>(juego));
             }
         } else {
             break;

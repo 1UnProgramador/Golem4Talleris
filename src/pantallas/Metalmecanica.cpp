@@ -1,5 +1,6 @@
 #include "../../include/pantallas/metalmecanica.h"
 #include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cmath>
@@ -78,7 +79,7 @@ Metalmecanica::Metalmecanica(Juego* juego)
 
 void Metalmecanica::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
     }
 
     if (ignoreInput) {

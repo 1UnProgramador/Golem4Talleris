@@ -1,5 +1,6 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/pantallas/Metalmecanica.h"
 
 #include <vector>
 #include <cmath>
@@ -102,6 +103,37 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
         p.sPieza.setPosition(cintas.getPosition().x - 1107, cintas.getPosition().y);
         piezasMalas.push_back(p);
     }
+    std::vector<std::string> listaCorazones = {"1", "2", "3"};
+    int i = 0;
+    int separacion = 100;
+    for (const auto& corazon : listaCorazones) {
+        Corazon c;
+
+        c.tCorazon = std::make_shared<sf::Texture>();
+
+
+        if (!c.tCorazon->loadFromFile("../assets/minijuegoMecanicaIndustrial/corazon.png")) {
+            std::cerr << "No se pudo cargar .png" << std::endl;
+        }
+        c.sCorazon.setTexture(*c.tCorazon);
+        c.sCorazon.setOrigin(c.sCorazon.getGlobalBounds().width / 2, c.sCorazon.getGlobalBounds().height / 2);
+        c.sCorazon.setScale(0.3, 0.3);
+        c.sCorazon.setPosition((c.sCorazon.getGlobalBounds().width / 2) + (c.sCorazon.getGlobalBounds().height / 2) + (separacion * i) , c.sCorazon.getGlobalBounds().height / 2);
+        corazones.push_back(c);
+        i++;
+    }
+    cambioPieza.restart();
+    piezasBuenas[0].sPieza.setPosition(sPantalla.getPosition().x, sPantalla.getPosition().y);
+    piezasBuenas[1].sPieza.setPosition(piezasBuenas[0].sPieza.getPosition().x, piezasBuenas[0].sPieza.getPosition().y);
+    piezasBuenas[2].sPieza.setPosition(piezasBuenas[0].sPieza.getPosition().x, piezasBuenas[0].sPieza.getPosition().y);
+    piezasBuenas[0].activada = true;
+
+    tBoteBasurero.loadFromFile("../assets/minijuegoMecatronica/caneca4.png");
+    boteBasurero.setTexture(tBoteBasurero);
+    boteBasurero.setOrigin(boteBasurero.getGlobalBounds().width / 2, boteBasurero.getGlobalBounds().height / 2);
+    boteBasurero.setScale(3, 3);
+    boteBasurero.setPosition(pistonActivado.getPosition().x, sf::VideoMode::getDesktopMode().height - boteBasurero.getGlobalBounds().height);
+
 }
 void minijuegoMecanicaIndustrial::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed) {
@@ -124,6 +156,8 @@ void minijuegoMecanicaIndustrial::ManejarEvento(sf::Event evento){
                 }
             }
 
+        } else if(evento.key.code == sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
         }
     } else if(evento.type == sf::Event::KeyReleased){
         if(evento.key.code == sf::Keyboard::Space){
@@ -158,36 +192,58 @@ void minijuegoMecanicaIndustrial::actualizar(){
         relojAnimacion.restart();
     }
 
+    if (cambioPieza.getElapsedTime().asSeconds() >= numeroPiezas * delayTime){
+        if(piezasBuenas[0].activada){
+            piezasBuenas[0].activada = false;
+            piezasBuenas[1].activada = true;
+            cambioPieza.restart();
+        } else if(piezasBuenas[1].activada){
+            piezasBuenas[1].activada = false;
+            piezasBuenas[2].activada = true;
+            cambioPieza.restart();
+        }
+    }
+
     if (relojPiezas.getElapsedTime().asSeconds() >= delayTime) {
         Pieza pieza;
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dist(1, 6);
+        std::uniform_int_distribution<> dist(0, 5);
         int numero = dist(gen);
 
-        if(numero >= 1 && numero <= 3){
+        if(numero >= 0 && numero <= 2){
             pieza = piezasBuenas[numero];
-        } else if (numero >= 4 && numero <= 6){
+            pieza.piezaBuena = true;
+        } else if (numero >= 3 && numero <= 5){
             pieza = piezasMalas[numero - 3];
+            pieza.piezaBuena = false;
         }
+        pieza.sPieza.setPosition(cintas.getPosition().x - 1107, cintas.getPosition().y);
         piezasGeneradas.push_back(pieza);
         std::cout << "Pieza Creada";
         relojPiezas.restart();
     }
-    int indice = 0;
-    for (auto &pieza : piezasGeneradas)
-    {
-        if(pieza.piezaGolpeada){
-            pieza.sPieza.move(0, velocidad * 2);
-        } else {
-            pieza.sPieza.move(velocidad, 0);
+
+    for (size_t i = 0; i < piezasGeneradas.size(); ) {
+    auto &pieza = piezasGeneradas[i];
+
+    if (pieza.piezaGolpeada)
+        pieza.sPieza.move(0, velocidad * 2);
+    else
+        pieza.sPieza.move(velocidad, 0);
+
+    if (pieza.sPieza.getPosition().x > sf::VideoMode::getDesktopMode().width || pieza.sPieza.getPosition().y > sf::VideoMode::getDesktopMode().height || pieza.sPieza.getGlobalBounds().intersects(boteBasurero.getGlobalBounds())) {
+        piezasGeneradas.erase(piezasGeneradas.begin() + i);
+        std::cout << "Pieza destruida";
+        if (pieza.piezaBuena)
+        {
+            /* code */
         }
-        if(pieza.sPieza.getPosition().x > sf::VideoMode::getDesktopMode().width || pieza.sPieza.getPosition().y > sf::VideoMode::getDesktopMode().height){
-            piezasGeneradas.erase(piezasGeneradas.begin() + indice);
-            std::cout << "Pieza destruida";
-        }
-        indice++;
+
+    } else {
+        i++;
     }
+}
 
 }
 void minijuegoMecanicaIndustrial::renderizar(sf::RenderWindow& window){
@@ -208,6 +264,14 @@ void minijuegoMecanicaIndustrial::renderizar(sf::RenderWindow& window){
     {
         window.draw(pieza.sPieza);
     }
-
-
+    for (auto &pieza : piezasBuenas)
+    {
+        if(pieza.activada){
+            window.draw(pieza.sPieza);
+        }
+    }
+    window.draw(boteBasurero);
+    window.draw(corazones[0].sCorazon);
+    window.draw(corazones[1].sCorazon);
+    window.draw(corazones[2].sCorazon);
 }

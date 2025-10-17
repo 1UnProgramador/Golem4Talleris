@@ -1,7 +1,7 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
 
-#include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
+#include "../../include/pantallas/electricidad.h"
 
 
 #include <vector>
@@ -148,6 +148,8 @@ void minijuegoMecatronica::ManejarEvento(sf::Event evento){
             }
         }
 
+    } else if(evento.key.code == sf::Keyboard::Escape){
+        juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
     }
 }
 void minijuegoMecatronica::actualizar(){
@@ -198,7 +200,7 @@ void minijuegoMecatronica::actualizar(){
                 objeto.reciclado = true;
                 objeto.actual = false;
                 objeto.sObjeto.setPosition(-500, -500);
-                juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
+                juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
                 std::cout << i;
                 break;
             } else if(objeto.sObjeto.getGlobalBounds().top > sf::VideoMode::getDesktopMode().height){
