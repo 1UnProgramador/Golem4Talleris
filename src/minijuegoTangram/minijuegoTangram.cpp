@@ -1,5 +1,5 @@
 #include "../../include/minijuegoTangram/minijuegoTangram.h"
-#include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
+#include "../../include/pantallas/informatica.h"
 #include "../../include/logica/Juego.h"
 #include <vector>
 #include <cmath>
@@ -241,6 +241,10 @@ bool checkCollisionSAT(const sf::ConvexShape& shapeA, const sf::ConvexShape& sha
 }
 
 void minijuegoTangram::ManejarEvento(sf::Event evento){
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
+    {
+        juego->cambiarPantalla(std::make_unique<Informatica>(juego));
+    }
     if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
         for (auto &figura : figurasObjetivo)
         {
@@ -328,9 +332,7 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         }
     }
     if (evento.type == sf::Event::KeyPressed) {
-        if(evento.key.code == sf::Keyboard::Enter){
-            juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
-        }
+        
         for (auto &figura : figuras)
         {
             if (figura.seleccionada){

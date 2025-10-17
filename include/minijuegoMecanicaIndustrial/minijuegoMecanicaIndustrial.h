@@ -18,6 +18,9 @@ class minijuegoMecanicaIndustrial : public Pantalla{
         sf::Texture tPistonActivado;
         sf::Sprite pistonActivado;
 
+        sf::Texture tBoteBasurero;
+        sf::Sprite boteBasurero;
+
         bool activado = false;
 
         struct Pieza
@@ -25,16 +28,28 @@ class minijuegoMecanicaIndustrial : public Pantalla{
             std::shared_ptr<sf::Texture> tPiezas;
             sf::Sprite sPieza;
             bool piezaGolpeada = false;
+            bool activada = false;
+            bool piezaBuena = false;
         };
+        struct Corazon
+        {
+            std::shared_ptr<sf::Texture> tCorazon;
+            sf::Sprite sCorazon;
+        };
+        std::vector<Corazon> corazones;
+
         std::vector<std::string> nombresPiezas;
 
         std::vector<Pieza> piezasBuenas;
         std::vector<Pieza> piezasMalas;
+        std::vector<Pieza> piezasInvisibles;
 
         std::vector<Pieza> piezasGeneradas;
         sf::Clock relojPiezas;
-        float delayTime = 2.0f;
+        float delayTime = 1.0f;
+        int numeroPiezas = 15;
         int velocidad = 5;
+        sf::Clock cambioPieza;
 
         sf::Texture tCintas;
         sf::Sprite cintas;

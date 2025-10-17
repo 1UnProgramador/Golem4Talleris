@@ -2,6 +2,7 @@
 #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
 #include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
 #include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 
 #include <iostream>
@@ -78,7 +79,7 @@ Informatica::Informatica(Juego* juego)
 void Informatica::ManejarEvento(sf::Event evento) {
     // ESC siempre sale
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
     }
 
     // Si estamos ignorando inputs, levantamos el flag cuando hay KeyReleased (cualquier tecla)

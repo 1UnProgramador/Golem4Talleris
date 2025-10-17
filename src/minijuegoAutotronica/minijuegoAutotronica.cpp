@@ -1,6 +1,6 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
-#include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
+#include "../../include/pantallas/electricidad.h"
 #include <vector>
 #include <cmath>
 #include <memory>
@@ -230,6 +230,8 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
             } else if(opciones[3].seleccionado && objetos[0].seleccionado){
                 objetos[0].arreglado = true;
             }
+        } else if(evento.key.code == sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
         }
         int i=0;
         for (auto &objeto : objetos){
@@ -238,7 +240,7 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
             } else {
                 if (i == 3)
                 {
-                    juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
+                    juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
                 }
 
             }

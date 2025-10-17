@@ -1,6 +1,6 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
-#include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/pantallas/electricidad.h"
 
 #include <vector>
 #include <cmath>
@@ -187,6 +187,8 @@ void minijuegoElectronicaYControl::ManejarEvento(sf::Event evento){
                 }
                 o++;
             }
+        } else if(evento.key.code == sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
         }
     }
 }
@@ -197,7 +199,7 @@ void minijuegoElectronicaYControl::actualizar(){
         if(cuadrado.encajado){
             a++;
             if(a == 43){
-                juego->cambiarPantalla(std::make_unique<minijuegoMecanicaIndustrial>(juego));
+                juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
             }
         }
     }
