@@ -4,17 +4,28 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class DiseñoTecnico : public Pantalla {
+class DisenoTecnico : public Pantalla {
 private:
     Golem jugador;
-    std::vector<sf::RectangleShape> puertas;
+
+    std::vector<sf::Texture> puertasTextures;
+    std::vector<sf::Sprite>  puertasSprites;
+    std::vector<sf::Color>   coloresBrillo;
+
     int puertaCercana = -1;
+    bool ignoreInput = true; // evita acción inmediata tras cambiar pantalla
 
     sf::Texture tFondoDiseno;
-    sf::Sprite FondoDiseno;
+    sf::Sprite  FondoDiseno;
+
+    // Texto de aviso
+    sf::Font fuente;
+    sf::Text textoAviso;
+    bool mostrandoAviso = false;
+    sf::Clock relojAviso;
 
 public:
-    DiseñoTecnico(Juego* juego);
+    DisenoTecnico(Juego* juego);
 
     void ManejarEvento(sf::Event evento) override;
     void actualizar() override;
