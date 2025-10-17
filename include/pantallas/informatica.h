@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class PantallaSeleccionar : public Pantalla {
+class Informatica : public Pantalla {
 private:
     Golem jugador;
 
@@ -15,11 +15,11 @@ private:
     int puertaCercana = -1;
     bool ignoreInput = true; // evita accion inmediata tras cambiar pantalla
 
-    sf::Texture tFondoNexus;
-    sf::Sprite  FondoNexus;
+    sf::Texture tFondoInformatica;
+    sf::Sprite  FondoInformatica;
 
 public:
-    PantallaSeleccionar(Juego* juego);
+    Informatica(Juego* juego);
 
     void ManejarEvento(sf::Event evento) override;
     void actualizar() override;

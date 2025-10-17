@@ -1,40 +1,34 @@
-#include "../../include/pantallas/PantallaSeleccionar.h"
-#include "../../include/pantallas/informatica.h"
 #include "../../include/pantallas/electricidad.h"
-#include "../../include/pantallas/DiseñoTecnico.h"
-#include "../../include/pantallas/Metalmecanica.h"
+#include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
+#include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
+#include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
+#include "../../include/minijuegoRedes/minijuegoRedes.h"
 #include "../../include/logica/Juego.h"
 
 #include <iostream>
 #include <cmath>
 
-PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
+Electricidad::Electricidad(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
-    // Fondo (usa la misma ruta que usas en otras pantallas)
-    if (!tFondoNexus.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
-        std::cerr << "Error al cargar fondo nexus\n";
+    // Fondo (ruta según tu repo)
+    if (!tFondoElectricidad.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
+        std::cerr << "Error al cargar fondo de Electricidad\n";
     } else {
-        FondoNexus.setTexture(tFondoNexus);
-        float fX = sf::VideoMode::getDesktopMode().width / FondoNexus.getGlobalBounds().width;
-        float fY = sf::VideoMode::getDesktopMode().height / FondoNexus.getGlobalBounds().height;
-        FondoNexus.setScale(fX, fY);
+        FondoElectricidad.setTexture(tFondoElectricidad);
+        float fX = sf::VideoMode::getDesktopMode().width / FondoElectricidad.getGlobalBounds().width;
+        float fY = sf::VideoMode::getDesktopMode().height / FondoElectricidad.getGlobalBounds().height;
+        FondoElectricidad.setScale(fX, fY);
     }
 
-    // Posición inicial del jugador al centro de la pantalla
-    float width = sf::VideoMode::getDesktopMode().width;
-    float height = sf::VideoMode::getDesktopMode().height;
-
+    // Posición inicial del jugador (centro)
+    float width = (float)sf::VideoMode::getDesktopMode().width;
+    float height = (float)sf::VideoMode::getDesktopMode().height;
     jugador.setPosition((width / 2) - jugador.getBounds().width / 2,
                         (height / 2) - jugador.getBounds().height / 2);
 
-    // Rutas de las texturas EXACTAS que dijiste
-    std::vector<std::string> rutas = {
-        "../assets/nexusxd/puerta informatica1.png",   // Informática
-        "../assets/nexusxd/puerta electricidad2.png",  // Electricidad
-        "../assets/nexusxd/puerta diseno3.png",  // Diseño Técnico (mismo archivo según tu repo)
-        "../assets/nexusxd/puerta metalmecanica4.png"  // Metalmecánica
-    };
+    // Textura de las puertas
+    std::string rutaPuerta = "../assets/nexusxd/puerta electricidad2.png";
 
     // Colores de brillo (1: cyan, 2: amarillo, 3: verde, 4: azul)
     coloresBrillo = {
@@ -44,27 +38,27 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         sf::Color(80, 140, 255, 220)   // Azul eléctrico
     };
 
-    // Tamaño base y factor: +50% (1.50f)
+    // Tamaño base y factor (usa 1.2 para +20%)
     const float factorAumento = 1.50f;
     const float baseW = 120.f;
     const float baseH = 200.f;
     const float puertaW = baseW * factorAumento;
     const float puertaH = baseH * factorAumento;
 
-    // Separación / posición (ajustado como en tus otros archivos)
-    const float separacion = 210.f;
-    const float startX = (width / 2) - ((puertaW * 4 + separacion * 3) / 2);
+    const float separacion = 220.f;
+    const float totalAncho = (puertaW * 4) + (separacion * 3);
+    const float startX = (width / 2) - (totalAncho / 2);
     const float posY = 120.f;
 
-    // Reservar y cargar
+    // Cargar texturas y crear sprites
     puertasTextures.resize(4);
     puertasSprites.resize(4);
 
     for (int i = 0; i < 4; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutas[i])) {
-            std::cerr << "Warning: no se pudo cargar " << rutas[i] << "\n";
-            // fallback para evitar crash con texturas vacías
-            sf::Image img; img.create((unsigned)baseW, (unsigned)baseH, sf::Color(150,150,150));
+        if (!puertasTextures[i].loadFromFile(rutaPuerta)) {
+            std::cerr << "Warning: No se pudo cargar " << rutaPuerta << " (puerta " << i << ")\n";
+            // fallback por si no carga
+            sf::Image img; img.create((unsigned)baseW, (unsigned)baseH, sf::Color(180,180,180));
             puertasTextures[i].loadFromImage(img);
         }
 
@@ -80,56 +74,61 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         puertasSprites[i].setColor(sf::Color::White);
     }
 
-    // Evitar entrada pegada al entrar a la pantalla
+    // Al entrar a la pantalla, ignorar inputs hasta que el usuario suelte la tecla
     ignoreInput = true;
 }
 
-void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
+void Electricidad::ManejarEvento(sf::Event evento) {
+    // ESC siempre sale
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
         exit(0);
     }
 
+    // Si estamos ignorando inputs, levantamos el flag cuando hay KeyReleased
     if (ignoreInput) {
         if (evento.type == sf::Event::KeyReleased) {
             ignoreInput = false;
-            std::cout << "[PantallaSeleccionar] input habilitado\n";
+            std::cout << "[Electricidad] input habilitado\n";
         }
         return;
     }
 
-    // Usamos KeyReleased para Enter como en tu Informatica
+    // Enter → cambia de pantalla según la puerta
     if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter) {
-        std::cout << "[PantallaSeleccionar] Enter released; puertaCercana = " << puertaCercana << std::endl;
+        std::cout << "[Electricidad] Enter released; puertaCercana = " << puertaCercana << std::endl;
         fflush(stdout);
 
         if (puertaCercana != -1) {
+            std::cout << "[Electricidad] intentamos cambiar desde puerta " << puertaCercana << std::endl;
+            fflush(stdout);
+
             switch (puertaCercana) {
                 case 0:
-                    juego->cambiarPantalla(std::make_unique<Informatica>(juego));
+                    juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
                     break;
                 case 1:
-                    juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+                    juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
                     break;
                 case 2:
-                    juego->cambiarPantalla(std::make_unique<DiseñoTecnico>(juego));
+                    juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
                     break;
                 case 3:
-                    juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+                    juego->cambiarPantalla(std::make_unique<minijuegoRedes>(juego));
                     break;
                 default:
+                    std::cout << "[Electricidad] puertaCercana fuera de rango\n";
                     break;
             }
         } else {
-            std::cout << "[PantallaSeleccionar] Enter pero sin puerta cercana\n";
+            std::cout << "[Electricidad] Enter pero sin puerta cercana\n";
         }
     }
 }
 
-void PantallaSeleccionar::actualizar() {
-    // Actualiza el jugador tal como en Informatica
+void Electricidad::actualizar() {
     jugador.update(sf::VideoMode::getDesktopMode());
 
-    // Buscamos la puerta más cercana válida
+    // Buscamos la puerta más cercana
     int nuevaPuerta = -1;
     float mejorDist = 1e9f;
 
@@ -140,56 +139,47 @@ void PantallaSeleccionar::actualizar() {
     for (int i = 0; i < (int)puertasSprites.size(); ++i) {
         sf::FloatRect b = puertasSprites[i].getGlobalBounds();
 
-        // expandimos bounds para detección más permisiva
+        // Expandimos área de detección
         const float expand = std::max(30.f, b.width * 0.18f);
         b.left   -= expand;
         b.top    -= expand;
         b.width  += expand * 2.f;
         b.height += expand * 2.f;
 
-        // primer filtro: intersects con bounds ampliado
         if (!jugadorBounds.intersects(b)) {
-            // restaurar color si no intersecta
             puertasSprites[i].setColor(sf::Color::White);
             continue;
         }
 
-        // si intersecta, medimos distancia euclidiana entre centros (más precisa)
         float pCenterX = b.left + b.width * 0.5f;
         float pCenterY = b.top  + b.height * 0.5f;
         float dx = pCenterX - jCenterX;
         float dy = pCenterY - jCenterY;
         float dist = std::sqrt(dx*dx + dy*dy);
 
-        // elegir la más cercana
         if (dist < mejorDist) {
             mejorDist = dist;
             nuevaPuerta = i;
         }
     }
 
-    // aplicar color y debug
+    // Aplicar brillo o restaurar color
     for (int i = 0; i < (int)puertasSprites.size(); ++i) {
-        if (i == nuevaPuerta) {
+        if (i == nuevaPuerta)
             puertasSprites[i].setColor(coloresBrillo[i]);
-        } else {
+        else
             puertasSprites[i].setColor(sf::Color::White);
-        }
-    }
-
-    if (nuevaPuerta != puertaCercana) {
-        std::cout << "[PantallaSeleccionar] puertaCercana cambio: " << puertaCercana << " -> " << nuevaPuerta << std::endl;
-        fflush(stdout);
     }
 
     puertaCercana = nuevaPuerta;
 }
 
-void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
+void Electricidad::renderizar(sf::RenderWindow& window) {
     window.clear();
-    window.draw(FondoNexus);
+    window.draw(FondoElectricidad);
 
-    for (auto& s : puertasSprites) window.draw(s);
+    for (auto& s : puertasSprites)
+        window.draw(s);
 
     window.draw(jugador);
 }

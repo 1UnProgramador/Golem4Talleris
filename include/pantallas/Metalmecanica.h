@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class PantallaSeleccionar : public Pantalla {
+class Metalmecanica : public Pantalla {
 private:
     Golem jugador;
 
@@ -13,13 +13,19 @@ private:
     std::vector<sf::Color>   coloresBrillo;
 
     int puertaCercana = -1;
-    bool ignoreInput = true; // evita accion inmediata tras cambiar pantalla
+    bool ignoreInput = true; // evita acción inmediata tras cambiar pantalla
 
-    sf::Texture tFondoNexus;
-    sf::Sprite  FondoNexus;
+    sf::Texture tFondoMetalmecanica;
+    sf::Sprite  FondoMetalmecanica;
+
+    // --- NUEVOS ELEMENTOS ---
+    sf::Font fuente;
+    sf::Text textoAviso;
+    bool mostrandoAviso = false;
+    sf::Clock relojAviso;
 
 public:
-    PantallaSeleccionar(Juego* juego);
+    Metalmecanica(Juego* juego);
 
     void ManejarEvento(sf::Event evento) override;
     void actualizar() override;
