@@ -1,5 +1,6 @@
 #include "../../include/pantallas/metalmecanica.h"
 #include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/minijuegoSoldadura/minijuegoSoldadura.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
@@ -97,7 +98,7 @@ void Metalmecanica::ManejarEvento(sf::Event evento) {
                     break;
 
                 case 1:
-                    // mostrar mensaje temporal
+                    juego->cambiarPantalla(std::make_unique<minijuegoSoldadura>(juego));
                     mostrandoAviso = true;
                     relojAviso.restart();
                     break;

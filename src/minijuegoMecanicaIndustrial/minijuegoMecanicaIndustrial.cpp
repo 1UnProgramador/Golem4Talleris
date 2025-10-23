@@ -10,7 +10,9 @@
 #include <iostream>
 
 minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoElectricidad.png");
+
+
+    tFondo.loadFromFile("../assets/fondoMetalmecanica.png");
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -105,7 +107,7 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     }
     std::vector<std::string> listaCorazones = {"1", "2", "3"};
     int i = 0;
-    int separacion = 100;
+    int separacion = 150;
     for (const auto& corazon : listaCorazones) {
         Corazon c;
 
@@ -117,7 +119,7 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
         }
         c.sCorazon.setTexture(*c.tCorazon);
         c.sCorazon.setOrigin(c.sCorazon.getGlobalBounds().width / 2, c.sCorazon.getGlobalBounds().height / 2);
-        c.sCorazon.setScale(0.3, 0.3);
+        c.sCorazon.setScale(0.2, 0.2);
         c.sCorazon.setPosition((c.sCorazon.getGlobalBounds().width / 2) + (c.sCorazon.getGlobalBounds().height / 2) + (separacion * i) , c.sCorazon.getGlobalBounds().height / 2);
         corazones.push_back(c);
         i++;
@@ -134,6 +136,12 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     boteBasurero.setScale(3, 3);
     boteBasurero.setPosition(pistonActivado.getPosition().x, sf::VideoMode::getDesktopMode().height - boteBasurero.getGlobalBounds().height);
 
+    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
+    texto.setFont(fuente);
+    texto.setString("Actualmente tienes: 0 Puntos!");
+    texto.setCharacterSize(40);
+    texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
+    texto.setPosition(sPantalla.getPosition().x, sPantalla.getPosition().y - (sPantalla.getGlobalBounds().height / 2) - (texto.getGlobalBounds().height) - 100);
 }
 void minijuegoMecanicaIndustrial::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed) {
@@ -166,6 +174,13 @@ void minijuegoMecanicaIndustrial::ManejarEvento(sf::Event evento){
     }
 }
 void minijuegoMecanicaIndustrial::actualizar(){
+    if(corazones.empty()){
+        juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+    }
+    if (puntos >= 15){
+        juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+    }
+
     if (relojAnimacion.getElapsedTime().asSeconds() >= frameTime) {
         currentFrame = (currentFrame + 1) % numFrames; // avanza al siguiente frame
         cintas.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
@@ -233,12 +248,33 @@ void minijuegoMecanicaIndustrial::actualizar(){
         pieza.sPieza.move(velocidad, 0);
 
     if (pieza.sPieza.getPosition().x > sf::VideoMode::getDesktopMode().width || pieza.sPieza.getPosition().y > sf::VideoMode::getDesktopMode().height || pieza.sPieza.getGlobalBounds().intersects(boteBasurero.getGlobalBounds())) {
+
+        if(pieza.sPieza.getPosition().x > sf::VideoMode::getDesktopMode().width){
+            if (pieza.activada)
+            {
+                puntos++;
+                std::cout << "puntos: " << std::to_string(puntos) << std::endl;
+                texto.setString("Actualmente tienes: " + std::to_string(puntos) + " Puntos!");
+            } else {
+                if (!corazones.empty()) {
+                    corazones.erase(corazones.end() - 1);
+                }
+            }
+        } else if(pieza.sPieza.getPosition().y > sf::VideoMode::getDesktopMode().height || pieza.sPieza.getGlobalBounds().intersects(boteBasurero.getGlobalBounds())){
+            if (pieza.activada)
+            {
+                if (!corazones.empty()) {
+                    corazones.erase(corazones.end() - 1);
+                }
+            } else {
+
+            }
+
+        }
+
         piezasGeneradas.erase(piezasGeneradas.begin() + i);
         std::cout << "Pieza destruida";
-        if (pieza.piezaBuena)
-        {
-            /* code */
-        }
+
 
     } else {
         i++;
@@ -271,7 +307,9 @@ void minijuegoMecanicaIndustrial::renderizar(sf::RenderWindow& window){
         }
     }
     window.draw(boteBasurero);
-    window.draw(corazones[0].sCorazon);
-    window.draw(corazones[1].sCorazon);
-    window.draw(corazones[2].sCorazon);
+    for (auto &corazon : corazones)
+    {
+        window.draw(corazon.sCorazon);
+    }
+    window.draw(texto);
 }

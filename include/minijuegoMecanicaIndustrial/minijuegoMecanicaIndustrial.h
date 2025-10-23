@@ -6,6 +6,9 @@
 
 class minijuegoMecanicaIndustrial : public Pantalla{
     private:
+        sf::Font fuente;
+        sf::Text texto;
+
         sf::Texture tFondo;
         sf::Sprite fondo;
 
@@ -37,6 +40,8 @@ class minijuegoMecanicaIndustrial : public Pantalla{
             sf::Sprite sCorazon;
         };
         std::vector<Corazon> corazones;
+        int vidas = 3;
+        int puntos = 0;
 
         std::vector<std::string> nombresPiezas;
 
@@ -47,7 +52,7 @@ class minijuegoMecanicaIndustrial : public Pantalla{
         std::vector<Pieza> piezasGeneradas;
         sf::Clock relojPiezas;
         float delayTime = 1.0f;
-        int numeroPiezas = 15;
+        int numeroPiezas = 10;
         int velocidad = 5;
         sf::Clock cambioPieza;
 
