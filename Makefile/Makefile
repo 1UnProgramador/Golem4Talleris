@@ -30,13 +30,21 @@ SRC = ../src/logica/main.cpp \
       ../src/logica/Juego.cpp \
       ../src/pantallas/PantallaSeleccionar.cpp \
       ../src/pantallas/PantallaMenu.cpp \
+      ../src/pantallas/PantallaCarga.cpp \
+      ../src/pantallas/Informatica.cpp \
+      ../src/pantallas/Electricidad.cpp \
+      ../src/pantallas/DisenoTecnico.cpp \
+      ../src/pantallas/Metalmecanica.cpp \
       ../src/minijuegoPonchar/minijuegoPonchar.cpp \
       ../src/minijuegoPaginaWeb/minijuegoPaginaWeb.cpp \
-      ../src/pantallas/PantallaCarga.cpp \
       ../src/minijuegoRedes/minijuegoRedes.cpp \
       ../src/minijuegoTangram/minijuegoTangram.cpp \
       ../src/minijuegoAutotronica/minijuegoAutotronica.cpp \
-      ../src/minijuegoMecatronica/minijuegoMecatronica.cpp
+      ../src/minijuegoMecatronica/minijuegoMecatronica.cpp \
+      ../src/minijuegoElectronicaYControl/minijuegoElectronicaYControl.cpp \
+      ../src/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.cpp \
+      ../src/minijuegoSoldadura/minijuegoSoldadura.cpp
+
 
 # Recursos
 RES = recursos.res

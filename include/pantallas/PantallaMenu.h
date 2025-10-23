@@ -3,19 +3,36 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 
+
 class PantallaMenu : public Pantalla{
+
     private:
         sf::Font fuente;
         sf::Text texto;
 
-        sf::Texture tPlay;
+
+        //Titulo
+        sf::Texture tTitulo;
+        sf::Sprite Titulo;
+
+        // Play
+        sf::Texture tPlay, tPlayselec;
         sf::Sprite play;
-        sf::Texture tExtra;
+
+        // Extra
+        sf::Texture tExtra, tExtraselec;
         sf::Sprite Extra;
-        sf::Texture tExit;
+
+        // Exit
+        sf::Texture tExit, tExitselec;
         sf::Sprite Exit;
+
+        // Fondo
         sf::Texture tFondoMenu;
         sf::Sprite FondoMenu;
+
+        int opcionSeleccionada = 0; // 0 = Play, 1 = Extra, 2 = Exit
+
 
     public:
         PantallaMenu(Juego* juego);
@@ -23,4 +40,6 @@ class PantallaMenu : public Pantalla{
         void ManejarEvento(sf::Event evento) override;
         void actualizar() override;
         void renderizar(sf::RenderWindow& window) override;
+
 };
+
