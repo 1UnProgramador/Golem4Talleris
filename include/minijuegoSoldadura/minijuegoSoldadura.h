@@ -8,6 +8,11 @@ class minijuegoSoldadura : public Pantalla{
     private:
         sf::Texture tFondo;
         sf::Sprite fondo;
+
+        sf::Texture tSopleteDesactivado;
+        sf::Texture tSopleteActivado;
+        sf::Sprite soplete;
+
         struct PanelSoldable
         {
             std::shared_ptr<sf::Texture> tPanel;
@@ -26,6 +31,7 @@ class minijuegoSoldadura : public Pantalla{
         bool soldando = false;
 
         sf::RectangleShape debugging;
+        int panelActual = 0;
 
     public:
         minijuegoSoldadura(Juego* juego);
