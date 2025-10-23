@@ -20,7 +20,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
     fondo.setScale(fX, fY);
 
 
-    std::vector<std::string> nombrePlacas = {"panelSoldar1", "panelSoldar2", "panelSoldar3", "panelSoldar4", "panelSoldar5"};
+    std::vector<std::string> nombrePlacas = {"panelSoldar1", "panelSoldar2", "panelSoldar3", "panelSoldar4"};
     for (const auto& nombre : nombrePlacas) {
         PanelSoldable p;
         p.tPanel = std::make_shared<sf::Texture>();
@@ -35,6 +35,13 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         p.sPanel.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
         paneles.push_back(p);
     }
+
+    tSopleteActivado.loadFromFile("../assets/minijuegoSoldadura/sopleteActivado.png");
+    tSopleteDesactivado.loadFromFile("../assets/minijuegoSoldadura/sopleteDesactivado.png");
+
+    soplete.setTexture(tSopleteActivado);
+    soplete.setOrigin(soplete.getGlobalBounds().width / 2, soplete.getGlobalBounds().height / 2);
+    soplete.setScale(2, 2);
 
     tMarcaLimpia.loadFromFile("../assets/minijuegoSoldadura/soldaduraLimpia.png");
     tMarcaSucia.loadFromFile("../assets/minijuegoSoldadura/soldaduraSucia.png");
@@ -74,7 +81,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[1].sPanel.getPosition().x - 152 + (debugging.getGlobalBounds().width / 2), yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[1].marcas.push_back(spriteMarca);
         yActual -= 0.4 * (spriteMarca.getGlobalBounds().height);
     } while (yActual > paneles[1].sPanel.getPosition().y + 89 + (debugging.getGlobalBounds().height / 2));
@@ -88,7 +95,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[1].sPanel.getPosition().y + 89 + (debugging.getGlobalBounds().height / 2));
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[1].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual < paneles[1].sPanel.getPosition().x + (paneles[1].sPanel.getGlobalBounds().width / 2) - (prueba.getGlobalBounds().width / 4));
@@ -102,7 +109,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[1].sPanel.getPosition().x + 89 + (debugging.getGlobalBounds().width / 2), yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[1].marcas.push_back(spriteMarca);
         yActual -= 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual > paneles[1].sPanel.getPosition().y - (paneles[1].sPanel.getGlobalBounds().width / 2) + (prueba.getGlobalBounds().width / 4));
@@ -116,7 +123,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[1].sPanel.getPosition().y - 152 + (debugging.getGlobalBounds().height / 2));
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[1].marcas.push_back(spriteMarca);
         xActual -= 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual > paneles[1].sPanel.getPosition().x - (paneles[1].sPanel.getGlobalBounds().width / 2) + (prueba.getGlobalBounds().width / 4));
@@ -130,7 +137,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[1].sPanel.getPosition().y + 119);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[2].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[2].sPanel.getPosition().x - 120 + (prueba.getGlobalBounds().width / 4));
@@ -143,7 +150,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[2].sPanel.getPosition().x - 120, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[2].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[2].sPanel.getPosition().y + (paneles[2].sPanel.getGlobalBounds().height / 2) - (prueba.getGlobalBounds().width / 4));
@@ -156,7 +163,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[2].sPanel.getPosition().x + 119, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[2].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[2].sPanel.getPosition().y + (paneles[2].sPanel.getGlobalBounds().height / 2) - (prueba.getGlobalBounds().width / 4));
@@ -169,7 +176,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[2].sPanel.getPosition().y - 120);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[2].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[2].sPanel.getPosition().x + 119);
@@ -182,7 +189,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[2].sPanel.getPosition().y + 120);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[2].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[2].sPanel.getPosition().x + (paneles[2].sPanel.getGlobalBounds().width / 2) - (prueba.getGlobalBounds().width / 2));
@@ -196,7 +203,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[3].sPanel.getPosition().y - 121);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[3].sPanel.getPosition().x - 240);
@@ -209,7 +216,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[3].sPanel.getPosition().x - 240, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[3].sPanel.getPosition().y - 121);
@@ -222,7 +229,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[3].sPanel.getPosition().x, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[3].sPanel.getPosition().y - 121);
@@ -235,7 +242,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[3].sPanel.getPosition().y - 121);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[3].sPanel.getPosition().x + (paneles[3].sPanel.getGlobalBounds().width / 2) - (prueba.getGlobalBounds().width / 4));
@@ -248,7 +255,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[3].sPanel.getPosition().x + 240, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[3].sPanel.getPosition().y + (paneles[3].sPanel.getGlobalBounds().height / 2));
@@ -261,7 +268,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(xActual, paneles[3].sPanel.getPosition().y + 120);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         xActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (xActual <= paneles[3].sPanel.getPosition().x + 240);
@@ -274,13 +281,13 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         spriteMarca.setOrigin(spriteMarca.getGlobalBounds().width / 2, spriteMarca.getGlobalBounds().height / 2);
         spriteMarca.setScale(2, 2);
         spriteMarca.setPosition(paneles[3].sPanel.getPosition().x, yActual);
-        spriteMarca.setColor(sf::Color(255, 255, 255, 255));
+        spriteMarca.setColor(sf::Color(255, 255, 255, 0));
         paneles[3].marcas.push_back(spriteMarca);
         yActual += 0.4 * (spriteMarca.getGlobalBounds().width);
     } while (yActual <= paneles[3].sPanel.getPosition().y + (paneles[3].sPanel.getGlobalBounds().height / 2) - (prueba.getGlobalBounds().height / 2));
 
 
-    paneles[3].activada = true;
+    paneles[1].activada = true;
 }
 
 void minijuegoSoldadura::ManejarEvento(sf::Event evento){
@@ -309,6 +316,20 @@ void minijuegoSoldadura::ManejarEvento(sf::Event evento){
                             soldando = true;
                         }
                     }
+                    size_t i = 0;
+                    for (auto &sprite : panel.marcas){
+                        if (sprite.getColor().a == 255){
+                            if (i == panel.marcas.size() - 1)
+                            {
+                                paneles[panelActual].activada = false;
+                                panelActual++;
+                                paneles[panelActual].activada = true;
+                            }
+                        } else {
+                            break;
+                        }
+                        i++;
+                    }
                 }
             }
 
@@ -326,6 +347,7 @@ void minijuegoSoldadura::actualizar(){
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
     if(soldando){
+        soplete.setPosition(posicionEnVentana.x + soplete.getGlobalBounds().width / 2, posicionEnVentana.y + 20);
         for (auto &panel : paneles)
         {
             if (panel.activada)
@@ -336,8 +358,24 @@ void minijuegoSoldadura::actualizar(){
                         soldando = true;
                     }
                 }
+                size_t i = 0;
+                for (auto &sprite : panel.marcas){
+                    if (sprite.getColor().a == 255){
+                        if (i == panel.marcas.size() - 1)
+                        {
+                            paneles[panelActual].activada = false;
+                            panelActual++;
+                            paneles[panelActual].activada = true;
+                        }
+                    } else {
+                        break;
+                    }
+                    i++;
+                }
             }
         }
+    } else {
+        soplete.setPosition(-1000,-1000);
     }
 }
 
@@ -356,6 +394,6 @@ void minijuegoSoldadura::renderizar(sf::RenderWindow& window){
 
     }
 
-    window.draw(debugging);
 
+    window.draw(soplete);
 }

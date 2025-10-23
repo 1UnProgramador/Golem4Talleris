@@ -1,4 +1,5 @@
 #include "../../include/pantallas/DiseñoTecnico.h"
+#include "../../include/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cmath>
@@ -90,6 +91,14 @@ void DisenoTecnico::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter) {
         if (puertaCercana != -1 && !mostrandoAviso) {
             // Mostrar pantalla negra con aviso
+            switch (puertaCercana) {
+                case 0:
+                    juego->cambiarPantalla(std::make_unique<minijuegoDisenoArquitectonico>(juego));
+                    break;
+                /* case 1:
+                    juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
+                    break; */
+            }
             mostrandoAviso = true;
             relojAviso.restart();
         }
