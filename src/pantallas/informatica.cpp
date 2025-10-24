@@ -1,8 +1,9 @@
 #include "../../include/pantallas/informatica.h"
-#include "../../include/minijuegoPonchar/minijuegoPonchar.h"
+/* #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
 #include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
-#include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/minijuegoTangram/minijuegoTangram.h" */
 #include "../../include/pantallas/PantallaSeleccionar.h"
+#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/logica/Juego.h"
 
 #include <iostream>
@@ -103,18 +104,20 @@ void Informatica::ManejarEvento(sf::Event evento) {
 
             switch (puertaCercana) {
                 case 0:
-                    juego->cambiarPantalla(std::make_unique<minijuegoPonchar>(juego));
+                    juego->cambiarAPrograma = 1;
                     break;
                 case 1:
-                    juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
+                    juego->cambiarAPrograma = 2;
                     break;
                 case 2:
-                    juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
+                    juego->cambiarAPrograma = 3;
                     break;
                 default:
                     std::cout << "[Informatica] puertaCercana fuera de rango\n";
                     break;
+
             }
+            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[Informatica] Enter pero sin puerta cercana\n";
         }

@@ -3,6 +3,7 @@
 #include <memory>
 #include "../../include/logica/Pantalla.h"
 
+
 class Juego{
     private:
         sf::RenderWindow window;
@@ -10,6 +11,10 @@ class Juego{
 
     public:
         std::string instrucciones;
+
+        std::string seleccionado;
+        int cambiarAPrograma = 0;
+        bool botones = false;
         Juego();
         void run();
 
