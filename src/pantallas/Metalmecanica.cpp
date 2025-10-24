@@ -1,6 +1,7 @@
 #include "../../include/pantallas/metalmecanica.h"
-#include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
-#include "../../include/minijuegoSoldadura/minijuegoSoldadura.h"
+/* #include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/minijuegoSoldadura/minijuegoSoldadura.h" */
+#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
@@ -94,15 +95,16 @@ void Metalmecanica::ManejarEvento(sf::Event evento) {
         if (puertaCercana != -1 && !mostrandoAviso) {
             switch (puertaCercana) {
                 case 0:
-                    juego->cambiarPantalla(std::make_unique<minijuegoMecanicaIndustrial>(juego));
+                    juego->cambiarAPrograma = 5;
                     break;
 
                 case 1:
-                    juego->cambiarPantalla(std::make_unique<minijuegoSoldadura>(juego));
+                    juego->cambiarAPrograma = 12;
                     mostrandoAviso = true;
                     relojAviso.restart();
                     break;
             }
+            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         }
     }
 }

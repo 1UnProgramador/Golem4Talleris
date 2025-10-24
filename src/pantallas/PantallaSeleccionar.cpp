@@ -1,8 +1,9 @@
 #include "../../include/pantallas/PantallaSeleccionar.h"
-#include "../../include/pantallas/informatica.h"
+/* #include "../../include/pantallas/informatica.h"
 #include "../../include/pantallas/electricidad.h"
 #include "../../include/pantallas/DiseñoTecnico.h"
-#include "../../include/pantallas/Metalmecanica.h"
+#include "../../include/pantallas/Metalmecanica.h" */
+#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/logica/Juego.h"
 
 #include <iostream>
@@ -105,20 +106,21 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
         if (puertaCercana != -1) {
             switch (puertaCercana) {
                 case 0:
-                    juego->cambiarPantalla(std::make_unique<Informatica>(juego));
+                    juego->cambiarAPrograma = 14;
                     break;
                 case 1:
-                    juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+                    juego->cambiarAPrograma = 15;
                     break;
                 case 2:
-                    juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+                    juego->cambiarAPrograma = 16;
                     break;
                 case 3:
-                    juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+                    juego->cambiarAPrograma = 17;
                     break;
                 default:
                     break;
             }
+            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[PantallaSeleccionar] Enter pero sin puerta cercana\n";
         }

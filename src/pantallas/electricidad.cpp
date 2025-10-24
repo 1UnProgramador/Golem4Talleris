@@ -1,8 +1,9 @@
 #include "../../include/pantallas/electricidad.h"
-#include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
+/* #include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
 #include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
-#include "../../include/minijuegoRedes/minijuegoRedes.h"
+#include "../../include/minijuegoRedes/minijuegoRedes.h" */
+#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 
@@ -105,21 +106,22 @@ void Electricidad::ManejarEvento(sf::Event evento) {
 
             switch (puertaCercana) {
                 case 0:
-                    juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
+                    juego->cambiarAPrograma = 10;
                     break;
                 case 1:
-                    juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
+                    juego->cambiarAPrograma = 7;
                     break;
                 case 2:
-                    juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
+                    juego->cambiarAPrograma = 4;
                     break;
                 case 3:
-                    juego->cambiarPantalla(std::make_unique<minijuegoRedes>(juego));
+                    juego->cambiarAPrograma = 11;
                     break;
                 default:
                     std::cout << "[Electricidad] puertaCercana fuera de rango\n";
                     break;
             }
+            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[Electricidad] Enter pero sin puerta cercana\n";
         }

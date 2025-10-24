@@ -3,7 +3,27 @@
 
 #include "../../include/pantallas/PantallaSeleccionar.h"
 
+#include "../../include/pantallas/informatica.h"
+#include "../../include/pantallas/electricidad.h"
+#include "../../include/pantallas/Metalmecanica.h"
+#include "../../include/pantallas/DisenoTecnico.h"
+
 #include "../../include/logica/Juego.h"
+
+#include "../../include/minijuegoPonchar/minijuegoPonchar.h"
+#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
+#include "../../include/minijuegoTangram/minijuegoTangram.h"
+#include "../../include/minijuegoMecatronica/minijuegoMecatronica.h"
+#include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
+#include "../../include/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.h"
+#include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
+
+
+#include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
+#include "../../include/minijuegoRedes/minijuegoRedes.h"
+#include "../../include/minijuegoSoldadura/minijuegoSoldadura.h"
+
+
 #include <memory>
 
 const std::string Instrumentalizacion [] = {
@@ -41,7 +61,7 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     fondo.setPosition(0, 0);
 
     fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
-    imagen.loadFromFile("../assets/temporales/imagenPantallaCarga.png");
+    imagen.loadFromFile("../assets/" + juego->seleccionado + ".jpg");
     sImagen.setTexture(imagen);
 
 
@@ -55,7 +75,10 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     cBorde.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f , (sf::VideoMode::getDesktopMode().height / 2.0f) - 50);
 
 
-    sImagen.setScale(1.57, 1.57);
+    float ffX = cRelleno.getGlobalBounds().width / sImagen.getGlobalBounds().width;
+    float ffY = (cRelleno.getGlobalBounds().height / 2) / sImagen.getGlobalBounds().height;
+
+    sImagen.setScale(ffX, ffY);
     sImagen.setOrigin(sImagen.getLocalBounds().width / 2, 0);
     sImagen.setPosition(cRelleno.getPosition().x, (cRelleno.getPosition().y - (cRelleno.getGlobalBounds().height / 2)) + 5 /* + (sImagen.getGlobalBounds().height) + 5 */);
 
@@ -79,8 +102,60 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
 
 void PantallaCarga::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Enter){
+        int opcion = juego->cambiarAPrograma;
+        switch (opcion)
+        {
+        case 1:
+            juego->cambiarPantalla(std::make_unique<minijuegoPonchar>(juego));
+            break;
+        case 2:
+            juego->cambiarPantalla(std::make_unique<minijuegoPaginaWeb>(juego));
+            break;
+        case 3:
+            juego->cambiarPantalla(std::make_unique<minijuegoTangram>(juego));
+            break;
+        case 4:
+            juego->cambiarPantalla(std::make_unique<minijuegoMecatronica>(juego));
+            break;
+        case 5:
+            juego->cambiarPantalla(std::make_unique<minijuegoMecanicaIndustrial>(juego));
+            break;
+        case 6:
+            juego->cambiarPantalla(std::make_unique<minijuegoDisenoArquitectonico>(juego));
+            break;
+        case 7:
+            juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
+            break;
+        case 10:
+            juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
+            break;
+        case 11:
+            juego->cambiarPantalla(std::make_unique<minijuegoRedes>(juego));
+            break;
+        case 12:
+            juego->cambiarPantalla(std::make_unique<minijuegoSoldadura>(juego));
+            break;
+        case 13:
+            juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
+            break;
 
-        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
+        case 14:
+            juego->cambiarPantalla(std::make_unique<Informatica>(juego));
+            break;
+        case 15:
+            juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+            break;
+        case 16:
+            juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+            break;
+        case 17:
+            juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+            break;
+
+        default:
+            break;
+        }
+
 
     }
 }
