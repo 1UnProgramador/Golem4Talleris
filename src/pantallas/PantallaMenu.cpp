@@ -1,5 +1,6 @@
 #include "../../include/pantallas/PantallaMenu.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
+#include "../../include/pantallas/pantallaCreditos.h"
 #include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/logica/Juego.h"
 #include <memory>
@@ -65,7 +66,7 @@ void PantallaMenu::ManejarEvento(sf::Event evento) {
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
             }
             else if (opcionSeleccionada == 1) {
-                // Extra todavía no hace nada
+                juego->cambiarPantalla(std::make_unique<pantallaCreditos>(juego));
             }
             else if (opcionSeleccionada == 2) {
                 juego->getWindow().close();

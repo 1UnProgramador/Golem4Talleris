@@ -1,6 +1,6 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.h"
-#include "../../include/pantallas/Metalmecanica.h"
+#include "../../include/pantallas/DisenoTecnico.h"
 
 #include <vector>
 #include <cmath>
@@ -81,7 +81,20 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
         tolerancia = 5;
     }
 
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 40;
+    } else {
+        tiempoInt = 20;
+    }
 
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 
 
 
@@ -128,11 +141,15 @@ void minijuegoDisenoArquitectonico::ManejarEvento(sf::Event evento){
             piezas[4].sprite.move(1, 0);
         } else if(evento.key.code == sf::Keyboard::Down){
             piezas[4].sprite.move(0, 1);
+        } else if(evento.key.code ==sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
         }
         std::cout << "Posicion actual de la pieza: " << std::to_string(contorno.getPosition().x - piezas[4].sprite.getPosition().x) << ", " << std::to_string(contorno.getPosition().y - piezas[4].sprite.getPosition().y) << "." << std::endl;
     }
 }
 void minijuegoDisenoArquitectonico::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -143,6 +160,10 @@ void minijuegoDisenoArquitectonico::actualizar(){
             pieza.sprite.setPosition(posicionEnVentana);
         }
     }
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+    }
 
 }
 void minijuegoDisenoArquitectonico::renderizar(sf::RenderWindow& window){
@@ -152,6 +173,6 @@ void minijuegoDisenoArquitectonico::renderizar(sf::RenderWindow& window){
     {
         window.draw(pieza.sprite);
     }
-
+    window.draw(tiempo);
 
 }

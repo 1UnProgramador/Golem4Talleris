@@ -291,9 +291,7 @@ void minijuegoRedes::actualizar(){
     }
     if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
     {
-        /* que lo devuelva cuando Sam haga la pantalla */
-        tiempoRestante.restart();
-        tiempo.setString(std::to_string(tiempoInt));
+        juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
     }
 
 
