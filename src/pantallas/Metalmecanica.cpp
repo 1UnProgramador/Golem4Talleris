@@ -10,47 +10,59 @@
 Metalmecanica::Metalmecanica(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    float width = sf::VideoMode::getDesktopMode().width;
+    float height = sf::VideoMode::getDesktopMode().height;
+
+    // =========================
     // Fondo
+    // =========================
     if (!tFondoMetalmecanica.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
         std::cerr << "Error al cargar fondo de metalmecánica\n";
     } else {
         FondoMetalmecanica.setTexture(tFondoMetalmecanica);
-        float fX = sf::VideoMode::getDesktopMode().width / FondoMetalmecanica.getGlobalBounds().width;
-        float fY = sf::VideoMode::getDesktopMode().height / FondoMetalmecanica.getGlobalBounds().height;
+        float fX = width / FondoMetalmecanica.getGlobalBounds().width;
+        float fY = height / FondoMetalmecanica.getGlobalBounds().height;
         FondoMetalmecanica.setScale(fX, fY);
     }
 
+    // =========================
     // Jugador
-    float width = (float)sf::VideoMode::getDesktopMode().width;
-    float height = (float)sf::VideoMode::getDesktopMode().height;
-    jugador.setPosition((width / 2) - jugador.getBounds().width / 2,
-                        (height / 2) - jugador.getBounds().height / 2);
+    // =========================
+    {
+        sf::FloatRect pb = jugador.getBounds();
+        int inicialX = (int)std::round((width / 2.f) - pb.width * 0.5f);
+        int inicialY = (int)std::round(height - pb.height * 2.5f);
+        jugador.setPosition(inicialX, inicialY);
+    }
 
-    // Textura de las puertas
-    std::string rutaPuerta = "../assets/nexusxd/puerta metalmecanica4.png";
+    // =========================
+    // Configuración de puertas
+    // =========================
+    std::vector<std::string> rutas = {
+        "../assets/nexusxd/puerta metalmecanica4.png",
+        "../assets/nexusxd/puerta metalmecanica4.png"
+    };
 
     coloresBrillo = {
         sf::Color(0, 180, 255, 220),
         sf::Color(255, 200, 0, 220)
     };
 
-    const float factorAumento = 1.50f;
-    const float baseW = 120.f;
-    const float baseH = 200.f;
-    const float puertaW = baseW * factorAumento;
-    const float puertaH = baseH * factorAumento;
-
-    const float separacion = 400.f;
-    const float startX = (width / 2) - ((puertaW * 2 + separacion) / 2);
-    const float posY = 120.f;
+    const float factorAncho = 0.15f;
+    const float factorSeparacion = 0.10f;
+    float puertaW = width * factorAncho;
+    float puertaH = puertaW * (200.f / 120.f);
+    float separacion = width * factorSeparacion;
+    float startX = (width - (puertaW * 2 + separacion)) / 2.f;
+    float posY = height * 0.15f;
 
     puertasTextures.resize(2);
     puertasSprites.resize(2);
-
     for (int i = 0; i < 2; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutaPuerta)) {
-            std::cerr << "Warning: No se pudo cargar " << rutaPuerta << "\n";
-            sf::Image img; img.create((unsigned)baseW, (unsigned)baseH, sf::Color(150,150,150));
+        if (!puertasTextures[i].loadFromFile(rutas[i])) {
+            std::cerr << "Warning: No se pudo cargar " << rutas[i] << "\n";
+            sf::Image img;
+            img.create(120, 200, sf::Color(150,150,150));
             puertasTextures[i].loadFromImage(img);
         }
 
@@ -63,23 +75,38 @@ Metalmecanica::Metalmecanica(Juego* juego)
         puertasSprites[i].setColor(sf::Color::White);
     }
 
-    // Texto de aviso
-    if (!fuente.loadFromFile("../assets/fuentes/arial.ttf")) {
-        std::cerr << "No se pudo cargar fuente para aviso\n";
+    // =========================
+    // Fuente y textos de puertas ("P5", "P12")
+    // =========================
+    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+        std::cerr << "No se pudo cargar fuente para textos de puertas\n";
     }
-    textoAviso.setFont(fuente);
-    textoAviso.setString("No terminado");
-    textoAviso.setCharacterSize(60);
-    textoAviso.setFillColor(sf::Color::White);
-    textoAviso.setStyle(sf::Text::Bold);
 
-    sf::FloatRect bounds = textoAviso.getGlobalBounds();
-    textoAviso.setPosition((width - bounds.width) / 2, (height - bounds.height) / 2);
+    std::vector<std::string> nombresPuertas = { "P5", "P12" };
+    textosPuertas.resize(2);
+    for (int i = 0; i < 2; ++i) {
+        textosPuertas[i].setFont(fuente);
+        textosPuertas[i].setString(nombresPuertas[i]);
+        textosPuertas[i].setCharacterSize(35);
+        textosPuertas[i].setFillColor(sf::Color::White);
+        textosPuertas[i].setOutlineColor(sf::Color::Black);
+        textosPuertas[i].setOutlineThickness(3.f);
+        textosPuertas[i].setStyle(sf::Text::Bold);
 
-    ignoreInput = true;
+        sf::FloatRect textBounds = textosPuertas[i].getLocalBounds();
+        sf::FloatRect puertaBounds = puertasSprites[i].getGlobalBounds();
+        textosPuertas[i].setPosition(
+            puertaBounds.left + (puertaBounds.width / 2.f) - (textBounds.width / 2.f),
+            puertaBounds.top - textBounds.height * -0.5f
+        );
+    }
 }
 
-void Metalmecanica::ManejarEvento(sf::Event evento) {
+// =========================
+// EVENTOS
+// =========================
+void Metalmecanica::ManejarEvento(sf::Event evento)
+{
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
         juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
     }
@@ -91,33 +118,33 @@ void Metalmecanica::ManejarEvento(sf::Event evento) {
         return;
     }
 
-    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter) {
-        if (puertaCercana != -1 && !mostrandoAviso) {
-            switch (puertaCercana) {
-                case 0:
-                    juego->cambiarAPrograma = 5;
-                    break;
-
-                case 1:
-                    juego->cambiarAPrograma = 12;
-                    mostrandoAviso = true;
-                    relojAviso.restart();
-                    break;
-            }
-            juego->botones = true;
-            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter && puertaCercana != -1) {
+        switch (puertaCercana) {
+            case 0:
+                juego->cambiarAPrograma = 5;
+                juego->botones = true;
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P5
+            case 1:
+                juego->cambiarAPrograma = 12;
+                juego->botones = true;
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P12
         }
     }
 }
 
-void Metalmecanica::actualizar() {
+// =========================
+// LÓGICA
+// =========================
+void Metalmecanica::actualizar()
+{
     jugador.update(sf::VideoMode::getDesktopMode());
 
-    if (mostrandoAviso && relojAviso.getElapsedTime().asSeconds() > 2.0f) {
+    if (mostrandoAviso && relojAviso.getElapsedTime().asSeconds() > 2.0f)
         mostrandoAviso = false;
-    }
-
-    if (mostrandoAviso) return; // pausa detección mientras muestra aviso
+    if (mostrandoAviso)
+        return;
 
     int nuevaPuerta = -1;
     float mejorDist = 1e9f;
@@ -128,8 +155,11 @@ void Metalmecanica::actualizar() {
 
     for (int i = 0; i < (int)puertasSprites.size(); ++i) {
         sf::FloatRect b = puertasSprites[i].getGlobalBounds();
-        const float expand = std::max(30.f, b.width * 0.18f);
-        b.left -= expand; b.top -= expand; b.width += expand * 2.f; b.height += expand * 2.f;
+        const float expand = std::max(3.f, b.width * 0.02f);
+        b.left -= expand;
+        b.top -= expand;
+        b.width += expand * 2.f;
+        b.height += expand * 2.f;
 
         if (!jugadorBounds.intersects(b)) {
             puertasSprites[i].setColor(sf::Color::White);
@@ -140,8 +170,7 @@ void Metalmecanica::actualizar() {
         float pCenterY = b.top + b.height * 0.5f;
         float dx = pCenterX - jCenterX;
         float dy = pCenterY - jCenterY;
-        float dist = std::sqrt(dx * dx + dy * dy);
-
+        float dist = std::sqrt(dx*dx + dy*dy);
         if (dist < mejorDist) {
             mejorDist = dist;
             nuevaPuerta = i;
@@ -154,7 +183,11 @@ void Metalmecanica::actualizar() {
     puertaCercana = nuevaPuerta;
 }
 
-void Metalmecanica::renderizar(sf::RenderWindow& window) {
+// =========================
+// RENDERIZAR
+// =========================
+void Metalmecanica::renderizar(sf::RenderWindow& window)
+{
     if (mostrandoAviso) {
         window.clear(sf::Color::Black);
         window.draw(textoAviso);
@@ -164,6 +197,9 @@ void Metalmecanica::renderizar(sf::RenderWindow& window) {
 
     window.clear();
     window.draw(FondoMetalmecanica);
-    for (auto& s : puertasSprites) window.draw(s);
+    for (int i = 0; i < (int)puertasSprites.size(); ++i) {
+        window.draw(puertasSprites[i]);
+        window.draw(textosPuertas[i]); // textos "P5" y "P12"
+    }
     window.draw(jugador);
 }

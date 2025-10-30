@@ -44,8 +44,9 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoElectronicaYControl/minijuegoElectronicaYControl.cpp \
       ../src/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.cpp \
       ../src/minijuegoSoldadura/minijuegoSoldadura.cpp \
-      ../src/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.cpp
-
+      ../src/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.cpp \
+      ../src/minijuegoTopografia/minijuegoTopografia.cpp \
+      ../src/minijuegorandomxd/minijuegorandomxd.cpp
 
 # Recursos
 RES = recursos.res

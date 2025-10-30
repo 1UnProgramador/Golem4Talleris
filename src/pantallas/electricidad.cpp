@@ -6,192 +6,188 @@
 #include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
-
 #include <iostream>
 #include <cmath>
 
 Electricidad::Electricidad(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
-    // Fondo (ruta según tu repo)
+    float width = sf::VideoMode::getDesktopMode().width;
+    float height = sf::VideoMode::getDesktopMode().height;
+
+    // =========================
+    // Fondo
+    // =========================
     if (!tFondoElectricidad.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
         std::cerr << "Error al cargar fondo de Electricidad\n";
     } else {
         FondoElectricidad.setTexture(tFondoElectricidad);
-        float fX = sf::VideoMode::getDesktopMode().width / FondoElectricidad.getGlobalBounds().width;
-        float fY = sf::VideoMode::getDesktopMode().height / FondoElectricidad.getGlobalBounds().height;
-        FondoElectricidad.setScale(fX, fY);
+        FondoElectricidad.setScale(
+            width / FondoElectricidad.getGlobalBounds().width,
+            height / FondoElectricidad.getGlobalBounds().height
+        );
     }
 
-    // Posición inicial del jugador (centro)
-    float width = (float)sf::VideoMode::getDesktopMode().width;
-    float height = (float)sf::VideoMode::getDesktopMode().height;
-    jugador.setPosition((width / 2) - jugador.getBounds().width / 2,
-                        (height / 2) - jugador.getBounds().height / 2);
+    // =========================
+    // Jugador centrado abajo
+    // =========================
+    sf::FloatRect b = jugador.getBounds();
+    jugador.setPosition((width / 2.f) - b.width / 2.f, height - b.height * 2.5f);
 
-    // Textura de las puertas
+    // =========================
+    // Configuración de puertas
+    // =========================
     std::string rutaPuerta = "../assets/nexusxd/puerta electricidad2.png";
 
-    // Colores de brillo (1: cyan, 2: amarillo, 3: verde, 4: azul)
     coloresBrillo = {
-        sf::Color(0, 200, 255, 220),   // Cian (bonito)
-        sf::Color(255, 220, 80, 220),  // Amarillo suave
-        sf::Color(0, 200, 120, 220),   // Verde menta
-        sf::Color(80, 140, 255, 220)   // Azul eléctrico
+        sf::Color(0, 200, 255, 220),
+        sf::Color(255, 220, 80, 220),
+        sf::Color(0, 200, 120, 220),
+        sf::Color(80, 140, 255, 220)
     };
 
-    // Tamaño base y factor (usa 1.2 para +20%)
-    const float factorAumento = 1.50f;
-    const float baseW = 120.f;
-    const float baseH = 200.f;
-    const float puertaW = baseW * factorAumento;
-    const float puertaH = baseH * factorAumento;
+    const float factorAncho = 0.15f;
+    const float factorSeparacion = 0.10f;
 
-    const float separacion = 220.f;
-    const float totalAncho = (puertaW * 4) + (separacion * 3);
-    const float startX = (width / 2) - (totalAncho / 2);
-    const float posY = 120.f;
+    float puertaW = width * factorAncho;
+    float puertaH = puertaW * (200.f / 120.f);
+    float separacion = width * factorSeparacion;
+    float startX = (width - (puertaW * 4 + separacion * 3)) / 2.f;
+    float posY = height * 0.15f;
 
-    // Cargar texturas y crear sprites
     puertasTextures.resize(4);
     puertasSprites.resize(4);
 
-    for (int i = 0; i < 4; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutaPuerta)) {
-            std::cerr << "Warning: No se pudo cargar " << rutaPuerta << " (puerta " << i << ")\n";
-            // fallback por si no carga
-            sf::Image img; img.create((unsigned)baseW, (unsigned)baseH, sf::Color(180,180,180));
-            puertasTextures[i].loadFromImage(img);
-        }
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
+        if (!puertasTextures[i].loadFromFile(rutaPuerta))
+            std::cerr << "No se pudo cargar puerta electricidad " << i << "\n";
 
         puertasSprites[i].setTexture(puertasTextures[i]);
         sf::Vector2u texSize = puertasTextures[i].getSize();
-        float scaleX = 1.f, scaleY = 1.f;
-        if (texSize.x > 0 && texSize.y > 0) {
-            scaleX = puertaW / (float)texSize.x;
-            scaleY = puertaH / (float)texSize.y;
-        }
-        puertasSprites[i].setScale(scaleX, scaleY);
+        puertasSprites[i].setScale(puertaW / texSize.x, puertaH / texSize.y);
         puertasSprites[i].setPosition(startX + i * (puertaW + separacion), posY);
-        puertasSprites[i].setColor(sf::Color::White);
     }
 
-    // Al entrar a la pantalla, ignorar inputs hasta que el usuario suelte la tecla
+    // =========================
+    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+        std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
+
+    std::vector<std::string> nombresPuertas = { "P4", "P7", "P10", "P11" };
+    textosPuertas.resize(4);
+
+    for (int i = 0; i < 4; ++i) {
+        textosPuertas[i].setFont(fuente);
+        textosPuertas[i].setString(nombresPuertas[i]);
+        textosPuertas[i].setCharacterSize(35);
+        textosPuertas[i].setFillColor(sf::Color::White);
+        textosPuertas[i].setOutlineColor(sf::Color::Black);
+        textosPuertas[i].setOutlineThickness(3.f);
+        textosPuertas[i].setStyle(sf::Text::Bold);
+
+        sf::FloatRect textBounds = textosPuertas[i].getLocalBounds();
+        sf::FloatRect puertaBounds = puertasSprites[i].getGlobalBounds();
+
+        // Centrado arriba de la puerta
+        textosPuertas[i].setPosition(
+            puertaBounds.left + (puertaBounds.width / 2.f) - (textBounds.width / 2.f),
+            puertaBounds.top - textBounds.height * -0.5f
+        );
+    }
+
     ignoreInput = true;
 }
 
-void Electricidad::ManejarEvento(sf::Event evento) {
-    // ESC siempre sale
-    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
+// =========================
+// EVENTOS
+// =========================
+void Electricidad::ManejarEvento(sf::Event evento)
+{
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
         juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
-    }
 
-    // Si estamos ignorando inputs, levantamos el flag cuando hay KeyReleased
     if (ignoreInput) {
-        if (evento.type == sf::Event::KeyReleased) {
+        if (evento.type == sf::Event::KeyReleased)
             ignoreInput = false;
-            std::cout << "[Electricidad] input habilitado\n";
-        }
         return;
     }
 
-    // Enter → cambia de pantalla según la puerta
-    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter) {
-        std::cout << "[Electricidad] Enter released; puertaCercana = " << puertaCercana << std::endl;
-        fflush(stdout);
-
-        if (puertaCercana != -1) {
-            std::cout << "[Electricidad] intentamos cambiar desde puerta " << puertaCercana << std::endl;
-            fflush(stdout);
-
-            switch (puertaCercana) {
-                case 0:
-                    juego->cambiarAPrograma = 10;
-                    juego->seleccionado = "minijuegoElectronicaYControl";
-                    juego->instrucciones = "¿Alguna vez has usado una impresora 3D? En este minijuego vas a tener que usar el puntero de la impresora para crear un modelo pre-definido (el modelo esta sombreado), y mucho cuidado, tienes que dejar la pieza tal cuál como esta, si no no estariamos en  el programa de electrónica y control, P10.";
-                    break;
-                case 1:
-                    juego->cambiarAPrograma = 7;
-                    juego->seleccionado = "minijuegoAutotronica";
-                    juego->instrucciones = "Vamos con una trivia, ¿Con qué reparo qué componente? Piensa muy bien tus opciones de respuesta, demuéstrate a ti mismo de que eres capaz de pensar como un estudiante del programa de Autotrónica, P7. Para reparar un componente le das click a el y a la opción que creas correcta, y le das enter.";
-                    break;
-                case 2:
-                    juego->cambiarAPrograma = 4;
-                    juego->seleccionado = "minijuegoMecatronica";
-                    juego->instrucciones = "Algunas cosas de mecatrónica (P4) se pueden aplicar muy bien a la vida cotidiana, ¿Sabías? El siguiente minijuego consiste en pasar por un lente algún objeto para decidir en que contenedor de reciclaje va. ¡Aprende a reciclar mientras juegas, todo por un mundo mejor!";
-                    break;
-                case 3:
-                    juego->cambiarAPrograma = 11;
-                    juego->seleccionado = "minijuegoRedes";
-                    juego->instrucciones = "El siguiente minijuego de redes eléctricas (P11), puede ser un poco complicado así que presta atención: Va a fluir electricidad por los cables amarillos (así que cómo no pueden haber fugas de electricidad TODOS tienen que estar conectados), inicia por abajo y sale por arriba en la dirección que indica las flechas. ¡Ánimo!";
-                    break;
-                default:
-                    std::cout << "[Electricidad] puertaCercana fuera de rango\n";
-                    break;
-            }
-            juego->botones = true;
-            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
-        } else {
-            std::cout << "[Electricidad] Enter pero sin puerta cercana\n";
+    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter && puertaCercana != -1) {
+        switch (puertaCercana) {
+            case 0:
+                juego->cambiarAPrograma = 4;
+                juego->seleccionado = "minijuegoMecatronica";
+                juego->botones = true;
+                juego->instrucciones = "Algunas cosas de mecatrónica (P4) se pueden aplicar muy bien a la vida cotidiana, ¿Sabías? El siguiente minijuego consiste en pasar por un lente algún objeto para decidir en que contenedor de reciclaje va. ¡Aprende a reciclar mientras juegas, todo por un mundo mejor!";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P4
+            case 1:
+                juego->cambiarAPrograma = 7;
+                juego->seleccionado = "minijuegoAutotronica";
+                juego->botones = true;
+                juego->instrucciones = "Vamos con una trivia, ¿Con qué reparo qué componente? Piensa muy bien tus opciones de respuesta, demuéstrate a ti mismo de que eres capaz de pensar como un estudiante del programa de Autotrónica, P7. Para reparar un componente le das click a el y a la opción que creas correcta, y le das enter.";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P7
+            case 2:
+                juego->cambiarAPrograma = 10;
+                juego->seleccionado = "minijuegoElectronicaYControl";
+                juego->botones = true;
+                juego->instrucciones = "¿Alguna vez has usado una impresora 3D? En este minijuego vas a tener que usar el puntero de la impresora para crear un modelo pre-definido (el modelo esta sombreado), y mucho cuidado, tienes que dejar la pieza tal cuál como esta, si no no estariamos en  el programa de electrónica y control, P10.";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P10
+            case 3:
+                juego->cambiarAPrograma = 11;
+                juego->seleccionado = "minijuegoRedes";
+                juego->botones = true;
+                juego->instrucciones = "El siguiente minijuego de redes eléctricas (P11), puede ser un poco complicado así que presta atención: Va a fluir electricidad por los cables amarillos (así que cómo no pueden haber fugas de electricidad TODOS tienen que estar conectados), inicia por abajo y sale por arriba en la dirección que indica las flechas. ¡Ánimo!";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P11
         }
     }
 }
 
-void Electricidad::actualizar() {
+// =========================
+// LÓGICA
+// =========================
+void Electricidad::actualizar()
+{
     jugador.update(sf::VideoMode::getDesktopMode());
 
-    // Buscamos la puerta más cercana
     int nuevaPuerta = -1;
-    float mejorDist = 1e9f;
+    sf::FloatRect jBounds = jugador.getBounds();
 
-    sf::FloatRect jugadorBounds = jugador.getBounds();
-    float jCenterX = jugadorBounds.left + jugadorBounds.width * 0.5f;
-    float jCenterY = jugadorBounds.top  + jugadorBounds.height * 0.5f;
-
-    for (int i = 0; i < (int)puertasSprites.size(); ++i) {
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
         sf::FloatRect b = puertasSprites[i].getGlobalBounds();
-
-        // Expandimos área de detección
-        const float expand = std::max(30.f, b.width * 0.18f);
-        b.left   -= expand;
-        b.top    -= expand;
-        b.width  += expand * 2.f;
+        const float expand = std::max(3.f, b.width * 0.02f);
+        b.left -= expand;
+        b.top -= expand;
+        b.width += expand * 2.f;
         b.height += expand * 2.f;
 
-        if (!jugadorBounds.intersects(b)) {
-            puertasSprites[i].setColor(sf::Color::White);
-            continue;
-        }
-
-        float pCenterX = b.left + b.width * 0.5f;
-        float pCenterY = b.top  + b.height * 0.5f;
-        float dx = pCenterX - jCenterX;
-        float dy = pCenterY - jCenterY;
-        float dist = std::sqrt(dx*dx + dy*dy);
-
-        if (dist < mejorDist) {
-            mejorDist = dist;
-            nuevaPuerta = i;
+        if (jBounds.intersects(b)) {
+            nuevaPuerta = static_cast<int>(i);
+            break;
         }
     }
 
-    // Aplicar brillo o restaurar color
-    for (int i = 0; i < (int)puertasSprites.size(); ++i) {
-        if (i == nuevaPuerta)
-            puertasSprites[i].setColor(coloresBrillo[i]);
-        else
-            puertasSprites[i].setColor(sf::Color::White);
-    }
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i)
+        puertasSprites[i].setColor(i == static_cast<std::size_t>(nuevaPuerta) ? coloresBrillo[i] : sf::Color::White);
 
     puertaCercana = nuevaPuerta;
 }
 
-void Electricidad::renderizar(sf::RenderWindow& window) {
+// =========================
+// RENDER
+// =========================
+void Electricidad::renderizar(sf::RenderWindow& window)
+{
     window.clear();
     window.draw(FondoElectricidad);
 
-    for (auto& s : puertasSprites)
-        window.draw(s);
+    // Puertas + texto
+    for (int i = 0; i < 4; ++i) {
+        window.draw(puertasSprites[i]);
+        window.draw(textosPuertas[i]);
+    }
 
     window.draw(jugador);
 }

@@ -42,44 +42,49 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
     }
     piezas[0].sprite.setPosition(contorno.getPosition().x - (contorno.getGlobalBounds().width / 2) - (piezas[0].sprite.getGlobalBounds().width / 2) - 150, contorno.getPosition().y - (contorno.getGlobalBounds().height / 2) - 150);
     piezas[0].posicionInicial = piezas[0].sprite.getPosition();
-    piezas[0].posicionObjetivo = sf::Vector2f(1026, 664);
+    piezas[0].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 66, contorno.getPosition().y + 64);
 
     piezas[1].sprite.setPosition(piezas[0].sprite.getPosition().x, piezas[0].sprite.getPosition().y + (piezas[0].sprite.getGlobalBounds().height / 2) + (piezas[1].sprite.getGlobalBounds().height / 2) + 100);
     piezas[1].posicionInicial = piezas[1].sprite.getPosition();
-    piezas[1].posicionObjetivo = sf::Vector2f(1058, 728);
+    piezas[1].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 98, contorno.getPosition().y + 128);
 
     piezas[2].sprite.setPosition(piezas[1].sprite.getPosition().x, piezas[1].sprite.getPosition().y + (piezas[1].sprite.getGlobalBounds().height / 2) + (piezas[2].sprite.getGlobalBounds().height / 2) + 100);
     piezas[2].posicionInicial = piezas[2].sprite.getPosition();
-    piezas[2].posicionObjetivo = sf::Vector2f(866, 760);
+    piezas[2].posicionObjetivo = sf::Vector2f(contorno.getPosition().x - 94, contorno.getPosition().y + 160);
 
     piezas[3].sprite.setPosition(piezas[2].sprite.getPosition().x, piezas[2].sprite.getPosition().y + (piezas[2].sprite.getGlobalBounds().height / 2) + (piezas[3].sprite.getGlobalBounds().height / 2) + 100);
     piezas[3].posicionInicial = piezas[3].sprite.getPosition();
-    piezas[3].posicionObjetivo = sf::Vector2f(865.999939, 664);
+    piezas[3].posicionObjetivo = sf::Vector2f(contorno.getPosition().x - 94, contorno.getPosition().y + 64);
 
 
     piezas[4].sprite.setPosition(contorno.getPosition().x + (contorno.getGlobalBounds().width / 2) + (piezas[4].sprite.getGlobalBounds().width / 2) + 150, contorno.getPosition().y - (contorno.getGlobalBounds().height / 2) - 150);
     piezas[4].posicionInicial = piezas[4].sprite.getPosition();
-    piezas[4].posicionObjetivo = sf::Vector2f(833.999939, 548);
+    piezas[4].posicionObjetivo = sf::Vector2f(contorno.getPosition().x - 126, contorno.getPosition().y - 52);
 
     piezas[5].sprite.setPosition(piezas[4].sprite.getPosition().x, piezas[4].sprite.getPosition().y + (piezas[4].sprite.getGlobalBounds().height / 2) + (piezas[5].sprite.getGlobalBounds().height / 2) + 100);
     piezas[5].posicionInicial = piezas[5].sprite.getPosition();
-    piezas[5].posicionObjetivo = sf::Vector2f(993.999878, 504);
+    piezas[5].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 34, contorno.getPosition().y - 96);
 
     piezas[6].sprite.setPosition(piezas[5].sprite.getPosition().x, piezas[5].sprite.getPosition().y + (piezas[5].sprite.getGlobalBounds().height / 2) + (piezas[6].sprite.getGlobalBounds().height / 2) + 100);
     piezas[6].posicionInicial = piezas[6].sprite.getPosition();
-    piezas[6].posicionObjetivo = sf::Vector2f(1120, 544);
+    piezas[6].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 160, contorno.getPosition().y - 56);
 
     piezas[7].sprite.setPosition(piezas[6].sprite.getPosition().x, piezas[6].sprite.getPosition().y + (piezas[6].sprite.getGlobalBounds().height / 2) + (piezas[7].sprite.getGlobalBounds().height / 2) + 100);
     piezas[7].posicionInicial = piezas[7].sprite.getPosition();
-    piezas[7].posicionObjetivo = sf::Vector2f(966.999939, 728);
+    piezas[7].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 6.000061, contorno.getPosition().y + 128);
 
 
     if (juego->minijuegoFacil)
     {
-        tolerancia = 10;
+        tolerancia = 50;
     } else {
         tolerancia = 5;
     }
+
+
+
+
+
 
 }
 void minijuegoDisenoArquitectonico::ManejarEvento(sf::Event evento){
@@ -116,15 +121,15 @@ void minijuegoDisenoArquitectonico::ManejarEvento(sf::Event evento){
         }
     } else if(evento.type == sf::Event::KeyPressed){
         if(evento.key.code == sf::Keyboard::Left){
-            piezas[2].sprite.move(-1, 0);
+            piezas[4].sprite.move(-1, 0);
         } else if(evento.key.code == sf::Keyboard::Up){
-            piezas[2].sprite.move(0, -1);
+            piezas[4].sprite.move(0, -1);
         } else if(evento.key.code == sf::Keyboard::Right){
-            piezas[2].sprite.move(1, 0);
+            piezas[4].sprite.move(1, 0);
         } else if(evento.key.code == sf::Keyboard::Down){
-            piezas[2].sprite.move(0, 1);
+            piezas[4].sprite.move(0, 1);
         }
-        std::cout << "Posicion actual de la pieza: " << std::to_string(piezas[2].sprite.getPosition().x) << ", " << std::to_string(piezas[2].sprite.getPosition().y) << "." << std::endl;
+        std::cout << "Posicion actual de la pieza: " << std::to_string(contorno.getPosition().x - piezas[4].sprite.getPosition().x) << ", " << std::to_string(contorno.getPosition().y - piezas[4].sprite.getPosition().y) << "." << std::endl;
     }
 }
 void minijuegoDisenoArquitectonico::actualizar(){
@@ -147,5 +152,6 @@ void minijuegoDisenoArquitectonico::renderizar(sf::RenderWindow& window){
     {
         window.draw(pieza.sprite);
     }
+
 
 }

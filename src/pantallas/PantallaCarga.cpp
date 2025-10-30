@@ -24,8 +24,8 @@
 #include "../../include/minijuegoMecanicaIndustrial/minijuegoMecanicaIndustrial.h"
 #include "../../include/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.h"
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
-
-
+#include "../../include/minijuegoTopografia/minijuegoTopografia.h"
+#include "../../include/minijuegorandomxd/minijuegorandomxd.h"
 #include "../../include/minijuegoElectronicaYControl/minijuegoElectronicaYControl.h"
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
 #include "../../include/minijuegoSoldadura/minijuegoSoldadura.h"
@@ -183,6 +183,12 @@ void PantallaCarga::ManejarEvento(sf::Event evento){
                 break;
             case 7:
                 juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
+                break;
+            case 8:
+                juego->cambiarPantalla(std::make_unique<Topografia>(juego));
+                break;
+            case 9:
+                juego->cambiarPantalla(std::make_unique<minijuegorandomxd>(juego));
                 break;
             case 10:
                 juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
