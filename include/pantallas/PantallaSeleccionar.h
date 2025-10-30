@@ -18,7 +18,9 @@ private:
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
 
-
+    sf::Font fuente;
+    sf::Text textoPrincipal;
+    std::vector<sf::Text> textosPuertas;
 public:
     PantallaSeleccionar(Juego* juego);
 

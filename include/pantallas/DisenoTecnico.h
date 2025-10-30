@@ -24,6 +24,8 @@ private:
     bool mostrandoAviso = false;
     sf::Clock relojAviso;
 
+    std::vector<sf::Text> textosPuertas;
+
 public:
     DisenoTecnico(Juego* juego);
 

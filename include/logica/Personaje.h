@@ -11,7 +11,7 @@ class Golem : public sf::Drawable, public objColisionable
         sf::Texture texturaMovAbajo;
         sf::Texture texturaMovArriba;
         float velocidad = 3;
-    
+
         int frameWidth = 32;
         int frameHeight = 32;
         int currentFrame = 0;

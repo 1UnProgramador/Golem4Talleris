@@ -17,12 +17,13 @@ private:
 
     sf::Texture tFondoMetalmecanica;
     sf::Sprite  FondoMetalmecanica;
-
+    
     // --- NUEVOS ELEMENTOS ---
     sf::Font fuente;
     sf::Text textoAviso;
     bool mostrandoAviso = false;
     sf::Clock relojAviso;
+    std::vector<sf::Text> textosPuertas;
 
 public:
     Metalmecanica(Juego* juego);

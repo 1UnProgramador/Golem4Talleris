@@ -11,13 +11,14 @@ private:
     std::vector<sf::Texture> puertasTextures;
     std::vector<sf::Sprite>  puertasSprites;
     std::vector<sf::Color>   coloresBrillo;
+    std::vector<sf::Text> textosPuertas;
 
     int puertaCercana = -1;
     bool ignoreInput = true;
 
     sf::Texture tFondoElectricidad;
     sf::Sprite  FondoElectricidad;
-
+    sf::Font fuente;
 public:
     Electricidad(Juego* juego);
 

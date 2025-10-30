@@ -11,6 +11,8 @@ private:
     std::vector<sf::Texture> puertasTextures;
     std::vector<sf::Sprite>  puertasSprites;
     std::vector<sf::Color>   coloresBrillo;
+    std::vector<sf::Text> textosPuertas;
+    sf::Font fuente;
 
     int puertaCercana = -1;
     bool ignoreInput = true; // evita accion inmediata tras cambiar pantalla

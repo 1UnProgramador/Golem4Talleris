@@ -1,6 +1,8 @@
 #include "../../include/pantallas/DisenoTecnico.h"
-/* #include "../../include/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.h" */
+/* #include "../../include/minijuegoTopografia/minijuegoTopografia.h"
+#include "../../include/minijuegorandomxd/minijuegorandomxd.h" */
 #include "../../include/pantallas/PantallaCarga.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cmath>
@@ -8,163 +10,172 @@
 DisenoTecnico::DisenoTecnico(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    float width  = sf::VideoMode::getDesktopMode().width;
+    float height = sf::VideoMode::getDesktopMode().height;
+
+    // =========================
     // Fondo
+    // =========================
     if (!tFondoDiseno.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
         std::cerr << "Error al cargar fondo de Diseño Técnico\n";
     } else {
         FondoDiseno.setTexture(tFondoDiseno);
-        float fX = sf::VideoMode::getDesktopMode().width / FondoDiseno.getGlobalBounds().width;
-        float fY = sf::VideoMode::getDesktopMode().height / FondoDiseno.getGlobalBounds().height;
-        FondoDiseno.setScale(fX, fY);
+        FondoDiseno.setScale(
+            width / FondoDiseno.getGlobalBounds().width,
+            height / FondoDiseno.getGlobalBounds().height
+        );
     }
 
-    // Posición del jugador
-    float width = (float)sf::VideoMode::getDesktopMode().width;
-    float height = (float)sf::VideoMode::getDesktopMode().height;
-    jugador.setPosition((width / 2) - jugador.getBounds().width / 2,
-                        (height / 2) - jugador.getBounds().height / 2);
+    // =========================
+    // Jugador centrado abajo
+    // =========================
+    sf::FloatRect b = jugador.getBounds();
+    jugador.setPosition((width / 2.f) - b.width / 2.f, height - b.height * 2.5f);
 
-    // Textura de las puertas (Diseño Técnico)
+    // =========================
+    // Configuración de puertas
+    // =========================
     std::string rutaPuerta = "../assets/nexusxd/puerta diseno3.png";
 
     coloresBrillo = {
-        sf::Color(0, 180, 255, 220),
-        sf::Color(255, 200, 0, 220)
+        sf::Color(0, 200, 255, 220),   // Azul claro
+        sf::Color(255, 220, 80, 220),  // Amarillo
+        sf::Color(0, 255, 150, 220)    // Verde-agua
     };
 
-    const float factorAumento = 1.50f;
-    const float baseW = 120.f;
-    const float baseH = 200.f;
-    const float puertaW = baseW * factorAumento;
-    const float puertaH = baseH * factorAumento;
+    const float factorAncho = 0.15f;
+    const float factorSeparacion = 0.10f;
 
-    const float separacion = 400.f;
-    const float startX = (width / 2) - ((puertaW * 2 + separacion) / 2);
-    const float posY = 120.f;
+    float puertaW = width * factorAncho;
+    float puertaH = puertaW * (200.f / 120.f);
+    float separacion = width * factorSeparacion;
+    float startX = (width - (puertaW * 3 + separacion * 2)) / 2.f;
+    float posY = height * 0.15f;
 
-    puertasTextures.resize(2);
-    puertasSprites.resize(2);
+    puertasTextures.resize(3);
+    puertasSprites.resize(3);
 
-    for (int i = 0; i < 2; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutaPuerta)) {
-            std::cerr << "Warning: No se pudo cargar " << rutaPuerta << "\n";
-            sf::Image img; img.create((unsigned)baseW, (unsigned)baseH, sf::Color(150,150,150));
-            puertasTextures[i].loadFromImage(img);
-        }
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
+        if (!puertasTextures[i].loadFromFile(rutaPuerta))
+            std::cerr << "No se pudo cargar puerta diseño " << i << "\n";
 
         puertasSprites[i].setTexture(puertasTextures[i]);
         sf::Vector2u texSize = puertasTextures[i].getSize();
-        float scaleX = puertaW / (float)texSize.x;
-        float scaleY = puertaH / (float)texSize.y;
-        puertasSprites[i].setScale(scaleX, scaleY);
+        puertasSprites[i].setScale(puertaW / texSize.x, puertaH / texSize.y);
         puertasSprites[i].setPosition(startX + i * (puertaW + separacion), posY);
-        puertasSprites[i].setColor(sf::Color::White);
     }
 
-    // Texto de aviso
-    if (!fuente.loadFromFile("../assets/fuentes/arial.ttf")) {
-        std::cerr << "No se pudo cargar fuente para aviso\n";
-    }
-    textoAviso.setFont(fuente);
-    textoAviso.setString("Se trabaja en ello");
-    textoAviso.setCharacterSize(60);
-    textoAviso.setFillColor(sf::Color::White);
-    textoAviso.setStyle(sf::Text::Bold);
+    // =========================
+    // Fuente y textos sobre las puertas
+    // =========================
+    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+        std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
 
-    sf::FloatRect bounds = textoAviso.getGlobalBounds();
-    textoAviso.setPosition((width - bounds.width) / 2, (height - bounds.height) / 2);
+    std::vector<std::string> nombresPuertas = { "P6", "P8", "P9" };
+    textosPuertas.resize(3);
+
+    for (int i = 0; i < 3; ++i) {
+        textosPuertas[i].setFont(fuente);
+        textosPuertas[i].setString(nombresPuertas[i]);
+        textosPuertas[i].setCharacterSize(35);
+        textosPuertas[i].setFillColor(sf::Color::White);
+        textosPuertas[i].setOutlineColor(sf::Color::Black);
+        textosPuertas[i].setOutlineThickness(3.f);
+        textosPuertas[i].setStyle(sf::Text::Bold);
+
+        sf::FloatRect textBounds = textosPuertas[i].getLocalBounds();
+        sf::FloatRect puertaBounds = puertasSprites[i].getGlobalBounds();
+
+        // Centrado arriba de la puerta
+        textosPuertas[i].setPosition(
+            puertaBounds.left + (puertaBounds.width / 2.f) - (textBounds.width / 2.f),
+            puertaBounds.top - textBounds.height * -0.5f
+        );
+    }
 
     ignoreInput = true;
 }
 
-void DisenoTecnico::ManejarEvento(sf::Event evento) {
-    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
-        exit(0);
-    }
+// =========================
+// EVENTOS
+// =========================
+void DisenoTecnico::ManejarEvento(sf::Event evento)
+{
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
+        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
 
     if (ignoreInput) {
-        if (evento.type == sf::Event::KeyReleased) {
+        if (evento.type == sf::Event::KeyReleased)
             ignoreInput = false;
-        }
         return;
     }
 
-    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter) {
-        if (puertaCercana != -1 && !mostrandoAviso) {
-            // Mostrar pantalla negra con aviso
-            switch (puertaCercana) {
-                case 0:
-                    juego->cambiarAPrograma = 6;
-                    juego->seleccionado = "minijuegoDisenoArquitectonico";
-                    juego->instrucciones = "¿Hace cuánto no haces un rompecabezas? En el diseño arquitectónico (P6), es muy importante tener la habilidad de construir espacios, tanto mental como físicamente. Ahora vas a tener que arrastrar cada pieza a su posición indicada para armar una casa.";
-                    break;
-                /* case 1:
-                    juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
-                    break; */
-
-            }
-            juego->botones = true;
-            juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
-            mostrandoAviso = true;
-            relojAviso.restart();
+    if (evento.type == sf::Event::KeyReleased && evento.key.code == sf::Keyboard::Enter && puertaCercana != -1) {
+        switch (puertaCercana) {
+            case 0:
+                juego->cambiarAPrograma = 6;
+                juego->seleccionado = "minijuegoDisenoArquitectonico";
+                juego->botones= true;
+                juego->instrucciones = "¿Hace cuánto no haces un rompecabezas? En el diseño arquitectónico (P6), es muy importante tener la habilidad de construir espacios, tanto mental como físicamente. Ahora vas a tener que arrastrar cada pieza a su posición indicada para armar una casa.";
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P6
+            case 1:
+                juego->cambiarAPrograma = 8;
+                juego->botones= true;
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P8
+            case 2:
+                juego->cambiarAPrograma = 9;
+                juego->botones= true;
+                juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
+                break; // P9
         }
     }
 }
 
-void DisenoTecnico::actualizar() {
+// =========================
+// LÓGICA
+// =========================
+void DisenoTecnico::actualizar()
+{
     jugador.update(sf::VideoMode::getDesktopMode());
 
-    if (mostrandoAviso && relojAviso.getElapsedTime().asSeconds() > 2.0f) {
-        mostrandoAviso = false;
-    }
-
-    if (mostrandoAviso) return; // pausa detección mientras muestra aviso
-
     int nuevaPuerta = -1;
-    float mejorDist = 1e9f;
+    sf::FloatRect jBounds = jugador.getBounds();
 
-    sf::FloatRect jugadorBounds = jugador.getBounds();
-    float jCenterX = jugadorBounds.left + jugadorBounds.width * 0.5f;
-    float jCenterY = jugadorBounds.top + jugadorBounds.height * 0.5f;
-
-    for (int i = 0; i < (int)puertasSprites.size(); ++i) {
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
         sf::FloatRect b = puertasSprites[i].getGlobalBounds();
-        const float expand = std::max(30.f, b.width * 0.18f);
-        b.left -= expand; b.top -= expand; b.width += expand * 2.f; b.height += expand * 2.f;
+        const float expand = std::max(3.f, b.width * 0.02f);
+        b.left -= expand;
+        b.top -= expand;
+        b.width += expand * 2.f;
+        b.height += expand * 2.f;
 
-        if (!jugadorBounds.intersects(b)) {
-            puertasSprites[i].setColor(sf::Color::White);
-            continue;
-        }
-
-        float pCenterX = b.left + b.width * 0.5f;
-        float pCenterY = b.top + b.height * 0.5f;
-        float dx = pCenterX - jCenterX;
-        float dy = pCenterY - jCenterY;
-        float dist = std::sqrt(dx * dx + dy * dy);
-
-        if (dist < mejorDist) {
-            mejorDist = dist;
-            nuevaPuerta = i;
+        if (jBounds.intersects(b)) {
+            nuevaPuerta = static_cast<int>(i);
+            break;
         }
     }
 
-    for (int i = 0; i < (int)puertasSprites.size(); ++i)
-        puertasSprites[i].setColor(i == nuevaPuerta ? coloresBrillo[i] : sf::Color::White);
+    for (std::size_t i = 0; i < puertasSprites.size(); ++i)
+        puertasSprites[i].setColor(i == static_cast<std::size_t>(nuevaPuerta) ? coloresBrillo[i] : sf::Color::White);
 
     puertaCercana = nuevaPuerta;
 }
 
-void DisenoTecnico::renderizar(sf::RenderWindow& window) {
-    if (mostrandoAviso) {
-        window.clear(sf::Color::Black);
-        window.draw(textoAviso);
-        window.display();
-        return;
-    }
-
+// =========================
+// RENDER
+// =========================
+void DisenoTecnico::renderizar(sf::RenderWindow& window)
+{
     window.clear();
     window.draw(FondoDiseno);
-    for (auto& s : puertasSprites) window.draw(s);
+
+    // Puertas + texto
+    for (int i = 0; i < 3; ++i) {
+        window.draw(puertasSprites[i]);
+        window.draw(textosPuertas[i]);
+    }
+
     window.draw(jugador);
 }
