@@ -100,6 +100,20 @@ minijuegoElectronicaYControl::minijuegoElectronicaYControl(Juego* juego) : Panta
         cubosObjetivo[i + 28].forma.setPosition(cubosObjetivo[9].forma.getPosition().x, cubosObjetivo[9].forma.getPosition().y - (movimiento * (i + 1)));
     }
 
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 40;
+    } else {
+        tiempoInt = 20;
+    }
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
+
 }
 void minijuegoElectronicaYControl::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed) {
@@ -193,6 +207,8 @@ void minijuegoElectronicaYControl::ManejarEvento(sf::Event evento){
     }
 }
 void minijuegoElectronicaYControl::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     int a = 0;
     for (auto& cuadrado : cubos)
     {
@@ -204,6 +220,13 @@ void minijuegoElectronicaYControl::actualizar(){
         }
     }
     std::cout << "Actualmente hay: " << std::to_string(a) << std::endl;
+
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
 
 }
 void minijuegoElectronicaYControl::renderizar(sf::RenderWindow& window){
@@ -228,5 +251,5 @@ void minijuegoElectronicaYControl::renderizar(sf::RenderWindow& window){
     window.draw(soporte);
     window.draw(puntero);
 
-
+    window.draw(tiempo);
 }

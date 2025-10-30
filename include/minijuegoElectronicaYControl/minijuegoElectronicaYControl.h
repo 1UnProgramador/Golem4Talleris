@@ -35,6 +35,13 @@ class minijuegoElectronicaYControl : public Pantalla{
 
         bool prueba = false;
 
+
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
+
     public:
         minijuegoElectronicaYControl(Juego* juego);
         void ManejarEvento(sf::Event evento) override;

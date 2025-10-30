@@ -106,7 +106,19 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
     objetos[0].actual = true;
     objetos[1].sObjeto.setScale(1.8, 1.8);
 
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 60;
+    } else {
+        tiempoInt = 15;
+    }
 
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 }
 void minijuegoMecatronica::ManejarEvento(sf::Event evento){
     if(evento.type == sf::Event::MouseMoved){
@@ -153,6 +165,8 @@ void minijuegoMecatronica::ManejarEvento(sf::Event evento){
     }
 }
 void minijuegoMecatronica::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -214,7 +228,12 @@ void minijuegoMecatronica::actualizar(){
         }
     }
 
-
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
 }
 void minijuegoMecatronica::renderizar(sf::RenderWindow& window){
     window.draw(fondo);
@@ -245,4 +264,5 @@ void minijuegoMecatronica::renderizar(sf::RenderWindow& window){
 
     window.draw(palo);
     window.draw(garra);
+    window.draw(tiempo);
 }

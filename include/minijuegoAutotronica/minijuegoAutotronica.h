@@ -46,6 +46,12 @@ class minijuegoAutotronica : public Pantalla{
         sf::Vector2i posicionMouse;
         sf::Vector2f posicionEnVentana;
         bool arrastrando = false;
+
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
     public:
         minijuegoAutotronica(Juego* juego);
         void ManejarEvento(sf::Event evento) override;

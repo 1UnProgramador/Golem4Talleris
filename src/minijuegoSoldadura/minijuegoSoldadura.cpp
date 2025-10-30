@@ -288,6 +288,20 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
 
 
     paneles[1].activada = true;
+
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 50;
+    } else {
+        tiempoInt = 30;
+    }
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 }
 
 void minijuegoSoldadura::ManejarEvento(sf::Event evento){
@@ -343,6 +357,8 @@ void minijuegoSoldadura::ManejarEvento(sf::Event evento){
 }
 
 void minijuegoSoldadura::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -377,6 +393,13 @@ void minijuegoSoldadura::actualizar(){
     } else {
         soplete.setPosition(-1000,-1000);
     }
+
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
 }
 
 void minijuegoSoldadura::renderizar(sf::RenderWindow& window){
@@ -396,4 +419,5 @@ void minijuegoSoldadura::renderizar(sf::RenderWindow& window){
 
 
     window.draw(soplete);
+    window.draw(tiempo);
 }

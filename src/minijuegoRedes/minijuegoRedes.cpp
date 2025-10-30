@@ -67,7 +67,7 @@ std::vector<std::vector<std::string>> pieza2 = {
 };
 
 minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondo.png");
+    tFondo.loadFromFile("../assets/fondoElectricidad.png");
     fondo.setTexture(tFondo);
 
     fondo.setPosition(0, 0);
@@ -133,6 +133,13 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
         }
         malla.push_back(fila);
     }
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 120;
+    } else {
+        tiempoInt = 60;
+    }
+
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

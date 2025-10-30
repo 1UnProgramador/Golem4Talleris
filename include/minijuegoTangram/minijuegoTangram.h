@@ -20,6 +20,12 @@ class minijuegoTangram : public Pantalla{
         std::vector<figura> figurasObjetivo;
         sf::Vector2i posicionMouse;
         sf::Vector2f posicionEnVentana;
+
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
     public:
         minijuegoTangram(Juego* juego);
         void ManejarEvento(sf::Event evento) override;

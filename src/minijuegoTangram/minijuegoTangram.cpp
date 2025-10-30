@@ -154,6 +154,20 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
     rotacionObjetivos.push_back(figurasObjetivo[6].formaFigura.getRotation());
     posicionesObjetivos2.push_back(sf::Vector2f(195, 689));
     rotacionObjetivos2.push_back(90);
+
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 120;
+    } else {
+        tiempoInt = 70;
+    }
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 }
 
 
@@ -332,7 +346,7 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         }
     }
     if (evento.type == sf::Event::KeyPressed) {
-        
+
         for (auto &figura : figuras)
         {
             if (figura.seleccionada){
@@ -353,6 +367,8 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
 }
 
 void minijuegoTangram::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -496,6 +512,12 @@ void minijuegoTangram::actualizar(){
             }
         }
     }
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
 }
 
 void minijuegoTangram::renderizar(sf::RenderWindow& window){
@@ -506,4 +528,5 @@ void minijuegoTangram::renderizar(sf::RenderWindow& window){
     for (const auto& figura : figuras) {
         window.draw(figura.formaFigura);
     }
+    window.draw(tiempo);
 }

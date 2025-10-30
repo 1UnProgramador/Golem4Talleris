@@ -8,6 +8,17 @@
 
 class PantallaCarga : public Pantalla{
     private:
+        sf::Texture botonFacil;
+        sf::Texture botonFacilSeleccionado;
+        sf::Sprite bFacil;
+
+        sf::Texture botonDificil;
+        sf::Texture botonDificilSeleccionado;
+        sf::Sprite bDificil;
+
+        bool facil = true;
+
+
         sf::Texture tFondo;
         sf::Sprite fondo;
 
@@ -28,7 +39,7 @@ class PantallaCarga : public Pantalla{
         sf::Clock eje;
         sf::RectangleShape cBorde;
         sf::RectangleShape cRelleno;
-
+        
 
     public:
         PantallaCarga(Juego* juego);
