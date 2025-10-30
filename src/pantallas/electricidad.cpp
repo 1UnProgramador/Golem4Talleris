@@ -107,20 +107,29 @@ void Electricidad::ManejarEvento(sf::Event evento) {
             switch (puertaCercana) {
                 case 0:
                     juego->cambiarAPrograma = 10;
+                    juego->seleccionado = "minijuegoElectronicaYControl";
+                    juego->instrucciones = "¿Alguna vez has usado una impresora 3D? En este minijuego vas a tener que usar el puntero de la impresora para crear un modelo pre-definido (el modelo esta sombreado), y mucho cuidado, tienes que dejar la pieza tal cuál como esta, si no no estariamos en  el programa de electrónica y control, P10.";
                     break;
                 case 1:
                     juego->cambiarAPrograma = 7;
+                    juego->seleccionado = "minijuegoAutotronica";
+                    juego->instrucciones = "Vamos con una trivia, ¿Con qué reparo qué componente? Piensa muy bien tus opciones de respuesta, demuéstrate a ti mismo de que eres capaz de pensar como un estudiante del programa de Autotrónica, P7. Para reparar un componente le das click a el y a la opción que creas correcta, y le das enter.";
                     break;
                 case 2:
                     juego->cambiarAPrograma = 4;
+                    juego->seleccionado = "minijuegoMecatronica";
+                    juego->instrucciones = "Algunas cosas de mecatrónica (P4) se pueden aplicar muy bien a la vida cotidiana, ¿Sabías? El siguiente minijuego consiste en pasar por un lente algún objeto para decidir en que contenedor de reciclaje va. ¡Aprende a reciclar mientras juegas, todo por un mundo mejor!";
                     break;
                 case 3:
                     juego->cambiarAPrograma = 11;
+                    juego->seleccionado = "minijuegoRedes";
+                    juego->instrucciones = "El siguiente minijuego de redes eléctricas (P11), puede ser un poco complicado así que presta atención: Va a fluir electricidad por los cables amarillos (así que cómo no pueden haber fugas de electricidad TODOS tienen que estar conectados), inicia por abajo y sale por arriba en la dirección que indica las flechas. ¡Ánimo!";
                     break;
                 default:
                     std::cout << "[Electricidad] puertaCercana fuera de rango\n";
                     break;
             }
+            juego->botones = true;
             juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[Electricidad] Enter pero sin puerta cercana\n";

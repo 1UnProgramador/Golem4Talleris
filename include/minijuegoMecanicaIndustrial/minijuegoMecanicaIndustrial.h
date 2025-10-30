@@ -42,6 +42,7 @@ class minijuegoMecanicaIndustrial : public Pantalla{
         std::vector<Corazon> corazones;
         int vidas = 3;
         int puntos = 0;
+        int necesarios = 0;
 
         std::vector<std::string> nombresPiezas;
 

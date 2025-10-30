@@ -58,9 +58,10 @@ void PantallaMenu::ManejarEvento(sf::Event evento) {
         }
         else if (evento.key.code == sf::Keyboard::Enter) {
             if (opcionSeleccionada == 0) {
-                juego->seleccionado = "fondoDiseno";
+                juego->seleccionado = "imagenDefault";
                 juego->cambiarAPrograma = 13;
-                juego->instrucciones = "Hola y Bienvenido a\nGollem4Talleris!\n\nEstas a punto de explorar\nlas especialidades del\nITS!";
+                juego->instrucciones = "¡Hola y bienvenido a Gollem4Talleris!\n\nTécnica en juego, futuro en marcha. ¡Estas a punto de explorar las especialidades del ITS!";
+                juego->botones = false;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
             }
             else if (opcionSeleccionada == 1) {

@@ -18,13 +18,134 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
     float fY = sf::VideoMode::getDesktopMode().height / fondo.getGlobalBounds().height;
 
     fondo.setScale(fX, fY);
-}
-void minijuegoDisenoArquitectonico::ManejarEvento(sf::Event evento){
+
+    tContorno.loadFromFile("../assets/minijuegoDisenoArquitectonico/contorno.png");
+    contorno.setTexture(tContorno);
+    contorno.setOrigin(contorno.getGlobalBounds().width / 2, contorno.getGlobalBounds().height / 2);
+    contorno.setScale(4, 4);
+    contorno.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+
+    std::vector<std::string> nombresPiezasM = {"pieza1", "pieza2", "pieza3", "pieza4", "pieza5", "pieza6", "pieza7", "pieza8"};
+    for (const auto& nombre : nombresPiezasM) {
+        Pieza p;
+        p.textura = std::make_shared<sf::Texture>();
+
+
+        if (!p.textura->loadFromFile("../assets/minijuegoDisenoArquitectonico/" + nombre + ".png")) {
+            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        }
+        p.sprite.setTexture(*p.textura);
+        p.sprite.setOrigin(p.sprite.getGlobalBounds().width / 2, p.sprite.getGlobalBounds().height / 2);
+        p.sprite.setScale(4, 4);
+        /* p.sprite.setPosition(cintas.getPosition().x - 1107, cintas.getPosition().y); */
+        piezas.push_back(p);
+    }
+    piezas[0].sprite.setPosition(contorno.getPosition().x - (contorno.getGlobalBounds().width / 2) - (piezas[0].sprite.getGlobalBounds().width / 2) - 150, contorno.getPosition().y - (contorno.getGlobalBounds().height / 2) - 150);
+    piezas[0].posicionInicial = piezas[0].sprite.getPosition();
+    piezas[0].posicionObjetivo = sf::Vector2f(1026, 664);
+
+    piezas[1].sprite.setPosition(piezas[0].sprite.getPosition().x, piezas[0].sprite.getPosition().y + (piezas[0].sprite.getGlobalBounds().height / 2) + (piezas[1].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[1].posicionInicial = piezas[1].sprite.getPosition();
+    piezas[1].posicionObjetivo = sf::Vector2f(1058, 728);
+
+    piezas[2].sprite.setPosition(piezas[1].sprite.getPosition().x, piezas[1].sprite.getPosition().y + (piezas[1].sprite.getGlobalBounds().height / 2) + (piezas[2].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[2].posicionInicial = piezas[2].sprite.getPosition();
+    piezas[2].posicionObjetivo = sf::Vector2f(866, 760);
+
+    piezas[3].sprite.setPosition(piezas[2].sprite.getPosition().x, piezas[2].sprite.getPosition().y + (piezas[2].sprite.getGlobalBounds().height / 2) + (piezas[3].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[3].posicionInicial = piezas[3].sprite.getPosition();
+    piezas[3].posicionObjetivo = sf::Vector2f(865.999939, 664);
+
+
+    piezas[4].sprite.setPosition(contorno.getPosition().x + (contorno.getGlobalBounds().width / 2) + (piezas[4].sprite.getGlobalBounds().width / 2) + 150, contorno.getPosition().y - (contorno.getGlobalBounds().height / 2) - 150);
+    piezas[4].posicionInicial = piezas[4].sprite.getPosition();
+    piezas[4].posicionObjetivo = sf::Vector2f(833.999939, 548);
+
+    piezas[5].sprite.setPosition(piezas[4].sprite.getPosition().x, piezas[4].sprite.getPosition().y + (piezas[4].sprite.getGlobalBounds().height / 2) + (piezas[5].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[5].posicionInicial = piezas[5].sprite.getPosition();
+    piezas[5].posicionObjetivo = sf::Vector2f(993.999878, 504);
+
+    piezas[6].sprite.setPosition(piezas[5].sprite.getPosition().x, piezas[5].sprite.getPosition().y + (piezas[5].sprite.getGlobalBounds().height / 2) + (piezas[6].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[6].posicionInicial = piezas[6].sprite.getPosition();
+    piezas[6].posicionObjetivo = sf::Vector2f(1120, 544);
+
+    piezas[7].sprite.setPosition(piezas[6].sprite.getPosition().x, piezas[6].sprite.getPosition().y + (piezas[6].sprite.getGlobalBounds().height / 2) + (piezas[7].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[7].posicionInicial = piezas[7].sprite.getPosition();
+    piezas[7].posicionObjetivo = sf::Vector2f(966.999939, 728);
+
+
+    if (juego->minijuegoFacil)
+    {
+        tolerancia = 10;
+    } else {
+        tolerancia = 5;
+    }
 
 }
+void minijuegoDisenoArquitectonico::ManejarEvento(sf::Event evento){
+    if (evento.type == sf::Event::MouseButtonPressed) {
+        if (evento.mouseButton.button == sf::Mouse::Left){
+            for (auto &pieza : piezas)
+            {
+                if (pieza.sprite.getGlobalBounds().contains(posicionEnVentana) && !(pieza.posicionada))
+                {
+                    pieza.agarrada = true;
+                }
+
+            }
+
+        }
+    } else if(evento.type == sf::Event::MouseButtonReleased){
+        if (evento.mouseButton.button == sf::Mouse::Left){
+            for (auto &pieza : piezas)
+            {
+                float dX = std::abs(pieza.sprite.getPosition().x - pieza.posicionObjetivo.x);
+                float dY = std::abs(pieza.sprite.getPosition().y - pieza.posicionObjetivo.y);
+                if (dX <= tolerancia && dY <= tolerancia)
+                {
+                    pieza.sprite.setPosition(pieza.posicionObjetivo);
+                    pieza.posicionada = true;
+                } else {
+                    pieza.sprite.setPosition(pieza.posicionInicial);
+                }
+
+
+                pieza.agarrada = false;
+            }
+
+        }
+    } else if(evento.type == sf::Event::KeyPressed){
+        if(evento.key.code == sf::Keyboard::Left){
+            piezas[2].sprite.move(-1, 0);
+        } else if(evento.key.code == sf::Keyboard::Up){
+            piezas[2].sprite.move(0, -1);
+        } else if(evento.key.code == sf::Keyboard::Right){
+            piezas[2].sprite.move(1, 0);
+        } else if(evento.key.code == sf::Keyboard::Down){
+            piezas[2].sprite.move(0, 1);
+        }
+        std::cout << "Posicion actual de la pieza: " << std::to_string(piezas[2].sprite.getPosition().x) << ", " << std::to_string(piezas[2].sprite.getPosition().y) << "." << std::endl;
+    }
+}
 void minijuegoDisenoArquitectonico::actualizar(){
+    posicionMouse = sf::Mouse::getPosition(juego->getWindow());
+    posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
+
+    for (auto &pieza : piezas)
+    {
+        if (pieza.agarrada && !(pieza.posicionada))
+        {
+            pieza.sprite.setPosition(posicionEnVentana);
+        }
+    }
 
 }
 void minijuegoDisenoArquitectonico::renderizar(sf::RenderWindow& window){
     window.draw(fondo);
+    window.draw(contorno);
+    for (auto &pieza : piezas)
+    {
+        window.draw(pieza.sprite);
+    }
+
 }

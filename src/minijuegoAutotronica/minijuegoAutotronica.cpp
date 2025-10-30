@@ -162,6 +162,20 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opciones.push_back(opcionB);
     opciones.push_back(opcionC);
     opciones.push_back(opcionD);
+
+    if (juego->minijuegoFacil)
+    {
+        tiempoInt = 70;
+    } else {
+        tiempoInt = 45;
+    }
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    tiempo.setFont(fuente);
+    tiempo.setScale(2, 2);
+    tiempo.setPosition(0, 0);
+    tiempoRestante.restart();
+    tiempo.setString(std::to_string(tiempoInt));
 }
 void minijuegoAutotronica::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
@@ -262,6 +276,8 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
     }
 }
 void minijuegoAutotronica::actualizar(){
+    tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
+
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
@@ -270,6 +286,12 @@ void minijuegoAutotronica::actualizar(){
         objetos[3].sprite.setPosition(posicionEnVentana);
         std::cout << "posicion: " << std::to_string(objetos[3].sprite.getPosition().x) << ", " << std::to_string(objetos[3].sprite.getPosition().y) << std::endl;
     } */
+    if (tiempoRestante.getElapsedTime().asSeconds() >= tiempoInt)
+    {
+        /* que lo devuelva cuando Sam haga la pantalla */
+        tiempoRestante.restart();
+        tiempo.setString(std::to_string(tiempoInt));
+    }
 }
 void minijuegoAutotronica::renderizar(sf::RenderWindow& window){
     window.draw(fondo);
@@ -302,4 +324,5 @@ void minijuegoAutotronica::renderizar(sf::RenderWindow& window){
     /* window.draw(objetosE1[3].sprite); */
     window.draw(cuadro);
     window.draw(objetoSeleccionado);
+    window.draw(tiempo);
 }

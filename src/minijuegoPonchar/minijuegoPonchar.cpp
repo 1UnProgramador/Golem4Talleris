@@ -227,10 +227,14 @@ void minijuegoPonchar::renderizar(sf::RenderWindow& window){
     window.draw(fondo);
     window.draw(rj45);
     for (int i = 0; i <= 7; i++){
-        window.draw(cables[i].pObjetivo);
-    }
-    for (int i = 0; i <= 7; i++){
         window.draw(cables[i]);
     }
-    window.draw(texto);
+    /* window.draw(texto); */
+    for (int i = 0; i <= 7; i++){
+        if (juego->minijuegoFacil)
+        {
+            window.draw(cables[i].pObjetivo);
+        }
+
+    }
 }

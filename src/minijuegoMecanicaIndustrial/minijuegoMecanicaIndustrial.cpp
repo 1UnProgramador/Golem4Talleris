@@ -142,6 +142,14 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     texto.setCharacterSize(40);
     texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
     texto.setPosition(sPantalla.getPosition().x, sPantalla.getPosition().y - (sPantalla.getGlobalBounds().height / 2) - (texto.getGlobalBounds().height) - 100);
+
+    if (juego->minijuegoFacil)
+    {
+        necesarios = 5;
+    } else {
+        necesarios = 15;
+    }
+
 }
 void minijuegoMecanicaIndustrial::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::KeyPressed) {
@@ -177,7 +185,7 @@ void minijuegoMecanicaIndustrial::actualizar(){
     if(corazones.empty()){
         juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
     }
-    if (puntos >= 15){
+    if (puntos >= necesarios){
         juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
     }
 

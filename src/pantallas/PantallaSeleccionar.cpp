@@ -107,19 +107,28 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
             switch (puertaCercana) {
                 case 0:
                     juego->cambiarAPrograma = 14;
+                    juego->seleccionado = "imagenInformatica";
+                    juego->instrucciones =  "Bienvenido a la especialidad de informatica, aca se extiende durante 3 programas: Mantenimiento electronico y de computadores (P1), diseño de paginas Web (P2) y diseno grafico asistido por computador (P3). El elemento central de este taller es la tecnologia, te aseguramos que te encantara, Suerte!";
                     break;
                 case 1:
                     juego->cambiarAPrograma = 15;
+                    juego->seleccionado = "imagenElectricidad";
+                    juego->instrucciones =  "Bienvenido a la especialidad de Electricidad, aca se extiende durante 4 programas: Mecatrónica (P4), Autotrónica (P7), Electrónica y control (P10) y Redes Eléctricas (P11). El elemento central de este taller es La conversión, distribución y control inteligente de la energía eléctrica. ¡Aprende de él mientras desarrollas tu razonamiento lógico!";
                     break;
                 case 2:
                     juego->cambiarAPrograma = 16;
+                    juego->seleccionado = "imagenDiseno";
+                    juego->instrucciones =  "Bienvenido a la especialidad de Metalmecánica, aca se extiende durante 3 programas: Diseño Arquitectónico (P6), Topografía (P8) y Diseño asistido por computador  (P9). El elemento central de este taller es la representación y materialización del espacio mediante herramientas tecnológicas y análisis del territorio.";
                     break;
                 case 3:
                     juego->cambiarAPrograma = 17;
+                    juego->seleccionado = "imagenMetalmecanica";
+                    juego->instrucciones =  "Bienvenido a la especialidad de Metalmecánica, aca se extiende durante 2 programas: Mecánica industrial (P5), y Soldadura (P12). El elemento central de este taller es el dominio de los procesos que permiten dar forma, unir y optimizar componentes metálicos.";
                     break;
                 default:
                     break;
             }
+            juego->botones = false;
             juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[PantallaSeleccionar] Enter pero sin puerta cercana\n";

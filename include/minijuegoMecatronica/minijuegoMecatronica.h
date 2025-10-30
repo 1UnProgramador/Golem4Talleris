@@ -44,7 +44,7 @@ class minijuegoMecatronica : public Pantalla{
         int i = 0;
         std::vector<sf::Vector2f> posicionesObjetos;
 
-        
+
 
 
         sf::Texture tPalo;
@@ -72,6 +72,12 @@ class minijuegoMecatronica : public Pantalla{
         sf::Sprite b2;
         sf::Sprite b3;
         sf::Sprite b4;
+
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
     public:
         minijuegoMecatronica(Juego* juego);
         void ManejarEvento(sf::Event evento) override;

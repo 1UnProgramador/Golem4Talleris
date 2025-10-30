@@ -18,6 +18,7 @@ private:
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
 
+
 public:
     PantallaSeleccionar(Juego* juego);
 

@@ -15,6 +15,7 @@ class Juego{
         std::string seleccionado;
         int cambiarAPrograma = 0;
         bool botones = false;
+        bool minijuegoFacil = true;
         Juego();
         void run();
 

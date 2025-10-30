@@ -33,6 +33,12 @@ class minijuegoSoldadura : public Pantalla{
         sf::RectangleShape debugging;
         int panelActual = 0;
 
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
+
     public:
         minijuegoSoldadura(Juego* juego);
         void ManejarEvento(sf::Event evento) override;

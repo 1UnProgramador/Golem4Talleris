@@ -104,6 +104,7 @@ void Metalmecanica::ManejarEvento(sf::Event evento) {
                     relojAviso.restart();
                     break;
             }
+            juego->botones = true;
             juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         }
     }

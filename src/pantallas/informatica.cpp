@@ -105,18 +105,23 @@ void Informatica::ManejarEvento(sf::Event evento) {
             switch (puertaCercana) {
                 case 0:
                     juego->cambiarAPrograma = 1;
+                    juego->seleccionado = "minijuegoPonchar";
+                    juego->instrucciones = "Bienvenido al programa mantenimiento electrónico y de computadores , P1. En este minijuego tendrás que memorizar la imágen de arriba que es la normativa de cómo conectar un cable UTP según la norma T568B, ¡Acuérdate muy bien de dónde va cada cable para que no tengas fugas de datos!";
                     break;
                 case 1:
                     juego->cambiarAPrograma = 2;
                     break;
                 case 2:
                     juego->cambiarAPrograma = 3;
+                    juego->seleccionado = "minijuegoTangram";
+                    juego->instrucciones = "Ahora mismo estamos entrando a Diseño gráfico por computador, P3. Agudiza tu comprensión espacial para pasar el siguiente minijuego: Un Tangram. Vas a tener que organizar las piezas de tal manera que abarquen toda la figura azul sin salirse del contorno. Suerte!";
                     break;
                 default:
                     std::cout << "[Informatica] puertaCercana fuera de rango\n";
                     break;
 
             }
+            juego->botones = true;
             juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
         } else {
             std::cout << "[Informatica] Enter pero sin puerta cercana\n";

@@ -95,12 +95,15 @@ void DisenoTecnico::ManejarEvento(sf::Event evento) {
             switch (puertaCercana) {
                 case 0:
                     juego->cambiarAPrograma = 6;
+                    juego->seleccionado = "minijuegoDisenoArquitectonico";
+                    juego->instrucciones = "¿Hace cuánto no haces un rompecabezas? En el diseño arquitectónico (P6), es muy importante tener la habilidad de construir espacios, tanto mental como físicamente. Ahora vas a tener que arrastrar cada pieza a su posición indicada para armar una casa.";
                     break;
                 /* case 1:
                     juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
                     break; */
 
             }
+            juego->botones = true;
             juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
             mostrandoAviso = true;
             relojAviso.restart();
