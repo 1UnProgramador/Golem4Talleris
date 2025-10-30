@@ -1,5 +1,6 @@
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/pantallas/PantallaCarga.h"
+#include "../../include/pantallas/PantallaMenu.h"
 /* #include "../../include/pantallas/informatica.h"
 #include "../../include/pantallas/electricidad.h"
 #include "../../include/pantallas/DisenoTecnico.h"
@@ -113,7 +114,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
-        exit(0);
+        juego->cambiarPantalla(std::make_unique<PantallaMenu>(juego));
 
     if (ignoreInput) {
         if (evento.type == sf::Event::KeyReleased)

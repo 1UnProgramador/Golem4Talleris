@@ -122,11 +122,13 @@ void Metalmecanica::ManejarEvento(sf::Event evento)
         switch (puertaCercana) {
             case 0:
                 juego->cambiarAPrograma = 5;
+                juego->instrucciones = "Binevenido al hogar de las máquinas, aquí como buen mecánico industrial (P5), vas a tener que desechar al contenedor las piezas que no coincidan con la que se muestran en la pantalla. Demuestrale a los demás tu percepción e intuición visual.";
                 juego->botones = true;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P5
             case 1:
                 juego->cambiarAPrograma = 12;
+                juego->instrucciones = "Acá nos vamos a poner un poco más calientes, porqué en el siguiente";
                 juego->botones = true;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P12

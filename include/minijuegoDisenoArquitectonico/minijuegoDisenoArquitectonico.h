@@ -26,6 +26,12 @@ class minijuegoDisenoArquitectonico : public Pantalla{
         sf::Vector2f posicionEnVentana;
 
         int tolerancia;
+
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
+        sf::Font fuente;
+        sf::Text tiempo;
+        int tiempoInt;
     public:
         minijuegoDisenoArquitectonico(Juego* juego);
         void ManejarEvento(sf::Event evento) override;
