@@ -19,6 +19,11 @@ class minijuegoAutotronica : public Pantalla{
             sf::RectangleShape cuadro;
             bool seleccionado = false;
         };
+        sf::ConvexShape hazDeLuz;
+        bool luz = false;
+        sf::RectangleShape humo;
+        bool gas = false;
+
         std::vector<Opcion> opciones;
         std::vector<Objeto> objetos;
         std::vector<Objeto> objetosE1;

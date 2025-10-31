@@ -11,7 +11,13 @@ class minijuegoSoldadura : public Pantalla{
 
         sf::Texture tSopleteDesactivado;
         sf::Texture tSopleteActivado;
+        sf::Texture tPulidora;
         sf::Sprite soplete;
+
+        struct MarcaSoldadura {
+            sf::Sprite sprite;
+            bool limpia = false;
+        };
 
         struct PanelSoldable
         {
@@ -22,6 +28,8 @@ class minijuegoSoldadura : public Pantalla{
         };
         std::vector<PanelSoldable> paneles;
 
+
+
         sf::Texture tMarcaLimpia;
         sf::Texture tMarcaSucia;
 
@@ -29,6 +37,7 @@ class minijuegoSoldadura : public Pantalla{
         sf::Vector2f posicionEnVentana;
 
         bool soldando = false;
+        bool lijando = false;
 
         sf::RectangleShape debugging;
         int panelActual = 0;

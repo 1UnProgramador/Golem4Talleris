@@ -204,8 +204,13 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
         // 2. Si son iguales
         if (iguales)
         {
-            // Primera fase → pasar a pieza2
-            if (pieza != pieza2) {
+            if (juego->minijuegoFacil)
+            {
+                juego->minijuegosPasados[10] = true;
+                juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+            } else if (pieza != pieza2) {
+
+
                 orientacionObjetivo = orientacionObjetivo2;
                 pieza = pieza2;
 
@@ -241,6 +246,7 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                 tiempoRestante.restart();
                 tiempo.setString(std::to_string(tiempoInt));
             } else {
+                juego->minijuegosPasados[10] = true;
                 juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
             }
         }

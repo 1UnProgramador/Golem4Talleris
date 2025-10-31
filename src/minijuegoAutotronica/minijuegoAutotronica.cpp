@@ -176,6 +176,18 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     tiempo.setPosition(0, 0);
     tiempoRestante.restart();
     tiempo.setString(std::to_string(tiempoInt));
+
+    hazDeLuz.setPointCount(4);
+    hazDeLuz.setPoint(0, sf::Vector2f(0.f, 0.f));
+    hazDeLuz.setPoint(1, sf::Vector2f(40.f, 0.f));
+    hazDeLuz.setPoint(2, sf::Vector2f(100.f, 150.f));
+    hazDeLuz.setPoint(3, sf::Vector2f(-60.f, 150.f));
+    hazDeLuz.rotate(-90);
+    hazDeLuz.setPosition(objetos[3].sprite.getPosition().x + 50, objetos[3].sprite.getPosition().y + 40);
+
+    humo.setSize(sf::Vector2f(300, 50));
+    humo.setPosition(objetos[0].sprite.getPosition().x  - humo.getGlobalBounds().width, objetos[0].sprite.getPosition().y);
+    humo.setFillColor(sf::Color(20, 20, 20, 240));
 }
 void minijuegoAutotronica::ManejarEvento(sf::Event evento){
     if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
@@ -239,10 +251,12 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
                 objetos[2].arreglado = true;
             } else if(opciones[1].seleccionado && objetos[3].seleccionado){
                 objetos[3].arreglado = true;
+                luz = true;
             } else if(opciones[2].seleccionado && objetos[1].seleccionado){
                 objetos[1].arreglado = true;
             } else if(opciones[3].seleccionado && objetos[0].seleccionado){
                 objetos[0].arreglado = true;
+                gas = true;
             }
         } else if(evento.key.code == sf::Keyboard::Escape){
             juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
@@ -254,6 +268,7 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
             } else {
                 if (i == 3)
                 {
+                    juego->minijuegosPasados[6] = true;
                     juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
                 }
 
@@ -316,11 +331,19 @@ void minijuegoAutotronica::renderizar(sf::RenderWindow& window){
         i++;
     }
     i = 0;;
-    /* window.draw(objetosE1[0].sprite);
-    window.draw(objetosE1[1].sprite);
-    window.draw(objetosE1[2].sprite); */
-    /* window.draw(objetosE1[3].sprite); */
+
     window.draw(cuadro);
     window.draw(objetoSeleccionado);
     window.draw(tiempo);
+
+    if (luz)
+    {
+        window.draw(hazDeLuz);
+    }
+    if (gas)
+    {
+        window.draw(humo);
+    }
+
+
 }

@@ -141,7 +141,7 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     texto.setString("Actualmente tienes: 0 Puntos!");
     texto.setCharacterSize(40);
     texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
-    texto.setPosition(sPantalla.getPosition().x, sPantalla.getPosition().y - (sPantalla.getGlobalBounds().height / 2) - (texto.getGlobalBounds().height) - 100);
+    texto.setPosition(sPantalla.getPosition().x, sPantalla.getPosition().y - (sPantalla.getGlobalBounds().height / 2) - (texto.getGlobalBounds().height) - 25);
 
     if (juego->minijuegoFacil)
     {
@@ -186,6 +186,7 @@ void minijuegoMecanicaIndustrial::actualizar(){
         juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
     }
     if (puntos >= necesarios){
+        juego->minijuegosPasados[4] = true;
         juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
     }
 

@@ -214,6 +214,7 @@ void minijuegoMecatronica::actualizar(){
                 objeto.reciclado = true;
                 objeto.actual = false;
                 objeto.sObjeto.setPosition(-500, -500);
+                juego->minijuegosPasados[3] = true;
                 juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
                 std::cout << i;
                 break;

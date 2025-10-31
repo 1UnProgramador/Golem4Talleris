@@ -215,6 +215,7 @@ void minijuegoElectronicaYControl::actualizar(){
         if(cuadrado.encajado){
             a++;
             if(a == 43){
+                juego->minijuegosPasados[9] = true;
                 juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
             }
         }

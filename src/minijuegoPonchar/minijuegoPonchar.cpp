@@ -213,6 +213,7 @@ void minijuegoPonchar::actualizar(){
     {
         if(cable.correcto){
             if(x == 7){
+                juego->minijuegosPasados[0] = true;
                 juego->cambiarPantalla(std::make_unique<Informatica>(juego));
             }
         } else {

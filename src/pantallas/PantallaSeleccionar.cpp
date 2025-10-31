@@ -110,6 +110,49 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     }
 
     ignoreInput = true;
+
+    std::cout << "Minijuegos pasados: " << std::to_string(juego->minijuegosPasados[0]) << ", "<< std::to_string(juego->minijuegosPasados[1]) << ", "<< std::to_string(juego->minijuegosPasados[2]) << ", "<< std::to_string(juego->minijuegosPasados[3]) << ", "<< std::to_string(juego->minijuegosPasados[4]) << ", "<< std::to_string(juego->minijuegosPasados[5]) << ", "<< std::to_string(juego->minijuegosPasados[6]) << ", "<< std::to_string(juego->minijuegosPasados[7]) << ", "<< std::to_string(juego->minijuegosPasados[8]) << ", "<< std::to_string(juego->minijuegosPasados[9]) << ", "<< std::to_string(juego->minijuegosPasados[10]) << ", "<< std::to_string(juego->minijuegosPasados[11]) << "." << std::endl;
+
+    tLogroDesbloqueado.loadFromFile("../assets/logroDesbloqueado.png");
+    logroDesbloqueado.setTexture(tLogroDesbloqueado);
+    logroDesbloqueado.setOrigin(logroDesbloqueado.getGlobalBounds().width / 2, logroDesbloqueado.getGlobalBounds().height / 2);
+    logroDesbloqueado.setScale(5, 3);
+    logroDesbloqueado.setPosition(sf::VideoMode::getDesktopMode().width - (logroDesbloqueado.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height - (logroDesbloqueado.getGlobalBounds().height / 2));
+
+
+    tituloLogro.setFont(fuente);
+    tituloLogro.setCharacterSize(20);
+    tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - logroDesbloqueado.getGlobalBounds().height / 2);
+
+    descripcionLogro.setFont(fuente);
+    descripcionLogro.setFont(fuente);
+    descripcionLogro.setPosition(tituloLogro.getPosition().x, tituloLogro.getPosition().y + 25);
+
+    if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && !juego->logroDesbloqueado("Maestro del Bit Supremo"))
+    {
+        juego->desbloquearLogro("Maestro del Bit Supremo");
+        tituloLogro.setString("Maestro del Bit Supremo");
+        descripcionLogro.setString("Completaste el taller de informatica");
+    } else if((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && !juego->logroDesbloqueado("Senor de los Voltios"))
+    {
+        juego->desbloquearLogro("Senor de los Voltios");
+        tituloLogro.setString("Senor de los Voltios");
+        descripcionLogro.setString("Completaste el taller de electricidad");
+    } else if((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8] && !juego->logroDesbloqueado("Arquitecto de los Suenos")))
+    {
+        juego->desbloquearLogro("Arquitecto de los Suenos");
+        tituloLogro.setString("Arquitecto de los Suenos");
+        descripcionLogro.setString("Completaste el taller de diseno");
+    } else if((juego->minijuegosPasados[4] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Forjador del Acero Eterno"))
+    {
+        juego->desbloquearLogro("Forjador del Acero Eterno");
+        tituloLogro.setString("Forjador del Acero Eterno");
+        descripcionLogro.setString("Completaste el taller de metalmecanica");
+    }
+
+
+
+
 }
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
@@ -208,4 +251,8 @@ void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
     }
 
     window.draw(jugador);
+    window.draw(logroDesbloqueado);
+
+    window.draw(tituloLogro);
+    window.draw(descripcionLogro);
 }

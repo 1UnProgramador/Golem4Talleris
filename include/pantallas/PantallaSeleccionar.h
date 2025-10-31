@@ -18,9 +18,16 @@ private:
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
 
+    sf::Texture tLogroDesbloqueado;
+    sf::Sprite  logroDesbloqueado;
+
+
     sf::Font fuente;
     sf::Text textoPrincipal;
     std::vector<sf::Text> textosPuertas;
+
+    sf::Text tituloLogro;
+    sf::Text descripcionLogro;
 public:
     PantallaSeleccionar(Juego* juego);
 
