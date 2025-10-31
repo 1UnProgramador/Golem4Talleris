@@ -113,46 +113,85 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
     std::cout << "Minijuegos pasados: " << std::to_string(juego->minijuegosPasados[0]) << ", "<< std::to_string(juego->minijuegosPasados[1]) << ", "<< std::to_string(juego->minijuegosPasados[2]) << ", "<< std::to_string(juego->minijuegosPasados[3]) << ", "<< std::to_string(juego->minijuegosPasados[4]) << ", "<< std::to_string(juego->minijuegosPasados[5]) << ", "<< std::to_string(juego->minijuegosPasados[6]) << ", "<< std::to_string(juego->minijuegosPasados[7]) << ", "<< std::to_string(juego->minijuegosPasados[8]) << ", "<< std::to_string(juego->minijuegosPasados[9]) << ", "<< std::to_string(juego->minijuegosPasados[10]) << ", "<< std::to_string(juego->minijuegosPasados[11]) << "." << std::endl;
 
-    tLogroDesbloqueado.loadFromFile("../assets/logroDesbloqueado.png");
-    logroDesbloqueado.setTexture(tLogroDesbloqueado);
-    logroDesbloqueado.setOrigin(logroDesbloqueado.getGlobalBounds().width / 2, logroDesbloqueado.getGlobalBounds().height / 2);
+    // === Carga de las texturas de logro ===
+    if (!tLogroDesbloqueado.loadFromFile("../assets/logroDesbloqueado.png"))
+        std::cerr << "Error al cargar textura logroDesbloqueado base\n";
+    if (!tLogroInformatica.loadFromFile("../assets/logroDesbloqueadoinformatica.png"))
+        std::cerr << "Error al cargar textura logroInformatica\n";
+    if (!tLogroElectricidad.loadFromFile("../assets/logroDesbloqueadoelectricidad.png"))
+        std::cerr << "Error al cargar textura logroElectricidad\n";
+    if (!tLogroDiseno.loadFromFile("../assets/logroDesbloqueadodiseno.png"))
+        std::cerr << "Error al cargar textura logroDiseno\n";
+    if (!tLogroMetalmecanica.loadFromFile("../assets/logroDesbloqueadometalmecanica.png"))
+        std::cerr << "Error al cargar textura logroMetalmecanica\n";
+    // ======================================
+
+
+    logroDesbloqueado.setTexture(tLogroDesbloqueado); 
     logroDesbloqueado.setScale(5, 3);
-    logroDesbloqueado.setPosition(sf::VideoMode::getDesktopMode().width - (logroDesbloqueado.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height - (logroDesbloqueado.getGlobalBounds().height / 2));
+    
+    // Posición base en la esquina inferior derecha
+    float offsetX = logroDesbloqueado.getGlobalBounds().width / 2; // Margen para el centro del sprite
+    float offsetY = logroDesbloqueado.getGlobalBounds().height / 2; // Margen para el centro del sprite
+    logroDesbloqueado.setPosition(sf::VideoMode::getDesktopMode().width - offsetX, sf::VideoMode::getDesktopMode().height - offsetY);
 
 
     tituloLogro.setFont(fuente);
     tituloLogro.setCharacterSize(20);
-    tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - logroDesbloqueado.getGlobalBounds().height / 2);
 
     descripcionLogro.setFont(fuente);
     descripcionLogro.setFont(fuente);
-    descripcionLogro.setPosition(tituloLogro.getPosition().x, tituloLogro.getPosition().y + 25);
+
+
+    // === Lógica de desbloqueo de logro y cambio de sprite ===
+    sf::Texture* texturaLogro = nullptr;
 
     if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && !juego->logroDesbloqueado("Maestro del Bit Supremo"))
     {
         juego->desbloquearLogro("Maestro del Bit Supremo");
-        tituloLogro.setString("Maestro del Bit Supremo");
-        descripcionLogro.setString("Completaste el taller de informatica");
+        tituloLogro.setString(wrapTextString("Maestro del Bit Supremo", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de informatica", fuente, 15, 172));
     } else if((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && !juego->logroDesbloqueado("Senor de los Voltios"))
     {
         juego->desbloquearLogro("Senor de los Voltios");
-        tituloLogro.setString("Senor de los Voltios");
-        descripcionLogro.setString("Completaste el taller de electricidad");
+        tituloLogro.setString(wrapTextString("Senor de los Voltios", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de electricidad", fuente, 15, 172));
     } else if((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8] && !juego->logroDesbloqueado("Arquitecto de los Suenos")))
     {
         juego->desbloquearLogro("Arquitecto de los Suenos");
-        tituloLogro.setString("Arquitecto de los Suenos");
-        descripcionLogro.setString("Completaste el taller de diseno");
+        tituloLogro.setString(wrapTextString("Arquitecto de los Suenos", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de diseno", fuente, 15, 172));
     } else if((juego->minijuegosPasados[4] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Forjador del Acero Eterno"))
     {
         juego->desbloquearLogro("Forjador del Acero Eterno");
-        tituloLogro.setString("Forjador del Acero Eterno");
-        descripcionLogro.setString("Completaste el taller de metalmecanica");
+        tituloLogro.setString(wrapTextString("Forjador del Acero Eterno", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de metalmecanica", fuente, 15, 172));
     }
+    // === Ajustar textura y posición si se desbloqueó un logro ===
+    if (texturaLogro != nullptr) {
+        logroDesbloqueado.setTexture(*texturaLogro, true);
+        
+        // El origen DEBE ser el centro de la textura ORIGINAL para que la escala no lo desplace
+        sf::Vector2u texSize = texturaLogro->getSize();
+        logroDesbloqueado.setOrigin(texSize.x / 2.f, texSize.y / 2.f); 
 
-
-
-
+        // Recalcular la posición del texto según el nuevo sprite (escalado)
+        float spriteCenterX = logroDesbloqueado.getPosition().x;
+        float spriteCenterY = logroDesbloqueado.getPosition().y;
+        
+        // Ajustar la posición del texto (se asume que están centrados horizontalmente en el sprite)
+        // Puedes ajustar estos valores (como +10 o -10) para afinar la posición visual.
+        tituloLogro.setPosition(spriteCenterX, spriteCenterY - logroDesbloqueado.getGlobalBounds().height / 4.f);
+        descripcionLogro.setPosition(spriteCenterX, spriteCenterY + logroDesbloqueado.getGlobalBounds().height / 4.f);
+        
+        // Centrar los textos horizontalmente en el punto central (spriteCenterX)
+        sf::FloatRect tb_titulo = tituloLogro.getLocalBounds();
+        tituloLogro.setOrigin(tb_titulo.left + tb_titulo.width / 2.f, tb_titulo.top + tb_titulo.height / 2.f);
+        
+        sf::FloatRect tb_desc = descripcionLogro.getLocalBounds();
+        descripcionLogro.setOrigin(tb_desc.left + tb_desc.width / 2.f, tb_desc.top + tb_desc.height / 2.f);
+    }
+    // =======================================================
 }
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
@@ -251,8 +290,12 @@ void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
     }
 
     window.draw(jugador);
-    window.draw(logroDesbloqueado);
-
-    window.draw(tituloLogro);
-    window.draw(descripcionLogro);
+    
+    // Solo dibujamos el banner de logro si se ha detectado el desbloqueo (tituloLogro no está vacío)
+    if (tituloLogro.getString() != "")
+    {
+        window.draw(logroDesbloqueado);
+        window.draw(tituloLogro);
+        window.draw(descripcionLogro);
+    }
 }

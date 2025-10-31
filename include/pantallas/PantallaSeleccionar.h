@@ -18,9 +18,14 @@ private:
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
 
-    sf::Texture tLogroDesbloqueado;
+    sf::Texture tLogroDesbloqueado; // Textura original (ahora será la del logro detectado)
     sf::Sprite  logroDesbloqueado;
 
+
+    sf::Texture tLogroInformatica;
+    sf::Texture tLogroElectricidad;
+    sf::Texture tLogroDiseno;
+    sf::Texture tLogroMetalmecanica;
 
     sf::Font fuente;
     sf::Text textoPrincipal;
@@ -28,6 +33,16 @@ private:
 
     sf::Text tituloLogro;
     sf::Text descripcionLogro;
+    sf::RectangleShape prueba;
+
+    sf::Clock relojLogro;
+    bool logroActivo = false;
+    bool apareciendo = false;
+    bool desapareciendo = false;
+    float alphaLogro = 0.f;
+
+    sf::Vector2f posActual;
+    sf::Vector2f posDestino;
 public:
     PantallaSeleccionar(Juego* juego);
 

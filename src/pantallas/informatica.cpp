@@ -1,9 +1,5 @@
 #include "../../include/pantallas/informatica.h"
 #include "../../include/pantallas/PantallaCarga.h"
-/* #include "../../include/minijuegoPonchar/minijuegoPonchar.h"
-#include "../../include/minijuegoPaginaWeb/minijuegoPaginaWeb.h"
-#include "../../include/minijuegoTangram/minijuegoTangram.h" */
-#include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
@@ -73,13 +69,21 @@ Informatica::Informatica(Juego* juego)
     // =========================
     // Fuente y textos de puertas (P1, P2, P3)
     // =========================
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
         std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
+    }
 
     std::vector<std::string> nombresPuertas = { "P1", "P2", "P3" };
+    std::vector<std::string> nombresTalleres = {
+        "Mantenimiento",
+        "Diseno de paginas web",
+        "Diseno grafico"
+    };
+
     textosPuertas.resize(3);
 
     for (int i = 0; i < 3; ++i) {
+        // --- Texto "P" ---
         textosPuertas[i].setFont(fuente);
         textosPuertas[i].setString(nombresPuertas[i]);
         textosPuertas[i].setCharacterSize(35);
@@ -121,7 +125,7 @@ void Informatica::ManejarEvento(sf::Event evento)
                 juego->cambiarAPrograma = 1;
                 juego->seleccionado = "minijuegoPonchar";
                 juego->botones = true;
-                juego->instrucciones = "Bienvenido al programa mantenimiento electrónico y de computadores , P1. En este minijuego tendrás que memorizar la imágen de arriba que es la normativa de cómo conectar un cable UTP según la norma T568B, ¡Acuérdate muy bien de dónde va cada cable para que no tengas fugas de datos!";
+                juego->instrucciones = "Bienvenido al programa mantenimiento electronico y de computadores , P1. En este minijuego tendras que memorizar la imagen de arriba que es la normativa de como conectar un cable UTP segun la norma T568B, ¡Acuerdate muy bien de donde va cada cable para que no tengas fugas de datos!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P1
             case 1:
@@ -132,7 +136,7 @@ void Informatica::ManejarEvento(sf::Event evento)
                 juego->cambiarAPrograma = 3;
                 juego->seleccionado = "minijuegoTangram";
                 juego->botones = true;
-                juego->instrucciones = "Ahora mismo estamos entrando a Diseño gráfico por computador, P3. Agudiza tu comprensión espacial para pasar el siguiente minijuego: Un Tangram. Vas a tener que organizar las piezas de tal manera que abarquen toda la figura azul sin salirse del contorno. Suerte!";
+                juego->instrucciones = "Ahora mismo estamos entrando a Diseno grafico por computador, P3. Agudiza tu comprension espacial para pasar el siguiente minijuego: Un Tangram. Vas a tener que organizar las piezas de tal manera que abarquen toda la figura azul sin salirse del contorno. Suerte!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P3
         }
@@ -180,7 +184,27 @@ void Informatica::renderizar(sf::RenderWindow& window)
     // Puertas + texto
     for (int i = 0; i < 3; ++i) {
         window.draw(puertasSprites[i]);
-        window.draw(textosPuertas[i]);
+
+        // --- Texto encima de la P ---
+        sf::Text nombreTaller;
+        nombreTaller.setFont(fuente);
+        std::vector<std::string> nombresTalleres = { "Mantenimiento", "Diseno de paginas web", "Diseno grafico" };
+        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setCharacterSize(30);
+        nombreTaller.setFillColor(sf::Color::White);
+        nombreTaller.setOutlineColor(sf::Color::Black);
+        nombreTaller.setOutlineThickness(2.f);
+        nombreTaller.setStyle(sf::Text::Bold);
+
+        sf::FloatRect nombreBounds = nombreTaller.getLocalBounds();
+        sf::FloatRect pBounds = textosPuertas[i].getGlobalBounds();
+        nombreTaller.setPosition(
+            pBounds.left + (pBounds.width / 2.f) - (nombreBounds.width / 2.f),
+            pBounds.top - nombreBounds.height - 5.f
+        );
+
+        window.draw(nombreTaller);
+        window.draw(textosPuertas[i]);  // P1, P2, P3
     }
 
     window.draw(jugador);

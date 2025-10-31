@@ -1,151 +1,291 @@
 #include "../../include/minijuegoTopografia/minijuegoTopografia.h"
-#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/pantallas/DisenoTecnico.h"
+#include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
-#include <cstdlib>
 #include <ctime>
+#include <cstdlib>
+#include <cmath>
 
-Topografia::Topografia(Juego* juego)
-    : Pantalla(juego), jugador(0, 0), marcadorPosY(100), marcadorVelY(200),
-      destelloTiempo(0), tiempoLimite(30.f), puntosMedidos(0)
+Topografia::Topografia(Juego* juego, DificultadTopo dif)
+    : Pantalla(juego),
+      jugador(0, 0),
+      marcadorPosY(120.f),
+      marcadorVelY(220.f),
+      destelloTiempo(0.f),
+      // Tiempos ajustados:
+      tiempoLimite((dif == DificultadTopo::FACIL) ? 15.f : 20.f),
+      tiempoTranscurrido(0.f),
+      mostrarMensajeFinal(false),
+      tiempoMensaje(0.f),
+      puntosMedidos(0),
+      dificultad(dif),
+      // ATENCIÓN: victoria debe ir aquí si se declaró después de dificultad en el .h
+      victoria(false), // <--- ¡AÑADIDO Y EN POSICIÓN CORRECTA!
+      enterCooldown(0.5f),
+      margenAcierto((dif == DificultadTopo::FACIL) ? 25.f : 15.f) // margenAcierto al final
 {
     srand(static_cast<unsigned>(time(nullptr)));
 
-    // Cargar fondo
+    // --- fondo escalado a pantalla ---
     if (!fondoTextura.loadFromFile("../assets/fondoDiseno.png")) {
-        std::cerr << "Error al cargar fondo Topografía\n";
+        std::cerr << "Warning: no se pudo cargar ../assets/fondoDiseno.png\n";
     } else {
         fondo.setTexture(fondoTextura);
-        float width  = sf::VideoMode::getDesktopMode().width;
-        float height = sf::VideoMode::getDesktopMode().height;
-        fondo.setScale(width / fondo.getGlobalBounds().width,
-                       height / fondo.getGlobalBounds().height);
+        float w = (float)sf::VideoMode::getDesktopMode().width;
+        float h = (float)sf::VideoMode::getDesktopMode().height;
+        fondo.setScale(w / fondo.getGlobalBounds().width, h / fondo.getGlobalBounds().height);
     }
 
-    // Inicializar terreno y marcadores
-    inicializarTerreno();
+    // --- zona de trabajo (rectángulo gris centrado) ---
+    float screenW = (float)sf::VideoMode::getDesktopMode().width;
+    float screenH = (float)sf::VideoMode::getDesktopMode().height;
+    float zonaW = screenW * 0.85f;
+    float zonaH = screenH * 0.60f;
+    zonaTrabajo.setSize({zonaW, zonaH});
+    zonaTrabajo.setFillColor(sf::Color(50, 50, 50, 200));
+    zonaTrabajo.setOutlineColor(sf::Color(80, 80, 80, 220));
+    zonaTrabajo.setOutlineThickness(3.f);
+    zonaTrabajo.setOrigin(zonaW / 2.f, zonaH / 2.f);
+    zonaTrabajo.setPosition(screenW / 2.f, screenH / 2.f);
 
+    // --- generar terreno ---
+    float leftStart = zonaTrabajo.getPosition().x - zonaW / 2.f;
+    float rightEnd = zonaTrabajo.getPosition().x + zonaW / 2.f;
+
+    if (dificultad == DificultadTopo::FACIL) {
+        generarTerreno(terrenoPuntos1, leftStart, rightEnd, zonaTrabajo.getPosition().y, 60.f, 18);
+    } else {
+        generarTerreno(terrenoPuntos1, leftStart, rightEnd, zonaTrabajo.getPosition().y, 80.f, 10);
+    }
+
+    // --- marcador (Binye topo) ---
     if (!marcadorTextura.loadFromFile("../assets/Topografia/binye topo.png")) {
-        std::cerr << "Error al cargar Marcador\n";
+        std::cerr << "Warning: no se pudo cargar ../assets/Topografia/binye topo.png\n";
     }
     inicializarMarcadores();
 
-    // Centrar el sprite del marcador
-    for (auto& m : marcadores) {
-        sf::FloatRect bounds = m.sprite.getLocalBounds();
-        m.sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+    // sprite más pequeño
+    for (auto &m : marcadores) {
+        sf::FloatRect b = m.sprite.getLocalBounds();
+        float scale = (zonaH * 0.06f) / b.height;
+        m.sprite.setScale(scale, scale);
+        b = m.sprite.getLocalBounds();
+        m.sprite.setOrigin(b.width / 2.f, b.height / 2.f);
     }
 
-    // Destello
-    destello.setSize(sf::Vector2f(sf::VideoMode::getDesktopMode().width,
-                                  sf::VideoMode::getDesktopMode().height));
-    destello.setFillColor(sf::Color(255, 0, 0, 0)); // transparente inicialmente
+    // --- destello / oscurecer ---
+    destello.setSize({screenW, screenH});
+    destello.setFillColor(sf::Color(0, 0, 0, 0));
+
+    // --- cronómetro texto ---
+    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+        std::cerr << "Warning: no se pudo cargar ../assets/textos/Bangers-Regular.ttf\n";
+    }
+    textoCrono.setFont(fuente);
+    textoCrono.setCharacterSize(28);
+    textoCrono.setFillColor(sf::Color::White);
+    textoCrono.setOutlineThickness(1.f);
+    textoCrono.setOutlineColor(sf::Color::Black);
+    textoCrono.setPosition(30.f, 20.f);
+
+    // --- mensaje final (perder/ganar) ---
+    mensajeFinal.setFont(fuente);
+    mensajeFinal.setCharacterSize(56);
+    mensajeFinal.setFillColor(sf::Color::White);
+    sf::FloatRect mb = mensajeFinal.getLocalBounds();
+    mensajeFinal.setOrigin(mb.width / 2.f, mb.height / 2.f);
+    mensajeFinal.setPosition(screenW / 2.f, screenH / 2.f);
+
+    clockEnter.restart();
 }
 
-void Topografia::inicializarTerreno() {
-    lineaTerreno.setPrimitiveType(sf::LinesStrip);
-    float width = sf::VideoMode::getDesktopMode().width;
-    float height = sf::VideoMode::getDesktopMode().height;
-    int puntos = 10;
-    for (int i = 0; i < puntos; ++i) {
-        float x = i * width / (puntos - 1);
-        float y = height / 2 + (rand() % 200 - 100); // línea irregular
-        lineaTerreno.append(sf::Vertex(sf::Vector2f(x, y), sf::Color::White));
+/* --- Genera puntos para terreno (sin cambios) --- */
+void Topografia::generarTerreno(std::vector<sf::Vector2f> &puntos, float xStart, float xEnd, float baseY, float amplitude, int nPoints) {
+    puntos.clear();
+    if (nPoints < 3) nPoints = 3;
+    float span = xEnd - xStart;
+    for (int i = 0; i < nPoints; ++i) {
+        float t = (float)i / (nPoints - 1);
+        float x = xStart + t * span;
+        float noise = (std::rand() % 1000 / 1000.f - 0.5f) * 0.6f;
+        float sine = std::sin(t * 3.1415f * (1.0f + (std::rand() % 3) / 2.0f));
+        float y = baseY + sine * amplitude + noise * amplitude;
+        puntos.emplace_back(x, y);
     }
 }
 
+/* --- muestreo lineal (sin cambios) --- */
+float Topografia::muestrearTerreno(const std::vector<sf::Vector2f> &puntos, float x) const {
+    if (puntos.empty()) return 0.f;
+    if (x <= puntos.front().x) return puntos.front().y;
+    if (x >= puntos.back().x) return puntos.back().y;
+    for (size_t i = 0; i + 1 < puntos.size(); ++i) {
+        const auto &a = puntos[i];
+        const auto &b = puntos[i + 1];
+        if (x >= a.x && x <= b.x) {
+            float t = (x - a.x) / (b.x - a.x);
+            return a.y + t * (b.y - a.y);
+        }
+    }
+    return puntos.back().y;
+}
+
+/* --- inicializa los marcadores (sin cambios) --- */
 void Topografia::inicializarMarcadores() {
-    float width = sf::VideoMode::getDesktopMode().width;
-    for (int i = 0; i < 5; ++i) {
-        Marcador m;
+    marcadores.clear();
+    float zonaLeft = zonaTrabajo.getPosition().x - zonaTrabajo.getSize().x / 2.f;
+    float zonaRight = zonaTrabajo.getPosition().x + zonaTrabajo.getSize().x / 2.f;
+    float span = zonaRight - zonaLeft;
+
+    int numMarcadores = (dificultad == DificultadTopo::FACIL) ? 5 : 10;
+    
+    float step = span / (numMarcadores + 1);
+
+    for (int i = 0; i < numMarcadores; ++i) {
+        MarcadorTopo m;
         m.sprite.setTexture(marcadorTextura);
-        float x = (i + 1) * width / 6; // distribuidos
+        float x = zonaLeft + (i + 1) * step;
         m.sprite.setPosition(x, marcadorPosY);
         marcadores.push_back(m);
     }
 }
 
+/* --- Manejo de eventos (sin cambios) --- */
 void Topografia::ManejarEvento(sf::Event event) {
+    if (mostrarMensajeFinal) return;
+
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Escape) {
             juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+            return;
         }
-        else if (event.key.code == sf::Keyboard::Enter && puntosMedidos < 5) {
-            // Medir marcador actual
-            Marcador& m = marcadores[puntosMedidos];
-            float x = m.sprite.getPosition().x;
 
-            // Encontrar altura del terreno más cercano
-            float terrenoY = lineaTerreno[0].position.y;
-            float minDist = std::abs(lineaTerreno[0].position.x - x);
-            for (int i = 1; i < lineaTerreno.getVertexCount(); ++i) {
-                float dist = std::abs(lineaTerreno[i].position.x - x);
-                if (dist < minDist) {
-                    minDist = dist;
-                    terrenoY = lineaTerreno[i].position.y;
-                }
-            }
+        if (event.key.code == sf::Keyboard::Enter && puntosMedidos < (int)marcadores.size()) {
+            if (clockEnter.getElapsedTime().asSeconds() < enterCooldown) return;
+            clockEnter.restart();
 
-            // Usar el centro del sprite para comparar
+            MarcadorTopo &m = marcadores[puntosMedidos];
             float spriteCentroY = m.sprite.getPosition().y;
+            float x = m.sprite.getPosition().x;
+            float terrenoY = muestrearTerreno(terrenoPuntos1, x);
 
-            if (std::abs(spriteCentroY - terrenoY) < 15.f) {
-                // ✅ acierto: pasa al siguiente punto
+            if (std::abs(spriteCentroY - terrenoY) <= margenAcierto) {
                 m.correcto = true;
-                m.medido = true;
-                destello.setFillColor(sf::Color(0, 255, 0, 100));
+                destello.setFillColor(sf::Color(0, 255, 0, 110));
                 puntosMedidos++;
-                destelloTiempo = 0.2f;
             } else {
-                // ❌ fallo: puede volver a intentar
-                destello.setFillColor(sf::Color(255, 0, 0, 100));
-                destelloTiempo = 0.2f;
+                m.correcto = false;
+                destello.setFillColor(sf::Color(255, 0, 0, 120));
             }
+            m.medido = true;
+            destelloTiempo = 0.18f;
         }
     }
 }
 
+/* --- actualizar (MODIFICADO) --- */
 void Topografia::actualizar() {
     float dt = reloj.restart().asSeconds();
-    static float tiempoTranscurrido = 0.f;
+    
+    // --- LÓGICA DE MENSAJE FINAL (Ganar/Perder) ---
+    if (mostrarMensajeFinal) {
+        tiempoMensaje += dt;
+        // Esperar 2.0 segundos antes de cambiar de pantalla
+        if (tiempoMensaje >= 2.0f) {
+            juego->minijuegosPasados[7] = true;
+            juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+        }
+        return;
+    }
+    
     tiempoTranscurrido += dt;
 
-    // Terminar si se acaba el tiempo
+    // 1. Condición de Victoria
+    if (puntosMedidos >= (int)marcadores.size()) {
+        mostrarMensajeGanar(); // Llama a la nueva función de victoria
+        return;
+    }
+
+    // 2. Condición de Derrota por Tiempo
     if (tiempoTranscurrido >= tiempoLimite) {
-        juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+        mostrarMensajePerder();
         return;
     }
+    // --- FIN LÓGICA DE MENSAJE FINAL ---
 
-    // Actualizar marcador que está en movimiento
-    if (puntosMedidos < 5) {
-        Marcador& m = marcadores[puntosMedidos];
-        marcadorPosY += marcadorVelY * dt;
-        if (marcadorPosY < 50 || marcadorPosY > sf::VideoMode::getDesktopMode().height - 50)
-            marcadorVelY = -marcadorVelY;
-        m.sprite.setPosition(m.sprite.getPosition().x, marcadorPosY);
+    // 3. Movimiento normal del marcador
+    MarcadorTopo &m = marcadores[puntosMedidos];
+    marcadorPosY += marcadorVelY * dt;
+    float topLimit = zonaTrabajo.getPosition().y - zonaTrabajo.getSize().y / 2.f + 40.f;
+    float bottomLimit = zonaTrabajo.getPosition().y + zonaTrabajo.getSize().y / 2.f - 40.f;
+    if (marcadorPosY < topLimit || marcadorPosY > bottomLimit) {
+        marcadorVelY = -marcadorVelY;
+        marcadorPosY = std::max(topLimit, std::min(bottomLimit, marcadorPosY));
     }
-    else {
-        // Si ya logró los 5 antes del tiempo → volver a selección
-        juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego));
-        return;
-    }
+    m.sprite.setPosition(m.sprite.getPosition().x, marcadorPosY);
 
-    // Destello
-    if (destelloTiempo > 0) {
+    // 4. Lógica del destello (flash)
+    if (destelloTiempo > 0.f) {
         destelloTiempo -= dt;
-        if (destelloTiempo <= 0)
-            destello.setFillColor(sf::Color(0, 0, 0, 0));
+        if (destelloTiempo <= 0.f) destello.setFillColor(sf::Color(0, 0, 0, 0));
     }
+
+    // 5. Actualización del cronómetro
+    float restante = std::max(0.f, tiempoLimite - tiempoTranscurrido);
+    int segs = (int)std::ceil(restante);
+    textoCrono.setString("Tiempo: " + std::to_string(segs) + "s");
 }
 
-void Topografia::renderizar(sf::RenderWindow& window) {
+/* --- renderizar (sin cambios) --- */
+void Topografia::renderizar(sf::RenderWindow &window) {
     window.clear();
     window.draw(fondo);
-    window.draw(lineaTerreno);
+    window.draw(zonaTrabajo);
 
-    for (auto& m : marcadores)
-        window.draw(m.sprite);
+    if (!terrenoPuntos1.empty()) {
+        sf::VertexArray va(sf::LineStrip, terrenoPuntos1.size());
+        for (size_t i = 0; i < terrenoPuntos1.size(); ++i) {
+            va[i].position = terrenoPuntos1[i];
+            va[i].color = sf::Color::White;
+        }
+        window.draw(va);
+    }
 
-    window.draw(destello);
+    for (auto &m : marcadores) {
+        sf::Sprite s = m.sprite;
+        if (m.medido && m.correcto)
+            s.setColor(sf::Color(180, 255, 180));
+        else if (m.medido && !m.correcto)
+            s.setColor(sf::Color(255, 180, 180));
+        window.draw(s);
+    }
+
+    window.draw(textoCrono);
+    if (destello.getFillColor().a > 0) window.draw(destello);
+    
+    if (mostrarMensajeFinal) window.draw(mensajeFinal);
+}
+
+/* --- mostrar mensaje perder (MODIFICADO) --- */
+void Topografia::mostrarMensajePerder() {
+    mostrarMensajeFinal = true;
+    victoria = false; // Estado de derrota
+    tiempoMensaje = 0.f;
+    destello.setFillColor(sf::Color(0, 0, 0, 180));
+    mensajeFinal.setString("Mejor suerte la proxima");
+    sf::FloatRect mb = mensajeFinal.getLocalBounds();
+    mensajeFinal.setOrigin(mb.width / 2.f, mb.height / 2.f);
+}
+
+/* --- NUEVA FUNCIÓN PARA MOSTRAR MENSAJE DE VICTORIA --- */
+void Topografia::mostrarMensajeGanar() {
+    mostrarMensajeFinal = true;
+    victoria = true; // Estado de victoria
+    tiempoMensaje = 0.f;
+    // Oscurecimiento con un tinte verde claro para celebrar
+    destello.setFillColor(sf::Color(50, 200, 50, 180));
+    mensajeFinal.setString("Bien hecho");
+    sf::FloatRect mb = mensajeFinal.getLocalBounds();
+    mensajeFinal.setOrigin(mb.width / 2.f, mb.height / 2.f);
 }

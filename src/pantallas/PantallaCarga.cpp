@@ -304,11 +304,19 @@ void PantallaCarga::ManejarEvento(sf::Event evento){
                 juego->cambiarPantalla(std::make_unique<minijuegoAutotronica>(juego));
                 break;
             case 8:
-                juego->cambiarPantalla(std::make_unique<Topografia>(juego));
-                break;
+            if (juego->minijuegoFacil) {
+            juego->cambiarPantalla(std::make_unique<Topografia>(juego, DificultadTopo::FACIL));
+            } else {
+            juego->cambiarPantalla(std::make_unique<Topografia>(juego, DificultadTopo::DIFICIL));
+            }
+            break;
             case 9:
-                juego->cambiarPantalla(std::make_unique<minijuegorandomxd>(juego));
-                break;
+            if (juego->minijuegoFacil) {
+            juego->cambiarPantalla(std::make_unique<minijuegorandomxd>(juego, Dificultad::FACIL));
+            } else {
+            juego->cambiarPantalla(std::make_unique<minijuegorandomxd>(juego, Dificultad::DIFICIL));
+            }
+            break;
             case 10:
                 juego->cambiarPantalla(std::make_unique<minijuegoElectronicaYControl>(juego));
                 break;

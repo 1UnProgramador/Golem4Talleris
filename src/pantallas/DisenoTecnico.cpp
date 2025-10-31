@@ -116,7 +116,7 @@ void DisenoTecnico::ManejarEvento(sf::Event evento)
                 juego->cambiarAPrograma = 6;
                 juego->seleccionado = "minijuegoDisenoArquitectonico";
                 juego->botones= true;
-                juego->instrucciones = "¿Hace cuánto no haces un rompecabezas? En el diseño arquitectónico (P6), es muy importante tener la habilidad de construir espacios, tanto mental como físicamente. Ahora vas a tener que arrastrar cada pieza a su posición indicada para armar una casa.";
+                juego->instrucciones = "Diseño arquitectonico (P6)...";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P6
             case 1:
@@ -171,9 +171,34 @@ void DisenoTecnico::renderizar(sf::RenderWindow& window)
     window.clear();
     window.draw(FondoDiseno);
 
+    std::vector<std::string> nombresTalleres = {
+        "Diseno arquitectonico",
+        "Topografia",
+        "Diseno asistido por computador"
+    };
+
     // Puertas + texto
     for (int i = 0; i < 3; ++i) {
         window.draw(puertasSprites[i]);
+
+        // Texto encima de la "P"
+        sf::Text nombreTaller;
+        nombreTaller.setFont(fuente);
+        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setCharacterSize(30);
+        nombreTaller.setFillColor(sf::Color::White);
+        nombreTaller.setOutlineColor(sf::Color::Black);
+        nombreTaller.setOutlineThickness(2.f);
+        nombreTaller.setStyle(sf::Text::Bold);
+
+        sf::FloatRect nombreBounds = nombreTaller.getLocalBounds();
+        sf::FloatRect pBounds = textosPuertas[i].getGlobalBounds();
+        nombreTaller.setPosition(
+            pBounds.left + (pBounds.width / 2.f) - (nombreBounds.width / 2.f),
+            pBounds.top - nombreBounds.height - 5.f
+        );
+
+        window.draw(nombreTaller);
         window.draw(textosPuertas[i]);
     }
 
