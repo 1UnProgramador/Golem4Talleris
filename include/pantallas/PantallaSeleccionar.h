@@ -28,7 +28,19 @@ private:
 
     sf::Text tituloLogro;
     sf::Text descripcionLogro;
-public:
+    sf::RectangleShape prueba;
+
+
+
+    sf::Clock relojLogro;
+    bool logroActivo = false;
+    bool apareciendo = false;
+    bool desapareciendo = false;
+    float alphaLogro = 0.f;
+
+    sf::Vector2f posActual;
+    sf::Vector2f posDestino;
+    public:
     PantallaSeleccionar(Juego* juego);
 
     void ManejarEvento(sf::Event evento) override;
