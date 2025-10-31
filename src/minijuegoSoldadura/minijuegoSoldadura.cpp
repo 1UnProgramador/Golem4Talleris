@@ -423,10 +423,12 @@ void minijuegoSoldadura::actualizar(){
                         {
                             if (i == panel.marcas.size() - 1)
                             {
-                                paneles[panelActual].activada = false;
-                                panelActual++;
-                                paneles[panelActual].activada = true;
-                                if (panelActual == 4)
+                                if (panelActual < 3)
+                                {
+                                    paneles[panelActual].activada = false;
+                                    panelActual++;
+                                    paneles[panelActual].activada = true;
+                                } else if (panelActual == 3)
                                 {
                                     juego->minijuegosPasados[11] = true;
                                     juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));

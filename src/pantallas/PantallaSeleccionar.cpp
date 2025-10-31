@@ -8,6 +8,42 @@
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include <memory>
+#include <vector>
+#include <string>
+#include <codecvt>
+#include <locale>
+
+/* std::string wrapTextString(const std::string& text, const sf::Font& font, unsigned int characterSize, float maxWidth) {
+
+    sf::Text tempText("", font, characterSize);
+    std::istringstream stream(text);
+    std::string word;
+    std::string line;
+    std::string wrappedText;
+
+    while (std::getline(stream, word, ' ')) {
+        std::string testLine = line + (line.empty() ? "" : " ") + word;
+        tempText.setString(testLine);
+
+        // Si sobrepasa el ancho, salta de línea
+        if (tempText.getLocalBounds().width > maxWidth) {
+            wrappedText += line + "\n";
+            line = word;
+        } else {
+            line = testLine;
+        }
+    }
+
+    wrappedText += line; // última línea
+    return wrappedText;
+}
+
+std::wstring utf8_to_wstring(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.from_bytes(str);
+} */
 
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 : Pantalla(juego), jugador(0, 0)
@@ -122,38 +158,56 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
     tituloLogro.setFont(fuente);
     tituloLogro.setCharacterSize(20);
-    tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - logroDesbloqueado.getGlobalBounds().height / 2);
+    tituloLogro.setPosition(logroDesbloqueado.getPosition().x - 20, logroDesbloqueado.getPosition().y - logroDesbloqueado.getGlobalBounds().height / 2);
 
     descripcionLogro.setFont(fuente);
-    descripcionLogro.setFont(fuente);
-    descripcionLogro.setPosition(tituloLogro.getPosition().x, tituloLogro.getPosition().y + 25);
+    descripcionLogro.setCharacterSize(15);
+    descripcionLogro.setPosition(tituloLogro.getPosition().x, tituloLogro.getPosition().y + 40);
 
     if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && !juego->logroDesbloqueado("Maestro del Bit Supremo"))
     {
         juego->desbloquearLogro("Maestro del Bit Supremo");
-        tituloLogro.setString("Maestro del Bit Supremo");
-        descripcionLogro.setString("Completaste el taller de informatica");
+        tituloLogro.setString(wrapTextString("Maestro del Bit Supremo", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de informatica", fuente, 15, 172));
     } else if((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && !juego->logroDesbloqueado("Senor de los Voltios"))
     {
         juego->desbloquearLogro("Senor de los Voltios");
-        tituloLogro.setString("Senor de los Voltios");
-        descripcionLogro.setString("Completaste el taller de electricidad");
+        tituloLogro.setString(wrapTextString("Senor de los Voltios", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de electricidad", fuente, 15, 172));
     } else if((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8] && !juego->logroDesbloqueado("Arquitecto de los Suenos")))
     {
         juego->desbloquearLogro("Arquitecto de los Suenos");
-        tituloLogro.setString("Arquitecto de los Suenos");
-        descripcionLogro.setString("Completaste el taller de diseno");
+        tituloLogro.setString(wrapTextString("Arquitecto de los Suenos", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de diseno", fuente, 15, 172));
     } else if((juego->minijuegosPasados[4] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Forjador del Acero Eterno"))
     {
         juego->desbloquearLogro("Forjador del Acero Eterno");
-        tituloLogro.setString("Forjador del Acero Eterno");
-        descripcionLogro.setString("Completaste el taller de metalmecanica");
+        tituloLogro.setString(wrapTextString("Forjador del Acero Eterno", fuente, 20, 172));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de metalmecanica", fuente, 15, 172));
     }
 
+    prueba.setSize(sf::Vector2f(tituloLogro.getGlobalBounds().width - 30, logroDesbloqueado.getGlobalBounds().height));
+    /* prueba.setOrigin(prueba.getGlobalBounds().width / 2, prueba.getGlobalBounds().height / 2); */
+    prueba.setPosition(tituloLogro.getPosition().x, tituloLogro.getPosition().y);
+    prueba.setFillColor(sf::Color::Cyan);
+
+    std::cout << "posicion del coso: " << std::to_string(sf::VideoMode::getDesktopMode().width - descripcionLogro.getPosition().x) << ", " << std::to_string(sf::VideoMode::getDesktopMode().height - descripcionLogro.getPosition().y) << std::endl;
+
+    /* posActual = sf::Vector2f(-400, 50);
+    posDestino = sf::Vector2f(50, 50);
+    logroDesbloqueado.setPosition(posActual);
+    tituloLogro.setPosition(posActual.x + 20, posActual.y + 10);
+    descripcionLogro.setPosition(posActual.x + 20, posActual.y + 45);
 
 
+    alphaLogro = 0;
+    logroActivo = true;
+    apareciendo = true;
+    desapareciendo = false;
+    relojLogro.restart(); */
 
 }
+
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
@@ -253,6 +307,7 @@ void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
     window.draw(jugador);
     window.draw(logroDesbloqueado);
 
+    /* window.draw(prueba); */
     window.draw(tituloLogro);
     window.draw(descripcionLogro);
 }

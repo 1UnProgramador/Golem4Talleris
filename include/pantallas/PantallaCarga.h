@@ -4,7 +4,8 @@
 #include <functional>
 #include <string>
 
-
+std::string wrapTextString(const std::string& text, const sf::Font& font, unsigned int characterSize, float maxWidth);
+std::wstring utf8_to_wstring(const std::string& str);
 
 class PantallaCarga : public Pantalla{
     private:
@@ -39,9 +40,10 @@ class PantallaCarga : public Pantalla{
         sf::Clock eje;
         sf::RectangleShape cBorde;
         sf::RectangleShape cRelleno;
-        
+
 
     public:
+
         PantallaCarga(Juego* juego);
 
         void ManejarEvento(sf::Event evento) override;
