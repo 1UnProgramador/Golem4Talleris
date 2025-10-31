@@ -1,61 +1,58 @@
 #pragma once
 #include "../logica/Pantalla.h"
-#include "../logica/Personaje.h"
+#include "../logica/Personaje.h" // Asumo que Golem está en Personaje.h
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+// ENUM NECESARIO PARA PASAR LA DIFICULTAD
+enum Dificultad { FACIL, DIFICIL };
+
 class minijuegorandomxd : public Pantalla {
 private:
-    // jugador y fondo
     Golem jugador;
+    Dificultad dificultad; // Almacena la dificultad seleccionada
+
+    int rows, cols;
+    int cursorRow, cursorCol;
+    int movimiento = 20;
+
+    float tiempoRestante;
+    bool fadeActivo;
+    float fadeAlpha;
+    bool victoria;
+    bool mostrarBien;
+    bool mostrarTiempoAgotado;
+    bool cronoActivo;
+    float timerBien;
+
+    bool mouseOverConfirmar;
+    bool mouseOverCancelar;
+
     sf::Texture fondoTextura;
     sf::Sprite fondo;
 
-    // GRID
-    int movimiento = 12; // tamaño del 'pixel' (cuadro)
-    int cols = 20;       // columnas por mitad
-    int rows = 20;       // filas
-
-    // grids
-    std::vector<std::vector<bool>> targetGrid; // rows x cols
-    std::vector<std::vector<bool>> metalGrid;  // rows x cols
-
-    // cursor en la mitad derecha
-    int cursorCol = 0;
-    int cursorRow = 0;
-
-    // dificultad
-    enum Dificultad { FACIL, DIFICIL } dificultad;
-
-    // tiempo / reloj
-    float tiempoRestante = 130.0f; // segundos
-    sf::Clock deltaClock;
-    bool cronoActivo = true;
-
-    // visual
-    sf::RectangleShape pixelShape;
-    sf::RectangleShape cursorShape;
     sf::Font font;
     sf::Text textoNivel;
     sf::Text textoCrono;
 
-    // feedback cortes malos
+    sf::RectangleShape pixelShape;
+    sf::RectangleShape cursorShape;
+    sf::RectangleShape fadeRect;
+
+    sf::Texture confirmarTextura;
+    sf::Texture confirmarHoverTextura;
+    sf::Sprite confirmarSprite;
+
+    sf::Texture cancelarTextura;
+    sf::Texture cancelarHoverTextura;
+    sf::Sprite cancelarSprite;
+
+    std::vector<std::vector<bool>> targetGrid;
+    std::vector<std::vector<bool>> metalGrid;
     std::vector<std::vector<float>> badCutTimer;
 
-    // fade / victoria
-    sf::RectangleShape fadeRect;
-    bool fadeActivo = false;   
-    float fadeAlpha = 0.f;
-    bool victoria = false;
+    sf::Clock deltaClock;
 
-    // texto "Bien hecho!"
-    bool mostrarBien = false;
-    float timerBien = 0.f;
-
-    // nuevo texto "Mejor suerte la proxima"
-    bool mostrarTiempoAgotado = false;
-
-    // helpers
     void generarPatron(Dificultad d);
     void generarScrewPattern();
     void generarRimPattern();
@@ -63,8 +60,9 @@ private:
     bool verificarVictoria();
 
 public:
-    minijuegorandomxd(Juego* juego, Dificultad d = FACIL);
-
+    // CONSTRUCTOR MODIFICADO: Acepta la dificultad.
+    minijuegorandomxd(Juego* juego, Dificultad d);
+    
     void ManejarEvento(sf::Event event) override;
     void actualizar() override;
     void renderizar(sf::RenderWindow& window) override;

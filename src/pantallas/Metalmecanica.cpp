@@ -17,7 +17,7 @@ Metalmecanica::Metalmecanica(Juego* juego)
     // Fondo
     // =========================
     if (!tFondoMetalmecanica.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
-        std::cerr << "Error al cargar fondo de metalmecánica\n";
+        std::cerr << "Error al cargar fondo de metalmecanica\n";
     } else {
         FondoMetalmecanica.setTexture(tFondoMetalmecanica);
         float fX = width / FondoMetalmecanica.getGlobalBounds().width;
@@ -129,7 +129,7 @@ void Metalmecanica::ManejarEvento(sf::Event evento)
                 break; // P5
             case 1:
                 juego->cambiarAPrograma = 12;
-                juego->seleccionado = "minijuegoSoldadura";
+                 juego->seleccionado = "minijuegoSoldadura";
                 juego->instrucciones = "Acá nos vamos a poner un poco más calientes, porqué en el siguiente vamos a explorar los arcos eléctricos para permitirno unir piezas de metal en el programa de soldadura (P12)";
                 juego->botones = true;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
@@ -145,17 +145,8 @@ void Metalmecanica::actualizar()
 {
     jugador.update(sf::VideoMode::getDesktopMode());
 
-    if (mostrandoAviso && relojAviso.getElapsedTime().asSeconds() > 2.0f)
-        mostrandoAviso = false;
-    if (mostrandoAviso)
-        return;
-
     int nuevaPuerta = -1;
-    float mejorDist = 1e9f;
-
     sf::FloatRect jugadorBounds = jugador.getBounds();
-    float jCenterX = jugadorBounds.left + jugadorBounds.width * 0.5f;
-    float jCenterY = jugadorBounds.top + jugadorBounds.height * 0.5f;
 
     for (int i = 0; i < (int)puertasSprites.size(); ++i) {
         sf::FloatRect b = puertasSprites[i].getGlobalBounds();
@@ -165,24 +156,12 @@ void Metalmecanica::actualizar()
         b.width += expand * 2.f;
         b.height += expand * 2.f;
 
-        if (!jugadorBounds.intersects(b)) {
-            puertasSprites[i].setColor(sf::Color::White);
-            continue;
-        }
-
-        float pCenterX = b.left + b.width * 0.5f;
-        float pCenterY = b.top + b.height * 0.5f;
-        float dx = pCenterX - jCenterX;
-        float dy = pCenterY - jCenterY;
-        float dist = std::sqrt(dx*dx + dy*dy);
-        if (dist < mejorDist) {
-            mejorDist = dist;
+        if (jugadorBounds.intersects(b)) {
             nuevaPuerta = i;
         }
-    }
 
-    for (int i = 0; i < (int)puertasSprites.size(); ++i)
         puertasSprites[i].setColor(i == nuevaPuerta ? coloresBrillo[i] : sf::Color::White);
+    }
 
     puertaCercana = nuevaPuerta;
 }
@@ -192,18 +171,37 @@ void Metalmecanica::actualizar()
 // =========================
 void Metalmecanica::renderizar(sf::RenderWindow& window)
 {
-    if (mostrandoAviso) {
-        window.clear(sf::Color::Black);
-        window.draw(textoAviso);
-        window.display();
-        return;
-    }
-
     window.clear();
     window.draw(FondoMetalmecanica);
+
+    std::vector<std::string> nombresTalleres = {
+        "Mecanica industrial",
+        "Soldadura"
+    };
+
     for (int i = 0; i < (int)puertasSprites.size(); ++i) {
         window.draw(puertasSprites[i]);
-        window.draw(textosPuertas[i]); // textos "P5" y "P12"
+
+        // Texto encima de la "P"
+        sf::Text nombreTaller;
+        nombreTaller.setFont(fuente);
+        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setCharacterSize(30);
+        nombreTaller.setFillColor(sf::Color::White);
+        nombreTaller.setOutlineColor(sf::Color::Black);
+        nombreTaller.setOutlineThickness(2.f);
+        nombreTaller.setStyle(sf::Text::Bold);
+
+        sf::FloatRect nombreBounds = nombreTaller.getLocalBounds();
+        sf::FloatRect pBounds = textosPuertas[i].getGlobalBounds();
+        nombreTaller.setPosition(
+            pBounds.left + (pBounds.width / 2.f) - (nombreBounds.width / 2.f),
+            pBounds.top - nombreBounds.height - 5.f
+        );
+
+        window.draw(nombreTaller);
+        window.draw(textosPuertas[i]);
     }
+
     window.draw(jugador);
 }

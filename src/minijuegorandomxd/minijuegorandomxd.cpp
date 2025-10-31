@@ -20,8 +20,8 @@ minijuegorandomxd::minijuegorandomxd(Juego* juego, Dificultad d)
     cols = 20;
 
     // tiempos según dificultad
-    if(dificultad == FACIL) tiempoRestante = 90.0f;
-    else tiempoRestante = 120.0f;
+    if (dificultad == FACIL) tiempoRestante = 30.0f;
+    else tiempoRestante = 80.0f;
 
     // cargar fondo diseño técnico
     if (!fondoTextura.loadFromFile("../assets/fondoDiseno.png")) {
@@ -204,7 +204,7 @@ void minijuegorandomxd::actualizar() {
         }
     }
 
-    // actualizar destellos
+    // destellos
     for (int r = 0; r < rows; ++r)
         for (int c = 0; c < cols; ++c)
             if (badCutTimer[r][c] > 0.0f) {
@@ -221,7 +221,6 @@ void minijuegorandomxd::actualizar() {
         fadeAlpha = 0.f;
     }
 
-    // actualizar timer de mensaje
     if (mostrarBien || mostrarTiempoAgotado) {
         timerBien -= delta;
         if (timerBien < 0.0f) timerBien = 0.0f;
@@ -234,17 +233,14 @@ void minijuegorandomxd::actualizar() {
         fadeRect.setFillColor(sf::Color(0, 0, 0, (sf::Uint8)fadeAlpha));
 
         if (fadeAlpha >= 255.f) {
-            if (mostrarTiempoAgotado || dificultad == DIFICIL) {
-                juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
-            } else {
-                juego->cambiarPantalla(std::make_unique<minijuegorandomxd>(juego, DIFICIL));
-            }
+            juego->minijuegosPasados[8] = true;
+            juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
             return;
         }
     }
 }
 
-/* ---------------- LÓGICA DE VICTORIA ---------------- */
+/* ---------------- VICTORIA ---------------- */
 bool minijuegorandomxd::verificarVictoria() {
     for (int r = 0; r < rows; ++r)
         for (int c = 0; c < cols; ++c)
@@ -295,23 +291,24 @@ void minijuegorandomxd::renderizar(sf::RenderWindow& window) {
     sf::Color metalCorrect(0, 200, 0);
     sf::Color metalWrong(200, 0, 0);
 
-    // borde izquierdo
-    sf::RectangleShape borderLeft(sf::Vector2f(cellSize*cols + 4.f, cellSize*rows + 4.f));
-    borderLeft.setPosition(leftX - 2.f, topY - 2.f);
-    borderLeft.setFillColor(sf::Color(20, 20, 60));
-    borderLeft.setOutlineThickness(3.f);
+    // bordes
+    sf::RectangleShape borderLeft(sf::Vector2f(cellSize*cols, cellSize*rows));
+    borderLeft.setPosition(leftX, topY);
+    borderLeft.setOutlineThickness(2.f);
     borderLeft.setOutlineColor(sf::Color::White);
+    borderLeft.setFillColor(sf::Color::Transparent);
+    borderLeft.setOutlineColor(sf::Color(200,200,255));
     window.draw(borderLeft);
 
-    // borde derecho
-    sf::RectangleShape glassRight(sf::Vector2f(cellSize*cols + 4.f, cellSize*rows + 4.f));
-    glassRight.setPosition(rightX - 2.f, topY - 2.f);
-    glassRight.setFillColor(sf::Color(200, 200, 255, 50));
-    glassRight.setOutlineThickness(3.f);
-    glassRight.setOutlineColor(sf::Color(180, 180, 220));
-    window.draw(glassRight);
+    sf::RectangleShape borderRight(sf::Vector2f(cellSize*cols, cellSize*rows));
+    borderRight.setPosition(rightX, topY);
+    borderRight.setOutlineThickness(2.f);
+    borderRight.setOutlineColor(sf::Color::White);
+    borderRight.setFillColor(sf::Color::Transparent);
+    borderRight.setOutlineColor(sf::Color(200,200,255));
+    window.draw(borderRight);
 
-    // izquierda (target)
+    // izquierda
     for (int r = 0; r < rows; ++r)
         for (int c = 0; c < cols; ++c) {
             float x = leftX + c * cellSize;
@@ -321,16 +318,13 @@ void minijuegorandomxd::renderizar(sf::RenderWindow& window) {
             window.draw(pixelShape);
         }
 
-    // derecha (metal)
+    // derecha
     for (int r = 0; r < rows; ++r)
         for (int c = 0; c < cols; ++c) {
             float x = rightX + c * cellSize;
             float y = topY + r * cellSize;
             pixelShape.setPosition(x, y);
-            if (!metalGrid[r][c])
-                pixelShape.setFillColor(metalSelected);
-            else
-                pixelShape.setFillColor(metalNormal);
+            pixelShape.setFillColor(metalGrid[r][c] ? metalNormal : metalSelected);
             window.draw(pixelShape);
 
             if (badCutTimer[r][c] > 0.0f) {
@@ -341,23 +335,28 @@ void minijuegorandomxd::renderizar(sf::RenderWindow& window) {
             }
         }
 
-    // cuadrícula
+    // líneas cuadrícula (izquierda y derecha completas)
     sf::RectangleShape line;
-    line.setFillColor(sf::Color(0, 0, 0, 120));
+    line.setFillColor(sf::Color(0, 0, 0, 100));
+
+    // verticales
     for (int c = 0; c <= cols; ++c) {
-        float lx = leftX + c * cellSize - 0.5f;
+        float lx = leftX + c * cellSize;
+        float rx = rightX + c * cellSize;
         line.setSize(sf::Vector2f(1.0f, cellSize * rows));
         line.setPosition(lx, topY);
         window.draw(line);
-
-        float rx = rightX + c * cellSize - 0.5f;
         line.setPosition(rx, topY);
         window.draw(line);
     }
+
+    // horizontales
     for (int r = 0; r <= rows; ++r) {
-        float ly = topY + r * cellSize - 0.5f;
-        line.setSize(sf::Vector2f(cellSize * cols * 2.0f + 2.0f, 1.0f));
+        float ly = topY + r * cellSize;
+        line.setSize(sf::Vector2f(cellSize * cols, 1.0f));
         line.setPosition(leftX, ly);
+        window.draw(line);
+        line.setPosition(rightX, ly);
         window.draw(line);
     }
 
@@ -368,7 +367,7 @@ void minijuegorandomxd::renderizar(sf::RenderWindow& window) {
     cursorShape.setPosition(cursorX, cursorY);
     window.draw(cursorShape);
 
-    // mensaje victoria o tiempo agotado
+    // mensajes
     if ((mostrarBien || mostrarTiempoAgotado) && font.getInfo().family != "") {
         std::string mensaje = mostrarBien ? "Bien hecho!" : "Mejor suerte la proxima";
         sf::Text text(mensaje, font, 48);
@@ -378,7 +377,6 @@ void minijuegorandomxd::renderizar(sf::RenderWindow& window) {
         window.draw(text);
     }
 
-    // fade
     if (fadeActivo)
         window.draw(fadeRect);
 

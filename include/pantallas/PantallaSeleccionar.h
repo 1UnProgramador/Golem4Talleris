@@ -18,9 +18,14 @@ private:
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
 
-    sf::Texture tLogroDesbloqueado;
+    sf::Texture tLogroDesbloqueado; // Textura original (ahora será la del logro detectado)
     sf::Sprite  logroDesbloqueado;
 
+
+    sf::Texture tLogroInformatica;
+    sf::Texture tLogroElectricidad;
+    sf::Texture tLogroDiseno;
+    sf::Texture tLogroMetalmecanica;
 
     sf::Font fuente;
     sf::Text textoPrincipal;
@@ -30,8 +35,6 @@ private:
     sf::Text descripcionLogro;
     sf::RectangleShape prueba;
 
-
-
     sf::Clock relojLogro;
     bool logroActivo = false;
     bool apareciendo = false;
@@ -40,7 +43,7 @@ private:
 
     sf::Vector2f posActual;
     sf::Vector2f posDestino;
-    public:
+public:
     PantallaSeleccionar(Juego* juego);
 
     void ManejarEvento(sf::Event evento) override;
