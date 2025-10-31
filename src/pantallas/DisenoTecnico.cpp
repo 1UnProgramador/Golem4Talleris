@@ -116,17 +116,21 @@ void DisenoTecnico::ManejarEvento(sf::Event evento)
                 juego->cambiarAPrograma = 6;
                 juego->seleccionado = "minijuegoDisenoArquitectonico";
                 juego->botones= true;
-                juego->instrucciones = "Diseño arquitectonico (P6)...";
+                juego->instrucciones = "En el diseño arquitectónico, aprenderas que tienes que desarrollar un pensamiento espacial tanto mental como físicamente para desarrollar planos. ¡Adentrate en P6 mientras construyes el rompecabezas de una casa!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P6
             case 1:
                 juego->cambiarAPrograma = 8;
+                juego->seleccionado = "minijuegoTopografia";
                 juego->botones= true;
+                juego->instrucciones = "En el minijuego del programa de topografía (P8), vas a tener que posicionar exzactamente en las líneas guías, los elementos de nivelación para preparar el terreno.";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P8
             case 2:
                 juego->cambiarAPrograma = 9;
+                juego->seleccionado = "minijuegoDisenoComputador";
                 juego->botones= true;
+                juego->instrucciones = "En el diseño asistido por computador (P9), tendrás que diseñar a través de una pantalla, una forma determinada que se te pida en la pantalla de al lado. ¡Usa todos los conocimientos que lleves hasta ahora!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P9
         }

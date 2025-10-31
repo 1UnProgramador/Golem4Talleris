@@ -1,10 +1,21 @@
 /* #include "../../include/minijuegoTopografia/minijuegoTopografia.h" */
 /* #include "../../include/pantallas/PantallaSeleccionar.h" */
 #include "../../include/pantallas/pantallaCreditos.h"
+#include "../../include/pantallas/pantallaCarga.h"
+#include "../../include/pantallas/pantallaMenu.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+
+
+#include <sstream>
+#include <memory>
+#include <vector>
+#include <string>
+#include <codecvt>
+#include <locale>
+
 pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
     tFondo1.loadFromFile("../assets/fondoInformatica.png");
     fondo1.setTexture(tFondo1);
@@ -50,9 +61,26 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
     float fY4 = sf::VideoMode::getDesktopMode().height / fondo4.getGlobalBounds().height;
 
     fondo4.setScale(fX4, fY4);
+
+    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    texto.setFont(fuente);
+    texto.setCharacterSize(50);
+
+
+    prueba.setSize(sf::Vector2f(500, 500));
+    prueba.setFillColor(sf::Color::Green);
+    prueba.setOrigin(prueba.getGlobalBounds().width / 2, prueba.getGlobalBounds().height / 2);
+    prueba.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+    texto.setString(wrapTextString("Santiago Palacio\nBinye Chindoy\nSamuel Martínez\nCamilo Carvajal\n\n11-03", fuente, 50, prueba.getGlobalBounds().width));
+    texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
+    texto.setPosition(prueba.getPosition());
 }
 void pantallaCreditos::ManejarEvento(sf::Event evento){
-
+    if (evento.type == sf::Event::KeyPressed){
+        if(evento.key.code == sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<PantallaMenu>(juego));
+        }
+    }
 }
 void pantallaCreditos::actualizar(){
     fondo1.move(0, -velocidad);
@@ -66,4 +94,7 @@ void pantallaCreditos::renderizar(sf::RenderWindow& window){
     window.draw(fondo2);
     window.draw(fondo3);
     window.draw(fondo4);
+
+    /* window.draw(prueba); */
+    window.draw(texto);
 }

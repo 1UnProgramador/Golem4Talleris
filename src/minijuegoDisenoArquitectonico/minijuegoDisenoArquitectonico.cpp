@@ -69,7 +69,7 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
     piezas[6].posicionInicial = piezas[6].sprite.getPosition();
     piezas[6].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 160, contorno.getPosition().y - 56);
 
-    piezas[7].sprite.setPosition(piezas[6].sprite.getPosition().x, piezas[6].sprite.getPosition().y + (piezas[6].sprite.getGlobalBounds().height / 2) + (piezas[7].sprite.getGlobalBounds().height / 2) + 100);
+    piezas[7].sprite.setPosition(piezas[6].sprite.getPosition().x, piezas[6].sprite.getPosition().y + (piezas[6].sprite.getGlobalBounds().height / 2) + (piezas[7].sprite.getGlobalBounds().height / 2));
     piezas[7].posicionInicial = piezas[7].sprite.getPosition();
     piezas[7].posicionObjetivo = sf::Vector2f(contorno.getPosition().x + 6.000061, contorno.getPosition().y + 128);
 
