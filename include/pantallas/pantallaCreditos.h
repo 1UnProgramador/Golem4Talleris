@@ -20,6 +20,10 @@ class pantallaCreditos : public Pantalla{
         sf::Texture tFondo4;
         sf::Sprite fondo4;
 
+        sf::Font fuente;
+        sf::Text texto;
+        sf::RectangleShape prueba;
+
         float velocidad = 0.5;
     public:
         pantallaCreditos(Juego* juego);
