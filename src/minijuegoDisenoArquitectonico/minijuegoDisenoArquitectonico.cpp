@@ -164,6 +164,22 @@ void minijuegoDisenoArquitectonico::actualizar(){
     {
         juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
     }
+    size_t i = 0;
+    for (auto &pieza : piezas)
+    {
+        if (pieza.posicionada)
+        {
+            if(i == 7){
+                juego->minijuegosPasados[5] = true;
+                juego->cambiarPantalla(std::make_unique<DisenoTecnico>(juego));
+            }
+        } else {
+            break;
+        }
+
+        i++;
+    }
+
 
 }
 void minijuegoDisenoArquitectonico::renderizar(sf::RenderWindow& window){

@@ -38,6 +38,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
 
     tSopleteActivado.loadFromFile("../assets/minijuegoSoldadura/sopleteActivado.png");
     tSopleteDesactivado.loadFromFile("../assets/minijuegoSoldadura/sopleteDesactivado.png");
+    tPulidora.loadFromFile("../assets/minijuegoSoldadura/pulidora.png");
 
     soplete.setTexture(tSopleteActivado);
     soplete.setOrigin(soplete.getGlobalBounds().width / 2, soplete.getGlobalBounds().height / 2);
@@ -302,6 +303,9 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
     tiempo.setPosition(0, 0);
     tiempoRestante.restart();
     tiempo.setString(std::to_string(tiempoInt));
+
+
+
 }
 
 void minijuegoSoldadura::ManejarEvento(sf::Event evento){
@@ -320,6 +324,7 @@ void minijuegoSoldadura::ManejarEvento(sf::Event evento){
         std::cout << "Posicion actual: " << std::to_string(paneles[3].sPanel.getPosition().x - debugging.getPosition().x) << ", " << std::to_string(paneles[3].sPanel.getPosition().y - debugging.getPosition().y) << std::endl;
     } else if(evento.type == sf::Event::MouseButtonPressed){
         if(evento.mouseButton.button == sf::Mouse::Left){
+
             for (auto &panel : paneles)
             {
                 if (panel.activada)
@@ -333,11 +338,16 @@ void minijuegoSoldadura::ManejarEvento(sf::Event evento){
                     size_t i = 0;
                     for (auto &sprite : panel.marcas){
                         if (sprite.getColor().a == 255){
-                            if (i == panel.marcas.size() - 1)
+                            if (sprite.getTexture() == &tMarcaLimpia)
                             {
-                                paneles[panelActual].activada = false;
-                                panelActual++;
-                                paneles[panelActual].activada = true;
+                                if (i == panel.marcas.size() - 1)
+                                {
+                                    paneles[panelActual].activada = false;
+                                    panelActual++;
+                                    paneles[panelActual].activada = true;
+                                }
+                            } else {
+                                break;
                             }
                         } else {
                             break;
@@ -348,10 +358,27 @@ void minijuegoSoldadura::ManejarEvento(sf::Event evento){
             }
 
 
+        } else if(evento.mouseButton.button == sf::Mouse::Right){
+
+            for (auto &panel : paneles)
+            {
+                if (panel.activada)
+                {
+                    for (auto &sprite : panel.marcas){
+                        if (sprite.getGlobalBounds().contains(posicionEnVentana) && sprite.getColor().a != 0){
+                            sprite.setTexture(tMarcaLimpia);
+                            lijando = true;
+                        }
+                    }
+                }
+            }
         }
     } else if(evento.type == sf::Event::MouseButtonReleased){
         if(evento.mouseButton.button == sf::Mouse::Left){
             soldando = false;
+
+        } else if(evento.mouseButton.button == sf::Mouse::Right){
+            lijando = false;
         }
     }
 }
@@ -363,6 +390,7 @@ void minijuegoSoldadura::actualizar(){
     posicionEnVentana = juego->getWindow().mapPixelToCoords(posicionMouse);
 
     if(soldando){
+        soplete.setTexture(tSopleteActivado);
         soplete.setPosition(posicionEnVentana.x + soplete.getGlobalBounds().width / 2, posicionEnVentana.y + 20);
         for (auto &panel : paneles)
         {
@@ -374,15 +402,40 @@ void minijuegoSoldadura::actualizar(){
                         soldando = true;
                     }
                 }
+            }
+        }
+    } else if (lijando){
+        soplete.setTexture(tPulidora);
+        for (auto &panel : paneles)
+        {
+            if (panel.activada)
+            {
+                for (auto &sprite : panel.marcas){
+                    if (sprite.getGlobalBounds().contains(posicionEnVentana) && sprite.getColor().a != 0){
+                        sprite.setTexture(tMarcaLimpia);
+                        lijando = true;
+                    }
+                }
                 size_t i = 0;
                 for (auto &sprite : panel.marcas){
                     if (sprite.getColor().a == 255){
-                        if (i == panel.marcas.size() - 1)
+                        if (sprite.getTexture() == &tMarcaLimpia)
                         {
-                            paneles[panelActual].activada = false;
-                            panelActual++;
-                            paneles[panelActual].activada = true;
+                            if (i == panel.marcas.size() - 1)
+                            {
+                                paneles[panelActual].activada = false;
+                                panelActual++;
+                                paneles[panelActual].activada = true;
+                                if (panelActual == 4)
+                                {
+                                    juego->minijuegosPasados[11] = true;
+                                    juego->cambiarPantalla(std::make_unique<Metalmecanica>(juego));
+                                }
+                            }
+                        } else {
+                            break;
                         }
+
                     } else {
                         break;
                     }

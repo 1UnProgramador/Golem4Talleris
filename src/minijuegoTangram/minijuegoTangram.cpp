@@ -260,22 +260,24 @@ void minijuegoTangram::ManejarEvento(sf::Event evento){
         juego->cambiarPantalla(std::make_unique<Informatica>(juego));
     }
     if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
-        for (auto &figura : figurasObjetivo)
-        {
-            figura.seleccionada = false;
-        }
+    for (auto &figura : figurasObjetivo)
+        figura.seleccionada = false;
 
-        for (auto &figura : figuras)
-        {
-            if (figura.formaFigura.getGlobalBounds().contains(posicionEnVentana)){
-                figura.arrastrando = true;
-                figura.seleccionada = true;
-            }else {
-                figura.arrastrando = false;
-                figura.seleccionada = false;
-            }
+    // Deselectar todas
+    for (auto &f : figuras) {
+        f.arrastrando = false;
+        f.seleccionada = false;
+    }
+
+    // Recorremos al revés (últimas figuras = las que están arriba visualmente)
+    for (int i = figuras.size() - 1; i >= 0; --i) {
+        if (figuras[i].formaFigura.getGlobalBounds().contains(posicionEnVentana)) {
+            figuras[i].arrastrando = true;
+            figuras[i].seleccionada = true;
+            break; // salimos al encontrar la primera (la superior)
         }
-    } else if (evento.type == sf::Event::MouseMoved) {
+    }
+} else if (evento.type == sf::Event::MouseMoved) {
         for (auto &figura : figuras)
         {
             if (figura.arrastrando == true) {
@@ -516,6 +518,23 @@ void minijuegoTangram::actualizar(){
     {
         juego->cambiarPantalla(std::make_unique<Informatica>(juego));
     }
+    int i = 0;
+    for (auto &figura : figuras)
+    {
+        if (figura.formaFigura.getFillColor() == sf::Color::Cyan)
+        {
+            if (i == 6)
+            {
+                juego->minijuegosPasados[2] = true;
+                juego->cambiarPantalla(std::make_unique<Informatica>(juego));
+            }
+
+        } else {
+            break;
+        }
+        i++;
+    }
+
 }
 
 void minijuegoTangram::renderizar(sf::RenderWindow& window){

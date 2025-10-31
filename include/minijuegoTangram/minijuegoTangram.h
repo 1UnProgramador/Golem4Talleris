@@ -15,6 +15,7 @@ class minijuegoTangram : public Pantalla{
             int orientacion = 1;
             bool seleccionada = false;
             sf::Color colorOriginal;
+            bool posicionada = false;
         };
         std::vector<figura> figuras;
         std::vector<figura> figurasObjetivo;
