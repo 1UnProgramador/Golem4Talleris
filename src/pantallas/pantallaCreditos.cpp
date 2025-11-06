@@ -16,8 +16,10 @@
 #include <codecvt>
 #include <locale>
 
+#include "../../src/logica/assetManager.h"
+
 pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
-    tFondo1.loadFromFile("../assets/fondoInformatica.png");
+    tFondo1.loadFromMemory(fondoInformatica_png, fondoInformatica_png_len);
     fondo1.setTexture(tFondo1);
 
     fondo1.setPosition(0, 0);
@@ -28,7 +30,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
     fondo1.setScale(fX, fY);
 
 
-    tFondo2.loadFromFile("../assets/fondoElectricidad.png");
+    tFondo2.loadFromMemory(fondoElectricidad_png, fondoElectricidad_png_len);
     fondo2.setTexture(tFondo2);
 
     fondo2.setPosition(0, fondo1.getGlobalBounds().height);
@@ -40,7 +42,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
 
 
 
-    tFondo3.loadFromFile("../assets/fondoDiseno.png");
+    tFondo3.loadFromMemory(fondoDiseno_png, fondoDiseno_png_len);
     fondo3.setTexture(tFondo3);
 
     fondo3.setPosition(0, fondo1.getGlobalBounds().height + fondo2.getGlobalBounds().height);
@@ -52,7 +54,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
 
 
 
-    tFondo4.loadFromFile("../assets/fondoMetalmecanica.png");
+    tFondo4.loadFromMemory(fondoMetalmecanica_png, fondoMetalmecanica_png_len);
     fondo4.setTexture(tFondo4);
 
     fondo4.setPosition(0, fondo1.getGlobalBounds().height + fondo2.getGlobalBounds().height + fondo3.getGlobalBounds().height);
@@ -62,7 +64,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
 
     fondo4.setScale(fX4, fY4);
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     texto.setFont(fuente);
     texto.setCharacterSize(50);
 
@@ -71,7 +73,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
     prueba.setFillColor(sf::Color::Green);
     prueba.setOrigin(prueba.getGlobalBounds().width / 2, prueba.getGlobalBounds().height / 2);
     prueba.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
-    texto.setString(wrapTextString("Santiago Palacio\nBinye Chindoy\nSamuel Martínez\nCamilo Carvajal\n\n11-03", fuente, 50, prueba.getGlobalBounds().width));
+    texto.setString(utf8_to_wstring(wrapTextString("Santiago Palacio\nBinye Chindoy\nSamuel Martínez\nCamilo Carvajal\n\n11-03", fuente, 50, prueba.getGlobalBounds().width)));
     texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
     texto.setPosition(prueba.getPosition());
 }

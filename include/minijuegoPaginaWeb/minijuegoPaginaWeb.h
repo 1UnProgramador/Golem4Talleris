@@ -6,49 +6,40 @@
 
 class minijuegoPaginaWeb : public Pantalla {
     private:
+        sf::Clock clock;
+        sf::Clock tiempoRestante;
         sf::Font fuente;
-        sf::Texture texturaFlechaSeleccionar;
-        std::vector<std::string> textosBloques = {"fuente: ", "texto: ", "color de fondo: ", "color de texto: ", "tamano de fuente: ", "centrado titulo: "};
-        struct configuracionWeb {
-            sf::Font fuente;
-            sf::Text Texto;
-            sf::Color backgroundColor;
-            sf::Color textColor;
-            int fontSize;
-            int layout; // 0 = título izquierda, 1 = título centrado...
+        sf::Text tiempo;
+        int tiempoInt = 120;
 
+        sf::Texture tFondo;
+        sf::Sprite fondo;
+
+        struct Pieza {
+            std::shared_ptr<sf::Texture> textura;
+            sf::Sprite sprite;
+            sf::Vector2f posicionInicial;
+            sf::Vector2f posicionObjetivo;
+            bool agarrada = false;
+            bool posicionada = false;
         };
-        struct Bloque {
-            sf::Sprite flecha;
-            sf::RectangleShape rectangulo;
-            sf::Text texto;
-            bool seleccionado = false;
-            sf::Vector2f offset;
-            bool conectadoU = false;
-            bool  conectadoD = false;
-            bool arrastrando = false;
-            sf::Vector2f grabOffset{0.f, 0.f};
-            int pantalla = 0;
-        };
-        std::vector<Bloque> bloques;
-        std::vector<Bloque> copiaBloques;
-        configuracionWeb objetivo;
-        sf::View vistaCodigo;
-        sf::View vistaPanel;
-        sf::View vistaPagina;
-        sf::Vector2f mouseEnPanel;
-        sf::Vector2f mouseEnCodigo;
-        sf::Vector2f mouseEnPagina;
-        sf::Vector2f mouseEnPantalla;
-        sf::RectangleShape fondoCodigo;
-        sf::RectangleShape fondoPanel;
-        sf::RectangleShape fondoPagina;
-        sf::RectangleShape pagina;
-        int moviemientoPanel = 0;
-        int posicionBloques = 1;
+        std::vector<Pieza> piezas;
+
+
         sf::Vector2i posicionMouse;
-        sf::Vector2f mouseEnPantallaRelativa;
         sf::Vector2f posicionEnVentana;
+        /* sf::Texture tCompraAzul;
+        sf::Sprite compraAzul;
+
+
+        sf::Texture tCompraRojo;
+        sf::Sprite compraRojo;
+
+        sf::Texture tContornoWeb;
+        sf::Sprite contornoWeb;
+
+        sf::Texture tImagen;
+        sf::Sprite imagen; */
 
     public:
         /* bool dentroVista(const sf::Vector2f& pos, const sf::View& vista, const sf::RenderWindow& window); */

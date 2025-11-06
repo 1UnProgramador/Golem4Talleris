@@ -4,6 +4,7 @@
 #include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
+#include "../../src/logica/assetManager.h"
 #include <iostream>
 #include <cmath>
 
@@ -16,7 +17,7 @@ DisenoTecnico::DisenoTecnico(Juego* juego)
     // =========================
     // Fondo
     // =========================
-    if (!tFondoDiseno.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
+    if (!tFondoDiseno.loadFromMemory(fondoNexus_png, fondoNexus_png_len)) {
         std::cerr << "Error al cargar fondo de Diseño Técnico\n";
     } else {
         FondoDiseno.setTexture(tFondoDiseno);
@@ -56,7 +57,7 @@ DisenoTecnico::DisenoTecnico(Juego* juego)
     puertasSprites.resize(3);
 
     for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
-        if (!puertasTextures[i].loadFromFile(rutaPuerta))
+        if (!puertasTextures[i].loadFromMemory(puertaDiseno3_png, puertaDiseno3_png_len))
             std::cerr << "No se pudo cargar puerta diseño " << i << "\n";
 
         puertasSprites[i].setTexture(puertasTextures[i]);
@@ -68,7 +69,7 @@ DisenoTecnico::DisenoTecnico(Juego* juego)
     // =========================
     // Fuente y textos sobre las puertas
     // =========================
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len))
         std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
 
     std::vector<std::string> nombresPuertas = { "P6", "P8", "P9" };

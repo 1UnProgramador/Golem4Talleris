@@ -3,12 +3,13 @@
 #include "../../include/pantallas/pantallaCreditos.h"
 #include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/logica/Juego.h"
+#include "../../src/logica/assetManager.h"
 #include <memory>
 
 
 PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
     // Fondo
-    tFondoMenu.loadFromFile("../assets/menu/dibujo fondo menu.jpg");
+    tFondoMenu.loadFromMemory(dibujoFondoMenu_jpg, dibujoFondoMenu_jpg_len);
     FondoMenu.setTexture(tFondoMenu);
 
     float fX = sf::VideoMode::getDesktopMode().width / FondoMenu.getGlobalBounds().width;
@@ -16,31 +17,31 @@ PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
     FondoMenu.setScale(fX, fY);
 
    // --- Titulo xd ---
-    tTitulo.loadFromFile("../assets/menu/titulo juego.png");
+    tTitulo.loadFromMemory(tituloJuego_png, tituloJuego_png_len);
     Titulo.setTexture(tTitulo);
     Titulo.setOrigin(Titulo.getGlobalBounds().width / 2, Titulo.getGlobalBounds().height / 2);
     Titulo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 5);
     Titulo.setScale(1, 1);
 
     // --- Botón Play ---
-    tPlay.loadFromFile("../assets/menu/boton play.png");
-    tPlayselec.loadFromFile("../assets/menu/boton play selec.png");
+    tPlay.loadFromMemory(botonPlay_png, botonPlay_png_len);
+    tPlayselec.loadFromMemory(botonPlaySelec_png, botonPlaySelec_png_len);
     play.setTexture(tPlay);
     play.setOrigin(play.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
     play.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.6);
     play.setScale(4.5, 4.5);
 
     // --- Botón Extra ---
-    tExtra.loadFromFile("../assets/menu/boton extra.png");
-    tExtraselec.loadFromFile("../assets/menu/boton extra selec.png");
+    tExtra.loadFromMemory(botonExtra_png, botonExtra_png_len);
+    tExtraselec.loadFromMemory(botonExtraSelec_png, botonExtra_png_len);
     Extra.setTexture(tExtra);
     Extra.setOrigin(Extra.getGlobalBounds().width / 2, Extra.getGlobalBounds().height / 2);
     Extra.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.4);
     Extra.setScale(4.5, 4.5);
 
     // --- Botón Exit ---
-    tExit.loadFromFile("../assets/menu/boton exit.png");
-    tExitselec.loadFromFile("../assets/menu/boton exit selec.png");
+    tExit.loadFromMemory(botonExit_png, botonExit_png_len);
+    tExitselec.loadFromMemory(botonExitSelec_png, botonExitSelec_png_len);
     Exit.setTexture(tExit);
     Exit.setOrigin(Exit.getGlobalBounds().width / 2, Exit.getGlobalBounds().height / 2);
     Exit.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 1.25);
@@ -61,7 +62,16 @@ void PantallaMenu::ManejarEvento(sf::Event evento) {
             if (opcionSeleccionada == 0) {
                 juego->seleccionado = "imagenDefault";
                 juego->cambiarAPrograma = 13;
-                juego->instrucciones = "¡Hola y bienvenido a Gollem4Talleris!\n\nTécnica en juego, futuro en marcha. ¡Estas a punto de explorar las especialidades del ITS!";
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = false;
+                juego->flechas = true;
+                juego->mouse = false;
+                juego->space = false;
+                juego->wasd = true;
+
+                juego->instrucciones = "¡Hola y bienvenido a Gollem4Talleris!\nTécnica en juego, futuro en marcha. ¡Estas a punto de explorar las especialidades del ITS!\nNota: en las pantallas de carga aparecerán al lado los controles del minijuego que elijas";
                 juego->botones = false;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
             }

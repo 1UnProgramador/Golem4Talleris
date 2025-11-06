@@ -5,6 +5,7 @@
 #include "../../include/pantallas/electricidad.h"
 #include "../../include/pantallas/DisenoTecnico.h"
 #include "../../include/pantallas/Metalmecanica.h" */
+#include "../../src/logica/assetManager.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
 #include <cmath>
@@ -16,7 +17,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     float height = sf::VideoMode::getDesktopMode().height;
 
     // Fondo
-    if (!tFondoNexus.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png"))
+    if (!tFondoNexus.loadFromMemory(fondoNexus_png, fondoNexus_png_len))
         std::cerr << "Error al cargar fondo del nexus\n";
     else {
         FondoNexus.setTexture(tFondoNexus);
@@ -30,12 +31,12 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     jugador.setPosition((width - pb.width) / 2.f, height - pb.height * 2.5f);
 
     // Configuración de puertas
-    std::vector<std::string> rutas = {
+    /* std::vector<std::string> rutas = {
         "../assets/nexusxd/puerta informatica1.png",
         "../assets/nexusxd/puerta electricidad2.png",
         "../assets/nexusxd/puerta diseno3.png",
         "../assets/nexusxd/puerta metalmecanica4.png"
-    };
+    }; */
 
     coloresBrillo = {
         sf::Color(0, 200, 255, 220),
@@ -56,11 +57,38 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     puertasSprites.resize(4);
 
     for (int i = 0; i < 4; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutas[i])) {
-            std::cerr << "Warning: no se pudo cargar " << rutas[i] << "\n";
-            sf::Image img; img.create(120, 200, sf::Color(150,150,150));
-            puertasTextures[i].loadFromImage(img);
+        if (i == 0)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaInformatica1_png, puertaInformatica1_png_len)) {
+                std::cerr << "Warning: no se pudo cargar imagen\n";
+                /* sf::Image img; img.create(120, 200, sf::Color(150,150,150)); */
+                /* puertasTextures[i].loadFromImage(img); */
+            }
+        } else if (i == 1)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaElectricidad2_png, puertaElectricidad2_png_len)) {
+                std::cerr << "Warning: no se pudo cargar imagen\n";
+                /* sf::Image img; img.create(120, 200, sf::Color(150,150,150)); */
+                /* puertasTextures[i].loadFromImage(img); */
+            }
+        } else if (i == 2)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaDiseno3_png, puertaDiseno3_png_len)) {
+                std::cerr << "Warning: no se pudo cargar imagen\n";
+                /* sf::Image img; img.create(120, 200, sf::Color(150,150,150)); */
+                /* puertasTextures[i].loadFromImage(img); */
+            }
+        } else if (i == 3){
+            if (!puertasTextures[i].loadFromMemory(puertaMetalmecanica4_png, puertaMetalmecanica4_png_len)) {
+                std::cerr << "Warning: no se pudo cargar imagen\n";
+                /* sf::Image img; img.create(120, 200, sf::Color(150,150,150)); */
+                /* puertasTextures[i].loadFromImage(img); */
+            }
         }
+
+
+
+
 
         puertasSprites[i].setTexture(puertasTextures[i]);
         sf::Vector2u texSize = puertasTextures[i].getSize();
@@ -72,7 +100,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     }
 
     // Fuente y textos
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len))
         std::cerr << "No se pudo cargar la fuente para los textos\n";
 
     // === Texto principal ===
@@ -114,22 +142,22 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     std::cout << "Minijuegos pasados: " << std::to_string(juego->minijuegosPasados[0]) << ", "<< std::to_string(juego->minijuegosPasados[1]) << ", "<< std::to_string(juego->minijuegosPasados[2]) << ", "<< std::to_string(juego->minijuegosPasados[3]) << ", "<< std::to_string(juego->minijuegosPasados[4]) << ", "<< std::to_string(juego->minijuegosPasados[5]) << ", "<< std::to_string(juego->minijuegosPasados[6]) << ", "<< std::to_string(juego->minijuegosPasados[7]) << ", "<< std::to_string(juego->minijuegosPasados[8]) << ", "<< std::to_string(juego->minijuegosPasados[9]) << ", "<< std::to_string(juego->minijuegosPasados[10]) << ", "<< std::to_string(juego->minijuegosPasados[11]) << "." << std::endl;
 
     // === Carga de las texturas de logro ===
-    if (!tLogroDesbloqueado.loadFromFile("../assets/logroDesbloqueado.png"))
+    if (!tLogroDesbloqueado.loadFromMemory(logroDesbloqueado_png, logroDesbloqueado_png_len))
         std::cerr << "Error al cargar textura logroDesbloqueado base\n";
-    if (!tLogroInformatica.loadFromFile("../assets/logroDesbloqueadoinformatica.png"))
+    if (!tLogroInformatica.loadFromMemory(logroDesbloqueadoinformatica_png, logroDesbloqueadoinformatica_png_len))
         std::cerr << "Error al cargar textura logroInformatica\n";
-    if (!tLogroElectricidad.loadFromFile("../assets/logroDesbloqueadoelectricidad.png"))
+    if (!tLogroElectricidad.loadFromMemory(logroDesbloqueadoelectricidad_png, logroDesbloqueadoelectricidad_png_len))
         std::cerr << "Error al cargar textura logroElectricidad\n";
-    if (!tLogroDiseno.loadFromFile("../assets/logroDesbloqueadodiseno.png"))
+    if (!tLogroDiseno.loadFromMemory(logroDesbloqueadodiseno_png, logroDesbloqueadodiseno_png_len))
         std::cerr << "Error al cargar textura logroDiseno\n";
-    if (!tLogroMetalmecanica.loadFromFile("../assets/logroDesbloqueadometalmecanica.png"))
+    if (!tLogroMetalmecanica.loadFromMemory(logroDesbloqueadometalmecanica_png, logroDesbloqueadometalmecanica_png_len))
         std::cerr << "Error al cargar textura logroMetalmecanica\n";
     // ======================================
 
 
-    logroDesbloqueado.setTexture(tLogroDesbloqueado); 
+    logroDesbloqueado.setTexture(tLogroDesbloqueado);
     logroDesbloqueado.setScale(5, 3);
-    
+
     // Posición base en la esquina inferior derecha
     float offsetX = logroDesbloqueado.getGlobalBounds().width / 2; // Margen para el centro del sprite
     float offsetY = logroDesbloqueado.getGlobalBounds().height / 2; // Margen para el centro del sprite
@@ -170,24 +198,24 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     // === Ajustar textura y posición si se desbloqueó un logro ===
     if (texturaLogro != nullptr) {
         logroDesbloqueado.setTexture(*texturaLogro, true);
-        
+
         // El origen DEBE ser el centro de la textura ORIGINAL para que la escala no lo desplace
         sf::Vector2u texSize = texturaLogro->getSize();
-        logroDesbloqueado.setOrigin(texSize.x / 2.f, texSize.y / 2.f); 
+        logroDesbloqueado.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
 
         // Recalcular la posición del texto según el nuevo sprite (escalado)
         float spriteCenterX = logroDesbloqueado.getPosition().x;
         float spriteCenterY = logroDesbloqueado.getPosition().y;
-        
+
         // Ajustar la posición del texto (se asume que están centrados horizontalmente en el sprite)
         // Puedes ajustar estos valores (como +10 o -10) para afinar la posición visual.
         tituloLogro.setPosition(spriteCenterX, spriteCenterY - logroDesbloqueado.getGlobalBounds().height / 4.f);
         descripcionLogro.setPosition(spriteCenterX, spriteCenterY + logroDesbloqueado.getGlobalBounds().height / 4.f);
-        
+
         // Centrar los textos horizontalmente en el punto central (spriteCenterX)
         sf::FloatRect tb_titulo = tituloLogro.getLocalBounds();
         tituloLogro.setOrigin(tb_titulo.left + tb_titulo.width / 2.f, tb_titulo.top + tb_titulo.height / 2.f);
-        
+
         sf::FloatRect tb_desc = descripcionLogro.getLocalBounds();
         descripcionLogro.setOrigin(tb_desc.left + tb_desc.width / 2.f, tb_desc.top + tb_desc.height / 2.f);
     }
@@ -210,24 +238,60 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
                 case 0:
                     juego->cambiarAPrograma = 14;
                     juego->seleccionado = "imagenInformatica";
+
+                    juego->backspace = false;
+                    juego->enter = false;
+                    juego->esc = false;
+                    juego->flechas = true;
+                    juego->mouse = false;
+                    juego->space = false;
+                    juego->wasd = true;
+
                     juego->botones = false;
                     juego->instrucciones =  "Bienvenido a la especialidad de informatica, aca se extiende durante 3 programas: Mantenimiento electronico y de computadores (P1), diseño de paginas Web (P2) y diseno grafico asistido por computador (P3). El elemento central de este taller es la tecnologia, te aseguramos que te encantara, Suerte!";
                     break;
                 case 1:
                     juego->cambiarAPrograma = 15;
                     juego->seleccionado = "imagenElectricidad";
+
+                    juego->backspace = false;
+                    juego->enter = false;
+                    juego->esc = false;
+                    juego->flechas = true;
+                    juego->mouse = false;
+                    juego->space = false;
+                    juego->wasd = true;
+
                     juego->botones = false;
                     juego->instrucciones =  "Bienvenido a la especialidad de Electricidad, aca se extiende durante 4 programas: Mecatrónica (P4), Autotrónica (P7), Electrónica y control (P10) y Redes Eléctricas (P11). El elemento central de este taller es La conversión, distribución y control inteligente de la energía eléctrica. ¡Aprende de él mientras desarrollas tu razonamiento lógico!";
                     break;
                 case 2:
                     juego->cambiarAPrograma = 16;
                     juego->botones = false;
+
+                    juego->backspace = false;
+                    juego->enter = false;
+                    juego->esc = false;
+                    juego->flechas = true;
+                    juego->mouse = false;
+                    juego->space = false;
+                    juego->wasd = true;
+
                     juego->seleccionado = "imagenDiseno";
                     juego->instrucciones =  "Bienvenido a la especialidad de Metalmecánica, aca se extiende durante 3 programas: Diseño Arquitectónico (P6), Topografía (P8) y Diseño asistido por computador  (P9). El elemento central de este taller es la representación y materialización del espacio mediante herramientas tecnológicas y análisis del territorio.";
                     break;
                 case 3:
                     juego->cambiarAPrograma = 17;
                     juego->botones = false;
+
+                    juego->backspace = false;
+                    juego->enter = false;
+                    juego->esc = false;
+                    juego->flechas = true;
+                    juego->mouse = false;
+                    juego->space = false;
+                    juego->wasd = true;
+
                     juego->seleccionado = "imagenMetalmecanica";
                     juego->instrucciones =  "Bienvenido a la especialidad de Metalmecánica, aca se extiende durante 2 programas: Mecánica industrial (P5), y Soldadura (P12). El elemento central de este taller es el dominio de los procesos que permiten dar forma, unir y optimizar componentes metálicos.";
                     break;
@@ -290,7 +354,7 @@ void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
     }
 
     window.draw(jugador);
-    
+
     // Solo dibujamos el banner de logro si se ha detectado el desbloqueo (tituloLogro no está vacío)
     if (tituloLogro.getString() != "")
     {

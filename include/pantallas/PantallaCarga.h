@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <string>
+#include <memory>
 
 std::string wrapTextString(const std::string& text, const sf::Font& font, unsigned int characterSize, float maxWidth);
 std::wstring utf8_to_wstring(const std::string& str);
@@ -19,6 +20,11 @@ class PantallaCarga : public Pantalla{
 
         bool facil = true;
 
+        struct Control{
+            std::shared_ptr<sf::Texture> textura;;
+            sf::Sprite sprite;
+        };
+        std::vector<Control> controles;
 
         sf::Texture tFondo;
         sf::Sprite fondo;
@@ -36,8 +42,8 @@ class PantallaCarga : public Pantalla{
         sf::Text bienvenida;
         sf::Texture imagen;
         sf::Sprite sImagen;
-        sf::RectangleShape barraCarga;
-        sf::Clock eje;
+        /* sf::RectangleShape barraCarga;
+        sf::Clock eje; */
         sf::RectangleShape cBorde;
         sf::RectangleShape cRelleno;
 

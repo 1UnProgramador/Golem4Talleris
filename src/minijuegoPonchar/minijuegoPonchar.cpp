@@ -8,12 +8,14 @@
 #include <random>
 #include <algorithm>
 
+#include "../../src/logica/assetManager.h"
+
 /* #include "../../assets/minijuegoPonchar/naranjaBlanco.png" */
 minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoInformatica.png");
+    tFondo.loadFromMemory(fondoInformatica_png, fondoInformatica_png_len);
     fondo.setTexture(tFondo);
 
-    tRj45.loadFromFile("../assets/minijuegoPonchar/rj-45.png");
+    tRj45.loadFromMemory(rj_45_png, rj_45_png_len);
     rj45.setTexture(tRj45);
     rj45.setOrigin(rj45.getGlobalBounds().width / 2, rj45.getGlobalBounds().height / 2);
 
@@ -38,7 +40,7 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
     fondo.setScale(fX, fY);
 
     int nCable = 1;
-    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
+    fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len);
     texto.setFont(fuente);
     texto.setString("");
     texto.setCharacterSize(24);
@@ -54,9 +56,50 @@ minijuegoPonchar::minijuegoPonchar(Juego* juego) : Pantalla(juego){
         cable.pObjetivo.setSize(sf::Vector2f(11, 25));
         cable.pObjetivo.setFillColor(sf::Color::Red);
 
-        if (!cable.tCable->loadFromFile("../assets/minijuegoPonchar/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "naranjaBlanco")
+        {
+            if (!cable.tCable->loadFromMemory(naranjaBlanco_png, naranjaBlanco_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "naranja")
+        {
+            if (!cable.tCable->loadFromMemory(naranja_png, naranja_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "verdeBlanco")
+        {
+            if (!cable.tCable->loadFromMemory(verdeBlanco_png, verdeBlanco_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "azul")
+        {
+            if (!cable.tCable->loadFromMemory(azul_png, azul_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "azulBlanco")
+        {
+            if (!cable.tCable->loadFromMemory(azulBlanco_png, azulBlanco_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "verde")
+        {
+            if (!cable.tCable->loadFromMemory(verde_png, verde_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "cafeBlanco")
+        {
+            if (!cable.tCable->loadFromMemory(cafeBlanco_png, cafeBlanco_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "cafe")
+        {
+            if (!cable.tCable->loadFromMemory(cafe_png, cafe_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
+
         cable.pinObjetivo = nCable;
         cable.sCable.setScale(3, 3);
         cable.sCable.setTexture(*cable.tCable); // se desreferencia al puntero

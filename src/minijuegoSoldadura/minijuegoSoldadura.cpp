@@ -9,8 +9,10 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoMetalmecanica.png");
+    tFondo.loadFromMemory(fondoMetalmecanica_png, fondoMetalmecanica_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -25,10 +27,29 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         PanelSoldable p;
         p.tPanel = std::make_shared<sf::Texture>();
 
-
-        if (!p.tPanel->loadFromFile("../assets/minijuegoSoldadura/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "panelSoldar1")
+        {
+            if (!p.tPanel->loadFromMemory(panelSoldar1_png, panelSoldar1_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "panelSoldar2")
+        {
+            if (!p.tPanel->loadFromMemory(panelSoldar2_png, panelSoldar2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "panelSoldar3")
+        {
+            if (!p.tPanel->loadFromMemory(panelSoldar3_png, panelSoldar3_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "panelSoldar4")
+        {
+            if (!p.tPanel->loadFromMemory(panelSoldar4_png, panelSoldar4_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
         p.sPanel.setTexture(*p.tPanel);
         p.sPanel.setOrigin(p.sPanel.getGlobalBounds().width / 2, p.sPanel.getGlobalBounds().height / 2);
         p.sPanel.setScale(15, 15);
@@ -36,16 +57,16 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         paneles.push_back(p);
     }
 
-    tSopleteActivado.loadFromFile("../assets/minijuegoSoldadura/sopleteActivado.png");
-    tSopleteDesactivado.loadFromFile("../assets/minijuegoSoldadura/sopleteDesactivado.png");
-    tPulidora.loadFromFile("../assets/minijuegoSoldadura/pulidora.png");
+    tSopleteActivado.loadFromMemory(sopleteActivado_png, sopleteActivado_png_len);
+    tSopleteDesactivado.loadFromMemory(sopleteDesactivado_png, sopleteDesactivado_png_len);
+    tPulidora.loadFromMemory(pulidora_png, pulidora_png_len);
 
     soplete.setTexture(tSopleteActivado);
     soplete.setOrigin(soplete.getGlobalBounds().width / 2, soplete.getGlobalBounds().height / 2);
     soplete.setScale(2, 2);
 
-    tMarcaLimpia.loadFromFile("../assets/minijuegoSoldadura/soldaduraLimpia.png");
-    tMarcaSucia.loadFromFile("../assets/minijuegoSoldadura/soldaduraSucia.png");
+    tMarcaLimpia.loadFromMemory(soldaduraLimpia_png, soldaduraLimpia_png_len);
+    tMarcaSucia.loadFromMemory(soldaduraSucia_png, soldaduraSucia_png_len);
 
     sf::Sprite prueba;
     prueba.setTexture(tMarcaSucia);
@@ -297,7 +318,7 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
         tiempoInt = 30;
     }
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

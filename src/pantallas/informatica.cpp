@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "../../src/logica/assetManager.h"
+
 Informatica::Informatica(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
@@ -14,7 +16,7 @@ Informatica::Informatica(Juego* juego)
     // =========================
     // Fondo
     // =========================
-    if (!tFondoInformatica.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
+    if (!tFondoInformatica.loadFromMemory(fondoNexus_png, fondoNexus_png_len)) {
         std::cerr << "Error al cargar fondo de informática\n";
     } else {
         FondoInformatica.setTexture(tFondoInformatica);
@@ -33,11 +35,11 @@ Informatica::Informatica(Juego* juego)
     // =========================
     // Configuración de puertas
     // =========================
-    std::vector<std::string> rutas = {
+    /* std::vector<std::string> rutas = {
         "../assets/nexusxd/puerta informatica1.png",
         "../assets/nexusxd/puerta informatica1.png",
         "../assets/nexusxd/puerta informatica1.png"
-    };
+    }; */
 
     coloresBrillo = {
         sf::Color(0, 200, 255, 220),
@@ -57,8 +59,19 @@ Informatica::Informatica(Juego* juego)
     puertasSprites.resize(3);
 
     for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
-        if (!puertasTextures[i].loadFromFile(rutas[i]))
-            std::cerr << "No se pudo cargar puerta de informática " << i << "\n";
+        if (i == 0)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaInformatica1_png, puertaInformatica1_png_len))
+                std::cerr << "No se pudo cargar puerta de informática " << i << "\n";
+        } else if(i == 1){
+            if (!puertasTextures[i].loadFromMemory(puertaInformatica1_png, puertaInformatica1_png_len))
+                std::cerr << "No se pudo cargar puerta de informática " << i << "\n";
+        } else if (i == 2){
+            if (!puertasTextures[i].loadFromMemory(puertaInformatica1_png, puertaInformatica1_png_len))
+                std::cerr << "No se pudo cargar puerta de informática " << i << "\n";
+        }
+
+
 
         puertasSprites[i].setTexture(puertasTextures[i]);
         sf::Vector2u texSize = puertasTextures[i].getSize();
@@ -69,7 +82,7 @@ Informatica::Informatica(Juego* juego)
     // =========================
     // Fuente y textos de puertas (P1, P2, P3)
     // =========================
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len)) {
         std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
     }
 

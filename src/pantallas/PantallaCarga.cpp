@@ -30,6 +30,8 @@
 #include "../../include/minijuegoRedes/minijuegoRedes.h"
 #include "../../include/minijuegoSoldadura/minijuegoSoldadura.h"
 
+#include "../../src/logica/assetManager.h"
+
 
 std::string wrapTextString(const std::string& text, const sf::Font& font, unsigned int characterSize, float maxWidth) {
 
@@ -196,7 +198,7 @@ const std::string Instrumentalizacion [] = {
 
 PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
 
-    tFondo.loadFromFile("../assets/fondo.png");
+    tFondo.loadFromMemory(fondo_png, fondo_png_len);
     tFondo.setRepeated(true);
     tFondo.setSmooth(false);
 
@@ -215,11 +217,61 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     fondo.setPosition(0, 0);
 
 
-    if (!fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf")) {
+    if (!fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len)) {
         std::cerr << "No se pudo cargar la fuente";
     }
-    /* fuente.loadFromFile(); */
-    imagen.loadFromFile("../assets/pantallaCarga/" + juego->seleccionado + ".jpg");
+    if (juego->seleccionado == "minijuegoPonchar")
+    {
+        imagen.loadFromMemory(minijuegoPonchar_jpg, minijuegoPonchar_jpg_len);
+    } else if (juego->seleccionado == "minijuegoP2")
+    {
+        /* code */
+    } else if (juego->seleccionado == "minijuegoTangram")
+    {
+        imagen.loadFromMemory(minijuegoTangram_jpg, minijuegoTangram_jpg_len);
+    } else if (juego->seleccionado == "minijuegoMecatronica")
+    {
+        imagen.loadFromMemory(minijuegoMecatronica_jpg, minijuegoMecatronica_jpg_len);
+    } else if (juego->seleccionado == "minijuegoMecanicaIndustrial")
+    {
+        imagen.loadFromMemory(minijuegoMecanicaIndustrial_jpg, minijuegoMecanicaIndustrial_jpg_len);
+    } else if (juego->seleccionado == "minijuegoDisenoArquitectonico")
+    {
+        imagen.loadFromMemory(minijuegoDisenoArquitectonico_jpg, minijuegoDisenoArquitectonico_jpg_len);
+    } else if (juego->seleccionado == "minijuegoAutotronica")
+    {
+        imagen.loadFromMemory(minijuegoAutotronica_jpg, minijuegoAutotronica_jpg_len);
+    } else if (juego->seleccionado == "minijuegoTopografia")
+    {
+        imagen.loadFromMemory(minijuegoTopografia_jpg, minijuegoTopografia_jpg_len);
+    } else if (juego->seleccionado == "minijuegoDisenoComputador")
+    {
+        imagen.loadFromMemory(minijuegoDisenoComputador_jpg, minijuegoDisenoComputador_jpg_len);
+    } else if (juego->seleccionado == "minijuegoElectronicaYControl")
+    {
+        imagen.loadFromMemory(minijuegoElectronicaYControl_jpg, minijuegoElectronicaYControl_jpg_len);
+    } else if (juego->seleccionado == "minijuegoRedes")
+    {
+        imagen.loadFromMemory(minijuegoRedes_jpg, minijuegoRedes_jpg_len);
+    } else if (juego->seleccionado == "minijuegoSoldadura")
+    {
+        imagen.loadFromMemory(minijuegoSoldadura_jpg, minijuegoSoldadura_jpg_len);
+    } else if (juego->seleccionado == "imagenDefault")
+    {
+        imagen.loadFromMemory(imagenDefault_jpg, imagenDefault_jpg_len);
+    } else if(juego->seleccionado == "imagenInformatica"){
+        imagen.loadFromMemory(imagenInformatica_jpg, imagenInformatica_jpg_len);
+    } else if(juego->seleccionado == "imagenElectricidad"){
+        imagen.loadFromMemory(imagenElectricidad_jpg, imagenElectricidad_jpg_len);
+    } else if(juego->seleccionado == "imagenDiseno"){
+        imagen.loadFromMemory(imagenDiseno_jpg, imagenDiseno_jpg_len);
+    } else if(juego->seleccionado == "imagenMetalmecanica"){
+        imagen.loadFromMemory(imagenMetalmecanica_jpg, imagenMetalmecanica_jpg_len);
+    }
+
+
+
+
     sImagen.setTexture(imagen);
 
 
@@ -251,29 +303,83 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     texto.setFont(fuente);
     texto.setString(utf8_to_wstring(wrapTextString("Dato curioso: " + Instrumentalizacion[rand()%size], fuente, 40, sf::VideoMode::getDesktopMode().width)));
     texto.setCharacterSize(40);
-    texto.setOrigin(texto.getLocalBounds().left + texto.getLocalBounds().width / 2.0f , texto.getLocalBounds().top + texto.getLocalBounds().height / 2.0f);
-    barraCarga.setSize({50, 50});
-    barraCarga.setFillColor(sf::Color(0, 0, 255));
-    barraCarga.setPosition(0, sf::VideoMode::getDesktopMode().height - barraCarga.getGlobalBounds().height);
-    texto.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, barraCarga.getPosition().y - texto.getGlobalBounds().height);
+    texto.setOrigin(texto.getLocalBounds().width / 2.0f , texto.getLocalBounds().height / 2.0f);
+    /* barraCarga.setSize({50, 50}); */
+    /* barraCarga.setFillColor(sf::Color(0, 0, 255)); */
+    /* barraCarga.setPosition(0, sf::VideoMode::getDesktopMode().height - barraCarga.getGlobalBounds().height); */
+    texto.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height - (texto.getGlobalBounds().height / 2) - 15);
 
     int separacion = 100;
     if (juego->botones)
     {
-        botonFacil.loadFromFile("../assets/menu/facil.png");
-        botonFacilSeleccionado.loadFromFile("../assets/menu/facilSeleccionado.png");
+        botonFacil.loadFromMemory(facil_png, facil_png_len);
+        botonFacilSeleccionado.loadFromMemory(facilSeleccionado_png, facilSeleccionado_png_len);
         bFacil.setTexture(botonFacilSeleccionado);
         bFacil.setOrigin(bFacil.getGlobalBounds().width / 2, bFacil.getGlobalBounds().height / 2);
         bFacil.setScale(6, 6);
-        bFacil.setPosition((cBorde.getPosition().x - (cBorde.getGlobalBounds().width / 2)) - separacion - (bFacil.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height / 2.0f);
+        bFacil.setPosition((cBorde.getPosition().x - (cBorde.getGlobalBounds().width / 2)) - separacion - (bFacil.getGlobalBounds().width / 2), bFacil.getGlobalBounds().height / 2);
 
-        botonDificil.loadFromFile("../assets/menu/dificil.png");
-        botonDificilSeleccionado.loadFromFile("../assets/menu/dificilSeleccionado.png");
+        botonDificil.loadFromMemory(dificil_png, dificil_png_len);
+        botonDificilSeleccionado.loadFromMemory(dificilSeleccionado_png, dificilSeleccionado_png_len);
         bDificil.setTexture(botonDificil);
         bDificil.setOrigin(bDificil.getGlobalBounds().width / 2, bDificil.getGlobalBounds().height / 2);
         bDificil.setScale(6, 6);
-        bDificil.setPosition((cBorde.getPosition().x + (cBorde.getGlobalBounds().width / 2)) + separacion + (bDificil.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height / 2.0f);
+        bDificil.setPosition((cBorde.getPosition().x + (cBorde.getGlobalBounds().width / 2)) + separacion + (bDificil.getGlobalBounds().width / 2), bDificil.getGlobalBounds().height / 2);
     }
+
+    std::vector<std::string> controlesNombres = {"wasd", "flechas", "enter", "esc", "backspace", "space", "mouse"};
+
+    for (const auto& control : controlesNombres) {
+        Control c;
+        c.textura = std::make_shared<sf::Texture>();
+        if (control == "wasd")
+        {
+            if (!c.textura->loadFromMemory(wasd_png, wasd_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if (control == "flechas")
+        {
+            if (!c.textura->loadFromMemory(flechas_png, flechas_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if (control == "enter")
+        {
+            if (!c.textura->loadFromMemory(enter_png, enter_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if(control == "esc"){
+            if (!c.textura->loadFromMemory(esc_png, esc_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if(control == "backspace"){
+            if (!c.textura->loadFromMemory(backspace_png, backspace_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if(control == "space"){
+            if (!c.textura->loadFromMemory(space_png, space_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        } else if(control == "mouse"){
+            if (!c.textura->loadFromMemory(mouse_png, mouse_png_len)) {
+                std::cerr << "No se pudo cargar " << control << ".png" << std::endl;
+            }
+        }
+        c.sprite.setTexture(*c.textura);
+        c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
+        c.sprite.setScale(2, 2);
+        controles.push_back(c);
+    }
+    int separacionControles = 20;
+    controles[0].sprite.setPosition((cBorde.getPosition().x - (cBorde.getGlobalBounds().width / 2)) - separacion - (bFacil.getGlobalBounds().width / 2), bFacil.getPosition().y + (bFacil.getGlobalBounds().height / 2) + separacionControles + (controles[0].sprite.getGlobalBounds().height / 2));
+    controles[2].sprite.setPosition(controles[0].sprite.getPosition().x, controles[0].sprite.getPosition().y + (controles[0].sprite.getGlobalBounds().height / 2) + separacionControles + (controles[2].sprite.getGlobalBounds().height / 2));
+    controles[4].sprite.setPosition(controles[0].sprite.getPosition().x, controles[2].sprite.getPosition().y + (controles[2].sprite.getGlobalBounds().height / 2) + separacionControles + (controles[4].sprite.getGlobalBounds().height / 2));
+    controles[6].sprite.setPosition(controles[0].sprite.getPosition().x, controles[4].sprite.getPosition().y + (controles[4].sprite.getGlobalBounds().height / 2) + separacionControles + (controles[6].sprite.getGlobalBounds().height / 2));
+
+
+    controles[1].sprite.setPosition((cBorde.getPosition().x + (cBorde.getGlobalBounds().width / 2)) + separacion + (bDificil.getGlobalBounds().width / 2), bDificil.getPosition().y + (bDificil.getGlobalBounds().height / 2) + separacionControles + (controles[1].sprite.getGlobalBounds().height / 2));
+    controles[3].sprite.setPosition(controles[1].sprite.getPosition().x, controles[1].sprite.getPosition().y + (controles[1].sprite.getGlobalBounds().height / 2) + separacionControles + (controles[3].sprite.getGlobalBounds().height / 2));
+    controles[5].sprite.setPosition(controles[1].sprite.getPosition().x, controles[3].sprite.getPosition().y + (controles[3].sprite.getGlobalBounds().height / 2) + separacionControles + (controles[5].sprite.getGlobalBounds().height / 2));
+
 }
 
 void PantallaCarga::ManejarEvento(sf::Event evento){
@@ -399,21 +505,38 @@ void PantallaCarga::renderizar(sf::RenderWindow& window){
 
 
     window.draw(texto);
-    window.draw(barraCarga);
+    /* window.draw(barraCarga); */
     window.draw(cBorde);
     window.draw(cRelleno);
     window.draw(sImagen);
     window.draw(bienvenida);
-    float time=eje.getElapsedTime().asSeconds()/10.0;
-    barraCarga.setSize({window.getSize().x*time, 50});
-    if(time>=1.0){
-        /* juego->cambiarPantalla(std::make_unique<PantallaSeleccionar>(juego)); */
-        barraCarga.setFillColor(sf::Color::Transparent);
-    }
+
     if (juego->botones)
     {
         window.draw(bFacil);
         window.draw(bDificil);
     }
 
+    if (juego->backspace)
+    {
+        window.draw(controles[4].sprite);
+    }
+    if(juego->enter){
+        window.draw(controles[2].sprite);
+    }
+    if(juego->esc){
+        window.draw(controles[3].sprite);
+    }
+    if(juego->flechas){
+        window.draw(controles[1].sprite);
+    }
+    if(juego->mouse){
+        window.draw(controles[6].sprite);
+    }
+    if(juego->space){
+        window.draw(controles[5].sprite);
+    }
+    if(juego->wasd){
+        window.draw(controles[0].sprite);
+    }
 }

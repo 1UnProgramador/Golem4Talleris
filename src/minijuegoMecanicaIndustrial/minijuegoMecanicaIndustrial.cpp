@@ -9,10 +9,12 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantalla(juego){
 
 
-    tFondo.loadFromFile("../assets/fondoMetalmecanica.png");
+    tFondo.loadFromMemory(fondoMetalmecanica_png, fondoMetalmecanica_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -21,14 +23,14 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
 
     fondo.setScale(fX, fY);
 
-    tPantalla.loadFromFile("../assets/minijuegoMecanicaIndustrial/pantalla.png");
+    tPantalla.loadFromMemory(pantalla_png, pantalla_png_len);
     sPantalla.setTexture(tPantalla);
     sPantalla.setOrigin(sPantalla.getGlobalBounds().width / 2, sPantalla.getGlobalBounds().height / 2);
     sPantalla.setPosition(sf::VideoMode::getDesktopMode().width / 2, (sf::VideoMode::getDesktopMode().height / 2));
     sPantalla.setScale(9, 9);
     sPantalla.move(0, -1 * (sPantalla.getGlobalBounds().height));
 
-    tCintas.loadFromFile("../assets/minijuegoMecanicaIndustrial/cintas.png");
+    tCintas.loadFromMemory(cintas_png, cintas_png_len);
     cintas.setTexture(tCintas);
     cintas.setOrigin(cintas.getGlobalBounds().width / 2, cintas.getGlobalBounds().height / 2);
     cintas.setScale(3, 3);
@@ -65,12 +67,12 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     cintas6.setPosition(cintas5.getPosition().x + 324, cintas5.getPosition().y);
     cintas6.setTextureRect(sf::IntRect(0 * frameWidth, 0, frameWidth, frameHeight));
 
-    tPistonDesactivado.loadFromFile("../assets/minijuegoMecanicaIndustrial/pistonDesactivado.png");
+    tPistonDesactivado.loadFromMemory(pistonDesActivado_png, pistonDesActivado_png_len);
     pistonDesactivado.setTexture(tPistonDesactivado);
     pistonDesactivado.setOrigin(pistonDesactivado.getGlobalBounds().width / 2, pistonDesactivado.getGlobalBounds().height / 2);
     pistonDesactivado.setPosition(sf::VideoMode::getDesktopMode().width / 2, (sf::VideoMode::getDesktopMode().height / 2));
 
-    tPistonActivado.loadFromFile("../assets/minijuegoMecanicaIndustrial/pistonActivado.png");
+    tPistonActivado.loadFromMemory(pistonActivado_png, pistonActivado_png_len);
     pistonActivado.setTexture(tPistonActivado);
     pistonActivado.setOrigin(pistonActivado.getGlobalBounds().width / 2, pistonActivado.getGlobalBounds().height / 2);
     pistonActivado.setPosition(pistonDesactivado.getPosition().x, pistonDesactivado.getPosition().y);
@@ -80,10 +82,26 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
         Pieza p;
         p.tPiezas = std::make_shared<sf::Texture>();
 
-
-        if (!p.tPiezas->loadFromFile("../assets/minijuegoMecanicaIndustrial/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "L")
+        {
+            if (!p.tPiezas->loadFromMemory(L_png, L_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "T")
+        {
+            if (!p.tPiezas->loadFromMemory(T_png, T_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "Z")
+        {
+            if (!p.tPiezas->loadFromMemory(Z_png, Z_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
+
+
         p.sPieza.setTexture(*p.tPiezas);
         p.sPieza.setOrigin(p.sPieza.getGlobalBounds().width / 2, p.sPieza.getGlobalBounds().height / 2);
         p.sPieza.setScale(0.7, 0.7);
@@ -96,8 +114,21 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
         p.tPiezas = std::make_shared<sf::Texture>();
 
 
-        if (!p.tPiezas->loadFromFile("../assets/minijuegoMecanicaIndustrial/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "LM")
+        {
+            if (!p.tPiezas->loadFromMemory(LM_png, LM_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "TM")
+        {
+            if (!p.tPiezas->loadFromMemory(TM_png, TM_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "ZM")
+        {
+            if (!p.tPiezas->loadFromMemory(ZM_png, ZM_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
         p.sPieza.setTexture(*p.tPiezas);
         p.sPieza.setOrigin(p.sPieza.getGlobalBounds().width / 2, p.sPieza.getGlobalBounds().height / 2);
@@ -114,7 +145,7 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
         c.tCorazon = std::make_shared<sf::Texture>();
 
 
-        if (!c.tCorazon->loadFromFile("../assets/minijuegoMecanicaIndustrial/corazon.png")) {
+        if (!c.tCorazon->loadFromMemory(corazon_png, corazon_png_len)) {
             std::cerr << "No se pudo cargar .png" << std::endl;
         }
         c.sCorazon.setTexture(*c.tCorazon);
@@ -130,13 +161,13 @@ minijuegoMecanicaIndustrial::minijuegoMecanicaIndustrial(Juego* juego) : Pantall
     piezasBuenas[2].sPieza.setPosition(piezasBuenas[0].sPieza.getPosition().x, piezasBuenas[0].sPieza.getPosition().y);
     piezasBuenas[0].activada = true;
 
-    tBoteBasurero.loadFromFile("../assets/minijuegoMecatronica/caneca4.png");
+    tBoteBasurero.loadFromMemory(caneca4_png, caneca4_png_len);
     boteBasurero.setTexture(tBoteBasurero);
     boteBasurero.setOrigin(boteBasurero.getGlobalBounds().width / 2, boteBasurero.getGlobalBounds().height / 2);
     boteBasurero.setScale(3, 3);
     boteBasurero.setPosition(pistonActivado.getPosition().x, sf::VideoMode::getDesktopMode().height - boteBasurero.getGlobalBounds().height);
 
-    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
+    fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len);
     texto.setFont(fuente);
     texto.setString("Actualmente tienes: 0 Puntos!");
     texto.setCharacterSize(40);
