@@ -33,4 +33,12 @@ class Juego{
 
         void cambiarPantalla(std::unique_ptr<Pantalla> pantallaNueva);
         sf::RenderWindow& getWindow() { return window; }
+
+        bool backspace = false;
+        bool enter = false;
+        bool esc = false;
+        bool flechas = false;
+        bool mouse = false;
+        bool space = false;
+        bool wasd = false;
 };

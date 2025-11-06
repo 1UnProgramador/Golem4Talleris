@@ -6,6 +6,8 @@
 #include <memory>
 #include <algorithm>
 #include <iostream>
+
+#include "../../src/logica/assetManager.h"
 std::vector<sf::Vector2f> posicionesObjetos;
 
 std::vector<std::string> nombresObjetosE1 = {
@@ -23,9 +25,31 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
         Objeto o;
         o.textura = std::make_shared<sf::Texture>();
 
-        if (!o.textura->loadFromFile("../assets/minijuegoAutotronica/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "silenciadorE2")
+        {
+            if (!o.textura->loadFromMemory(silenciadorE2_png, silenciadorE2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "frenoE2")
+        {
+            if (!o.textura->loadFromMemory(frenoE2_png, frenoE2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "bateriaE2")
+        {
+            if (!o.textura->loadFromMemory(bateriaE2_png, bateriaE2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if(nombre == "lucesE2"){
+            if (!o.textura->loadFromMemory(lucesE2_png, lucesE2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
+
+
+
         o.sprite.setTexture(*o.textura); // se desreferencia al puntero
         objetos.push_back(o);
     }
@@ -34,14 +58,14 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
         Objeto1 o;
         o.textura = std::make_shared<sf::Texture>();
 
-        if (!o.textura->loadFromFile("../assets/minijuegoAutotronica/" + nombre + ".png")) {
+        if (!o.textura->loadFromMemory("../assets/minijuegoAutotronica/" + nombre + ".png")) {
             std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
         }
         o.sprite.setTexture(*o.textura); // se desreferencia al puntero
         objetosE1.push_back(o);
     } */
 
-    tFondo.loadFromFile("../assets/fondoElectricidad.png");
+    tFondo.loadFromMemory(fondoElectricidad_png, fondoElectricidad_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -50,7 +74,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
 
     fondo.setScale(fX, fY);
 
-    tCarro.loadFromFile("../assets/minijuegoAutotronica/carro.png");
+    tCarro.loadFromMemory(carro_png, carro_png_len);
     carro.setTexture(tCarro);
     carro.setOrigin(carro.getLocalBounds().width / 2, carro.getLocalBounds().height / 2);
     carro.setPosition(sf::VideoMode::getDesktopMode().width / 2, (sf::VideoMode::getDesktopMode().height /2) - carro.getGlobalBounds().height / 2);
@@ -77,25 +101,25 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     bateria.setPosition(803, 200); */
     Objeto silenciador;
     silenciador.textura = std::make_shared<sf::Texture>();
-    silenciador.textura->loadFromFile("../assets/minijuegoAutotronica/silenciadorE1.png");
+    silenciador.textura->loadFromMemory(silenciadorE1_png, silenciadorE1_png_len);
     silenciador.sprite.setTexture(*silenciador.textura);
     silenciador.sprite.setPosition(objetos[0].sprite.getPosition());
 
     Objeto freno;
     freno.textura = std::make_shared<sf::Texture>();
-    freno.textura->loadFromFile("../assets/minijuegoAutotronica/frenoE1.png");
+    freno.textura->loadFromMemory(frenoE1_png, frenoE1_png_len);
     freno.sprite.setTexture(*freno.textura);
     freno.sprite.setPosition(objetos[1].sprite.getPosition());
 
     Objeto bateria;
     bateria.textura = std::make_shared<sf::Texture>();
-    bateria.textura->loadFromFile("../assets/minijuegoAutotronica/bateriaE1.png");
+    bateria.textura->loadFromMemory(bateriaE1_png, bateriaE1_png_len);
     bateria.sprite.setTexture(*bateria.textura);
     bateria.sprite.setPosition(objetos[2].sprite.getPosition());
 
     Objeto luces;
     luces.textura = std::make_shared<sf::Texture>();
-    luces.textura->loadFromFile("../assets/minijuegoAutotronica/lucesE1.png");
+    luces.textura->loadFromMemory(lucesE1_png, lucesE1_png_len);
     luces.sprite.setTexture(*luces.textura);
     luces.sprite.setPosition(objetos[3].sprite.getPosition());
 
@@ -117,7 +141,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionA.cuadro.setOrigin(opcionA.cuadro.getLocalBounds().width / 2, opcionA.cuadro.getLocalBounds().height / 2);
     opcionA.cuadro.setPosition(carro.getPosition().x - (separacion / 2) - (opcionA.cuadro.getLocalBounds().width) - separacion - (opcionA.cuadro.getLocalBounds().width / 2), carro.getPosition().y + carro.getLocalBounds().height);
     opcionA.textura = std::make_shared<sf::Texture>();
-    opcionA.textura->loadFromFile("../assets/minijuegoAutotronica/energia.png");
+    opcionA.textura->loadFromMemory(energia_png, energia_png_len);
     opcionA.sprite.setTexture(*opcionA.textura);
     opcionA.sprite.setOrigin(opcionA.sprite.getLocalBounds().width / 2, opcionA.sprite.getLocalBounds().height / 2);
     opcionA.sprite.setPosition(opcionA.cuadro.getPosition());
@@ -129,7 +153,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionB.cuadro.setOrigin(opcionB.cuadro.getLocalBounds().width / 2, opcionB.cuadro.getLocalBounds().height / 2);
     opcionB.cuadro.setPosition(carro.getPosition().x - (separacion / 2) - (opcionA.cuadro.getLocalBounds().width / 2), opcionA.cuadro.getPosition().y);
     opcionB.textura = std::make_shared<sf::Texture>();
-    opcionB.textura->loadFromFile("../assets/minijuegoAutotronica/fusible.png");
+    opcionB.textura->loadFromMemory(fusible_png, fusible_png_len);
     opcionB.sprite.setTexture(*opcionB.textura);
     opcionB.sprite.setOrigin(opcionB.sprite.getLocalBounds().width / 2, opcionB.sprite.getLocalBounds().height / 2);
     opcionB.sprite.setPosition(opcionB.cuadro.getPosition());
@@ -141,7 +165,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionC.cuadro.setOrigin(opcionC.cuadro.getLocalBounds().width / 2, opcionC.cuadro.getLocalBounds().height / 2);
     opcionC.cuadro.setPosition(carro.getPosition().x + (separacion / 2) + (opcionA.cuadro.getLocalBounds().width / 2), opcionA.cuadro.getPosition().y);
     opcionC.textura = std::make_shared<sf::Texture>();
-    opcionC.textura->loadFromFile("../assets/minijuegoAutotronica/llaveInglesa.png");
+    opcionC.textura->loadFromMemory(llaveInglesa_png, llaveInglesa_png_len);
     opcionC.sprite.setTexture(*opcionC.textura);
     opcionC.sprite.setOrigin(opcionC.sprite.getLocalBounds().width / 2, opcionC.sprite.getLocalBounds().height / 2);
     opcionC.sprite.setPosition(opcionC.cuadro.getPosition());
@@ -153,7 +177,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionD.cuadro.setOrigin(opcionD.cuadro.getLocalBounds().width / 2, opcionD.cuadro.getLocalBounds().height / 2);
     opcionD.cuadro.setPosition(carro.getPosition().x + (separacion / 2) + opcionA.cuadro.getLocalBounds().width + separacion + (opcionA.cuadro.getLocalBounds().width / 2), opcionA.cuadro.getPosition().y);
     opcionD.textura = std::make_shared<sf::Texture>();
-    opcionD.textura->loadFromFile("../assets/minijuegoAutotronica/cajaRepuestos.png");
+    opcionD.textura->loadFromMemory(cajaRepuestos_png, cajaRepuestos_png_len);
     opcionD.sprite.setTexture(*opcionD.textura);
     opcionD.sprite.setOrigin(opcionD.sprite.getLocalBounds().width / 2, opcionD.sprite.getLocalBounds().height / 2);
     opcionD.sprite.setPosition(opcionD.cuadro.getPosition());
@@ -170,7 +194,7 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
         tiempoInt = 45;
     }
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

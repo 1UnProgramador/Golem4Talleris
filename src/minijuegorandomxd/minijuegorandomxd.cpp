@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegorandomxd::minijuegorandomxd(Juego* juego, Dificultad d)
     : Pantalla(juego),
       jugador(0, 0),
@@ -24,7 +26,7 @@ minijuegorandomxd::minijuegorandomxd(Juego* juego, Dificultad d)
     else tiempoRestante = 80.0f;
 
     // cargar fondo diseño técnico
-    if (!fondoTextura.loadFromFile("../assets/fondoDiseno.png")) {
+    if (!fondoTextura.loadFromMemory(fondoDiseno_png, fondoDiseno_png_len)) {
         std::cerr << "Error al cargar fondo diseño técnico\n";
     } else {
         fondo.setTexture(fondoTextura);
@@ -35,7 +37,7 @@ minijuegorandomxd::minijuegorandomxd(Juego* juego, Dificultad d)
     }
 
     // fuente
-    if (!font.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+    if (!font.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len)) {
         std::cerr << "Warning: no se pudo cargar fuente ../assets/textos/Bangers-Regular.ttf.\n";
     } else {
         textoNivel.setFont(font);

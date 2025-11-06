@@ -1,11 +1,16 @@
 #include "../../include/logica/Personaje.h"
 #include <SFML/Graphics.hpp>
+#include "assetManager.h"
+/* texturaQuieto.loadFromMemory("../assets/JugadorGolem/estado-reposo/JGT.png");
+    texturaMovLados.loadFromMemory("../assets/JugadorGolem/estado-moviendose-lados/JGML.png");
+    texturaMovAbajo.loadFromMemory("../assets/JugadorGolem/estado-moviendose-abajo/JGMA.png");
+    texturaMovArriba.loadFromMemory("../assets/JugadorGolem/estado-moviendose-arriba/JGMUp.png"); */
 
 Golem::Golem(float pInicialX, float pInicialY) {
-    texturaQuieto.loadFromFile("../assets/JugadorGolem/estado-reposo/JGT.png");
-    texturaMovLados.loadFromFile("../assets/JugadorGolem/estado-moviendose-lados/JGML.png");
-    texturaMovAbajo.loadFromFile("../assets/JugadorGolem/estado-moviendose-abajo/JGMA.png");
-    texturaMovArriba.loadFromFile("../assets/JugadorGolem/estado-moviendose-arriba/JGMUp.png");
+    texturaQuieto.loadFromMemory(JGT_png, JGT_png_len);
+    texturaMovLados.loadFromMemory(JGML_png, JGML_png_len);
+    texturaMovAbajo.loadFromMemory(JGMA_png, JGMA_png_len);
+    texturaMovArriba.loadFromMemory(JGMUp_png, JGMUp_png_len);
 
     sprite.setTexture(texturaQuieto);
     sprite.setPosition(pInicialX, pInicialY);

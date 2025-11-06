@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegoElectronicaYControl::minijuegoElectronicaYControl(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoElectricidad.png");
+    tFondo.loadFromMemory(fondoElectricidad_png, fondoElectricidad_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -18,19 +20,19 @@ minijuegoElectronicaYControl::minijuegoElectronicaYControl(Juego* juego) : Panta
 
     fondo.setScale(fX, fY);
 
-    tImpresora.loadFromFile("../assets/minijuegoElectronicaYControl/chasis.png");
+    tImpresora.loadFromMemory(chasis_png, chasis_png_len);
     impresora.setTexture(tImpresora);
     impresora.setOrigin(impresora.getGlobalBounds().width / 2, impresora.getGlobalBounds().height / 2);
     impresora.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
     impresora.setScale(7.1, 7);
 
-    tSoporte.loadFromFile("../assets/minijuegoElectronicaYControl/soporte.png");
+    tSoporte.loadFromMemory(soporte_png, soporte_png_len);
     soporte.setTexture(tSoporte);
     soporte.setOrigin(soporte.getGlobalBounds().width / 2, soporte.getGlobalBounds().height / 2);
     soporte.setPosition(impresora.getPosition().x, impresora.getPosition().y);
     soporte.setScale(7, 7);
 
-    tPuntero.loadFromFile("../assets/minijuegoElectronicaYControl/puntero.png");
+    tPuntero.loadFromMemory(puntero_png, puntero_png_len);
     puntero.setTexture(tPuntero);
     puntero.setOrigin(puntero.getGlobalBounds().width / 2, puntero.getGlobalBounds().height / 2);
     puntero.setPosition(soporte.getPosition().x, soporte.getPosition().y + 12);
@@ -107,7 +109,7 @@ minijuegoElectronicaYControl::minijuegoElectronicaYControl(Juego* juego) : Panta
         tiempoInt = 20;
     }
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

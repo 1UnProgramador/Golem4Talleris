@@ -6,6 +6,7 @@
 #include "../../include/pantallas/PantallaCarga.h"
 #include "../../include/pantallas/PantallaSeleccionar.h"
 #include "../../include/logica/Juego.h"
+#include "../../src/logica/assetManager.h"
 #include <iostream>
 #include <cmath>
 
@@ -18,7 +19,7 @@ Electricidad::Electricidad(Juego* juego)
     // =========================
     // Fondo
     // =========================
-    if (!tFondoElectricidad.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
+    if (!tFondoElectricidad.loadFromMemory(fondoNexus_png, fondoNexus_png_len)) {
         std::cerr << "Error al cargar fondo de Electricidad\n";
     } else {
         FondoElectricidad.setTexture(tFondoElectricidad);
@@ -59,7 +60,7 @@ Electricidad::Electricidad(Juego* juego)
     puertasSprites.resize(4);
 
     for (std::size_t i = 0; i < puertasSprites.size(); ++i) {
-        if (!puertasTextures[i].loadFromFile(rutaPuerta))
+        if (!puertasTextures[i].loadFromMemory(puertaElectricidad2_png, puertaElectricidad2_png_len))
             std::cerr << "No se pudo cargar puerta electricidad " << i << "\n";
 
         puertasSprites[i].setTexture(puertasTextures[i]);
@@ -71,7 +72,7 @@ Electricidad::Electricidad(Juego* juego)
     // =========================
     // Fuente y textos de puertas (P4, P7, P10, P11)
     // =========================
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf"))
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len))
         std::cerr << "No se pudo cargar la fuente para los textos de puertas\n";
 
     std::vector<std::string> nombresPuertas = { "P4", "P7", "P10", "P11" };

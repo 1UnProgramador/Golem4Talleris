@@ -7,6 +7,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "../../src/logica/assetManager.h"
+
 Metalmecanica::Metalmecanica(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
@@ -16,7 +18,7 @@ Metalmecanica::Metalmecanica(Juego* juego)
     // =========================
     // Fondo
     // =========================
-    if (!tFondoMetalmecanica.loadFromFile("../assets/nexusxd/fondo nexus chatgpt1.png")) {
+    if (!tFondoMetalmecanica.loadFromMemory(fondoNexus_png, fondoNexus_png_len)){
         std::cerr << "Error al cargar fondo de metalmecanica\n";
     } else {
         FondoMetalmecanica.setTexture(tFondoMetalmecanica);
@@ -38,10 +40,10 @@ Metalmecanica::Metalmecanica(Juego* juego)
     // =========================
     // Configuración de puertas
     // =========================
-    std::vector<std::string> rutas = {
+    /* std::vector<std::string> rutas = {
         "../assets/nexusxd/puerta metalmecanica4.png",
         "../assets/nexusxd/puerta metalmecanica4.png"
-    };
+    }; */
 
     coloresBrillo = {
         sf::Color(0, 180, 255, 220),
@@ -59,12 +61,26 @@ Metalmecanica::Metalmecanica(Juego* juego)
     puertasTextures.resize(2);
     puertasSprites.resize(2);
     for (int i = 0; i < 2; ++i) {
-        if (!puertasTextures[i].loadFromFile(rutas[i])) {
-            std::cerr << "Warning: No se pudo cargar " << rutas[i] << "\n";
-            sf::Image img;
-            img.create(120, 200, sf::Color(150,150,150));
-            puertasTextures[i].loadFromImage(img);
+        if (i == 0)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaMetalmecanica4_png, puertaMetalmecanica4_png_len)) {
+                std::cerr << "Warning: No se pudo cargar Imagen\n";
+                sf::Image img;
+                img.create(120, 200, sf::Color(150,150,150));
+                puertasTextures[i].loadFromImage(img);
+            }
+        } else if (i == 1)
+        {
+            if (!puertasTextures[i].loadFromMemory(puertaMetalmecanica4_png, puertaMetalmecanica4_png_len)) {
+                std::cerr << "Warning: No se pudo cargar Imagen\n";
+                sf::Image img;
+                img.create(120, 200, sf::Color(150,150,150));
+                puertasTextures[i].loadFromImage(img);
+            }
         }
+
+
+
 
         puertasSprites[i].setTexture(puertasTextures[i]);
         sf::Vector2u texSize = puertasTextures[i].getSize();
@@ -78,7 +94,7 @@ Metalmecanica::Metalmecanica(Juego* juego)
     // =========================
     // Fuente y textos de puertas ("P5", "P12")
     // =========================
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len)) {
         std::cerr << "No se pudo cargar fuente para textos de puertas\n";
     }
 

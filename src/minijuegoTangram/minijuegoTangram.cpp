@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 std::vector<sf::Vector2f> posicionesObjetivos;
 std::vector<float> rotacionObjetivos;
 
@@ -13,7 +15,7 @@ std::vector<sf::Vector2f> posicionesObjetivos2;
 std::vector<float> rotacionObjetivos2;
 
 minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoInformatica.png");
+    tFondo.loadFromMemory(fondoInformatica_png, fondoInformatica_png_len);
     fondo.setTexture(tFondo);
 
     fondo.setPosition(0, 0);
@@ -162,7 +164,7 @@ minijuegoTangram::minijuegoTangram(Juego* juego) : Pantalla(juego){
         tiempoInt = 70;
     }
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

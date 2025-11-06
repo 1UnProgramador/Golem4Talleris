@@ -9,8 +9,10 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoDiseno.png");
+    tFondo.loadFromMemory(fondoDiseno_png, fondoDiseno_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -19,7 +21,7 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
 
     fondo.setScale(fX, fY);
 
-    tContorno.loadFromFile("../assets/minijuegoDisenoArquitectonico/contorno.png");
+    tContorno.loadFromMemory(contorno_png, contorno_png_len);
     contorno.setTexture(tContorno);
     contorno.setOrigin(contorno.getGlobalBounds().width / 2, contorno.getGlobalBounds().height / 2);
     contorno.setScale(4, 4);
@@ -30,10 +32,49 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
         Pieza p;
         p.textura = std::make_shared<sf::Texture>();
 
-
-        if (!p.textura->loadFromFile("../assets/minijuegoDisenoArquitectonico/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "pieza1")
+        {
+            if (!p.textura->loadFromMemory(pieza1_png, pieza1_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza2")
+        {
+            if (!p.textura->loadFromMemory(pieza2_png, pieza2_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza3")
+        {
+            if (!p.textura->loadFromMemory(pieza3_png, pieza3_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza4")
+        {
+            if (!p.textura->loadFromMemory(pieza4_png, pieza4_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza5")
+        {
+            if (!p.textura->loadFromMemory(pieza5_png, pieza5_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza6")
+        {
+            if (!p.textura->loadFromMemory(pieza6_png, pieza6_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza7")
+        {
+            if (!p.textura->loadFromMemory(pieza7_png, pieza7_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "pieza8")
+        {
+            if (!p.textura->loadFromMemory(pieza8_png, pieza8_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
         p.sprite.setTexture(*p.textura);
         p.sprite.setOrigin(p.sprite.getGlobalBounds().width / 2, p.sprite.getGlobalBounds().height / 2);
         p.sprite.setScale(4, 4);
@@ -89,7 +130,7 @@ minijuegoDisenoArquitectonico::minijuegoDisenoArquitectonico(Juego* juego) : Pan
     }
 
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);

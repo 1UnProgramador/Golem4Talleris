@@ -47,7 +47,8 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoDisenoArquitectonico/minijuegoDisenoArquitectonico.cpp \
       ../src/minijuegoTopografia/minijuegoTopografia.cpp \
       ../src/minijuegorandomxd/minijuegorandomxd.cpp \
-      ../src/pantallas/pantallaCreditos.cpp
+      ../src/pantallas/pantallaCreditos.cpp \
+      ../src/logica/assetManager.cpp
 
 # Recursos
 RES = recursos.res
@@ -62,6 +63,7 @@ ifeq ($(USE_STATIC),1)
               -lsfml-graphics-s -lsfml-window-s -lsfml-audio-s -lsfml-system-s \
               -lopengl32 -lgdi32 -lfreetype -lwinmm -lopenal32 \
               -lflac -lvorbisenc -lvorbisfile -lvorbis -logg \
+              -lpng -lz -lbrotlidec -lbrotlicommon -lharfbuzz \
               -static-libgcc -static-libstdc++
 else
     LDFLAGS = -L$(SFML)/build/lib -L$(MINGW)/lib \

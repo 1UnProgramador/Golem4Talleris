@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <cmath>
 
+#include "../../src/logica/assetManager.h"
+
 Topografia::Topografia(Juego* juego, DificultadTopo dif)
     : Pantalla(juego),
       jugador(0, 0),
@@ -28,7 +30,7 @@ Topografia::Topografia(Juego* juego, DificultadTopo dif)
     srand(static_cast<unsigned>(time(nullptr)));
 
     // --- fondo escalado a pantalla ---
-    if (!fondoTextura.loadFromFile("../assets/fondoDiseno.png")) {
+    if (!fondoTextura.loadFromMemory(fondoDiseno_png, fondoDiseno_png_len)) {
         std::cerr << "Warning: no se pudo cargar ../assets/fondoDiseno.png\n";
     } else {
         fondo.setTexture(fondoTextura);
@@ -60,7 +62,7 @@ Topografia::Topografia(Juego* juego, DificultadTopo dif)
     }
 
     // --- marcador (Binye topo) ---
-    if (!marcadorTextura.loadFromFile("../assets/Topografia/binye topo.png")) {
+    if (!marcadorTextura.loadFromMemory(binyeTopo_png, binyeTopo_png_len)) {
         std::cerr << "Warning: no se pudo cargar ../assets/Topografia/binye topo.png\n";
     }
     inicializarMarcadores();
@@ -79,7 +81,7 @@ Topografia::Topografia(Juego* juego, DificultadTopo dif)
     destello.setFillColor(sf::Color(0, 0, 0, 0));
 
     // --- cronómetro texto ---
-    if (!fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf")) {
+    if (!fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len)) {
         std::cerr << "Warning: no se pudo cargar ../assets/textos/Bangers-Regular.ttf\n";
     }
     textoCrono.setFont(fuente);
@@ -139,7 +141,7 @@ void Topografia::inicializarMarcadores() {
     float span = zonaRight - zonaLeft;
 
     int numMarcadores = (dificultad == DificultadTopo::FACIL) ? 5 : 10;
-    
+
     float step = span / (numMarcadores + 1);
 
     for (int i = 0; i < numMarcadores; ++i) {
@@ -187,7 +189,7 @@ void Topografia::ManejarEvento(sf::Event event) {
 /* --- actualizar (MODIFICADO) --- */
 void Topografia::actualizar() {
     float dt = reloj.restart().asSeconds();
-    
+
     // --- LÓGICA DE MENSAJE FINAL (Ganar/Perder) ---
     if (mostrarMensajeFinal) {
         tiempoMensaje += dt;
@@ -198,7 +200,7 @@ void Topografia::actualizar() {
         }
         return;
     }
-    
+
     tiempoTranscurrido += dt;
 
     // 1. Condición de Victoria
@@ -263,7 +265,7 @@ void Topografia::renderizar(sf::RenderWindow &window) {
 
     window.draw(textoCrono);
     if (destello.getFillColor().a > 0) window.draw(destello);
-    
+
     if (mostrarMensajeFinal) window.draw(mensajeFinal);
 }
 

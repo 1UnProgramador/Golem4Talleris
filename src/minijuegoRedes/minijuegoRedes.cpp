@@ -3,6 +3,8 @@
 #include "../../include/logica/Juego.h"
 #include <cmath>
 
+#include "../../src/logica/assetManager.h"
+
 bool rotacionValida(const std::string& tipo, float rotacion, int objetivo);
 /* const std::string dirCuadros [] = {
     "../assets/minijuegoRedes/linea.png",
@@ -67,7 +69,7 @@ std::vector<std::vector<std::string>> pieza2 = {
 };
 
 minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoElectricidad.png");
+    tFondo.loadFromMemory(fondoElectricidad_png, fondoElectricidad_png_len);
     fondo.setTexture(tFondo);
 
     fondo.setPosition(0, 0);
@@ -81,10 +83,10 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
     fallo.setFillColor(sf::Color(255, 0, 0, 0));
     fallo.setOrigin(fallo.getGlobalBounds().width / 2, fallo.getGlobalBounds().height / 2);
     fallo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
-    fuente.loadFromFile("../assets/textos/Bangers-Regular.ttf");
+    fuente.loadFromMemory(Bangers_Regular_ttf, Bangers_Regular_ttf_len);
 
 
-    texturaFlecha.loadFromFile("../assets/minijuegoRedes/flecha.png");
+    texturaFlecha.loadFromMemory(flecha_png, flecha_png_len);
     flecha1.setTexture(texturaFlecha);
     flecha2.setTexture(texturaFlecha);
     flecha1.setOrigin(flecha1.getGlobalBounds().width / 2, flecha1.getGlobalBounds().height / 2);
@@ -105,7 +107,31 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
             c.rotacion = orientacionDefault[i][j]; */
 
             c.textura = std::make_shared<sf::Texture>();
-            c.textura->loadFromFile("../assets/minijuegoRedes/"+ c.tipo +".png");
+
+            if (c.tipo == "tipoCruz")
+            {
+                c.textura->loadFromMemory(tipoCruz_png, tipoCruz_png_len);
+            } else if (c.tipo == "tipoCruzI")
+            {
+                c.textura->loadFromMemory(tipoCruzI_png, tipoCruzI_png_len);
+            } else if (c.tipo == "tipoInterseccion")
+            {
+                c.textura->loadFromMemory(tipoInterseccion_png, tipoInterseccion_png_len);
+            } else if (c.tipo == "tipoL")
+            {
+                c.textura->loadFromMemory(tipoL_png, tipoL_png_len);
+            } else if (c.tipo == "tipoLI")
+            {
+                c.textura->loadFromMemory(tipoLI_png, tipoLI_png_len);
+            } else if (c.tipo == "tipoLinea")
+            {
+                c.textura->loadFromMemory(tipoLinea_png, tipoLinea_png_len);
+            } else if (c.tipo == "tipoLineaI")
+            {
+                c.textura->loadFromMemory(tipoLineaI_png, tipoLineaI_png_len);
+            }
+
+
 
             c.sprite.setTexture(*c.textura);
             c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2, c.sprite.getGlobalBounds().height / 2);
@@ -153,7 +179,7 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
         juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
     }
     if (evento.type == sf::Event::MouseButtonPressed) {
-        bufferClick.loadFromFile("../assets/minijuegoRedes/click.mp3");
+        bufferClick.loadFromMemory(click_mp3, click_mp3_len);
         click.setBuffer(bufferClick);
         for (size_t i = 0; i < pieza.size(); i++)
         {
@@ -224,7 +250,28 @@ void minijuegoRedes::ManejarEvento(sf::Event evento){
                         c.tipo = pieza[i][j];
 
                         c.textura = std::make_shared<sf::Texture>();
-                        c.textura->loadFromFile("../assets/minijuegoRedes/" + c.tipo + ".png");
+                        if (c.tipo == "tipoCruz")
+                        {
+                            c.textura->loadFromMemory(tipoCruz_png, tipoCruz_png_len);
+                        } else if (c.tipo == "tipoCruzI")
+                        {
+                            c.textura->loadFromMemory(tipoCruzI_png, tipoCruzI_png_len);
+                        } else if (c.tipo == "tipoInterseccion")
+                        {
+                            c.textura->loadFromMemory(tipoInterseccion_png, tipoInterseccion_png_len);
+                        } else if (c.tipo == "tipoL")
+                        {
+                            c.textura->loadFromMemory(tipoL_png, tipoL_png_len);
+                        } else if (c.tipo == "tipoLI")
+                        {
+                            c.textura->loadFromMemory(tipoLI_png, tipoLI_png_len);
+                        } else if (c.tipo == "tipoLinea")
+                        {
+                            c.textura->loadFromMemory(tipoLinea_png, tipoLinea_png_len);
+                        } else if (c.tipo == "tipoLineaI")
+                        {
+                            c.textura->loadFromMemory(tipoLineaI_png, tipoLineaI_png_len);
+                        }
 
                         c.sprite.setTexture(*c.textura);
                         c.sprite.setOrigin(c.sprite.getGlobalBounds().width / 2.f,

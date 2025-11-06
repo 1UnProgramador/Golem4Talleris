@@ -10,8 +10,10 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../../src/logica/assetManager.h"
+
 minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
-    tFondo.loadFromFile("../assets/fondoElectricidad.png");
+    tFondo.loadFromMemory(fondoElectricidad_png, fondoElectricidad_png_len);
     fondo.setTexture(tFondo);
     fondo.setPosition(0, 0);
 
@@ -22,14 +24,14 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
 
 
 
-    tLente.loadFromFile("../assets/minijuegoMecatronica/lente.png");
+    tLente.loadFromMemory(lente_png, lente_png_len);
     lente.setTexture(tLente);
     lente.setOrigin(lente.getGlobalBounds().width / 2, lente.getGlobalBounds().height / 2);
     lente.setScale(3, 3);
 
 
 
-    tPalo.loadFromFile("../assets/minijuegoMecatronica/palo.png");
+    tPalo.loadFromMemory(palo_png, palo_png_len);
     palo.setTexture(tPalo);
 
     palo.setOrigin(palo.getGlobalBounds().width / 2, palo.getGlobalBounds().height / 2);
@@ -37,7 +39,7 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
     palo.setPosition(sf::VideoMode::getDesktopMode().width / 2, (palo.getGlobalBounds().height / 2) - 15);
 
 
-    tGarra.loadFromFile("../assets/minijuegoMecatronica/garra.png");
+    tGarra.loadFromMemory(garra_png, garra_png_len);
     garra.setTexture(tGarra);
     garra.setOrigin(garra.getGlobalBounds().width / 2, garra.getGlobalBounds().width / 2);
     garra.setScale(4, 4);
@@ -47,10 +49,10 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
 
 
 
-    tB1.loadFromFile("../assets/minijuegoMecatronica/caneca1.png");
-    tB2.loadFromFile("../assets/minijuegoMecatronica/caneca2.png");
-    tB3.loadFromFile("../assets/minijuegoMecatronica/caneca3.png");
-    tB4.loadFromFile("../assets/minijuegoMecatronica/caneca4.png");
+    tB1.loadFromMemory(caneca1_png, caneca1_png_len);
+    tB2.loadFromMemory(caneca2_png, caneca2_png_len);
+    tB3.loadFromMemory(caneca3_png, caneca3_png_len);
+    tB4.loadFromMemory(caneca4_png, caneca4_png_len);
 
     b1.setTexture(tB1);
     b1.setScale(3, 3);
@@ -75,10 +77,34 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
         Objeto o;
         o.tObjeto = std::make_shared<sf::Texture>();
 
-
-        if (!o.tObjeto->loadFromFile("../assets/minijuegoMecatronica/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "botella")
+        {
+            if (!o.tObjeto->loadFromMemory(botella_png, botella_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "caja")
+        {
+            if (!o.tObjeto->loadFromMemory(caja_png, caja_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "bateria")
+        {
+            if (!o.tObjeto->loadFromMemory(bateria_png, bateria_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "cascara")
+        {
+            if (!o.tObjeto->loadFromMemory(cascara_png, cascara_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "lata")
+        {
+            if (!o.tObjeto->loadFromMemory(lata_png, lata_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
         o.sObjeto.setTexture(*o.tObjeto);
         o.sObjeto.setOrigin(o.sObjeto.getGlobalBounds().width / 2, o.sObjeto.getGlobalBounds().height / 2);
         o.sObjeto.setScale(2, 2);
@@ -91,10 +117,29 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
         led l;
         l.tLed = std::make_shared<sf::Texture>();
 
-
-        if (!l.tLed->loadFromFile("../assets/minijuegoMecatronica/" + nombre + ".png")) {
-            std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+        if (nombre == "apagado")
+        {
+            if (!l.tLed->loadFromMemory(apagado_png, apagado_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "azul")
+        {
+            if (!l.tLed->loadFromMemory(azulM_png, azulM_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "rojo")
+        {
+            if (!l.tLed->loadFromMemory(rojo_png, rojo_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "verde")
+        {
+            if (!l.tLed->loadFromMemory(verdeM_png, verdeM_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
         }
+
+
         l.sLed.setTexture(*l.tLed);
         l.sLed.setOrigin(l.sLed.getGlobalBounds().width / 2, l.sLed.getGlobalBounds().height / 2);
         l.sLed.setScale(2, 2);
@@ -113,7 +158,7 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
         tiempoInt = 15;
     }
 
-    fuente.loadFromFile("../assets/textos/Ubuntu-Bold.ttf");
+    fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);
     tiempo.setFont(fuente);
     tiempo.setScale(2, 2);
     tiempo.setPosition(0, 0);
