@@ -136,6 +136,15 @@ void Informatica::ManejarEvento(sf::Event evento)
         switch (puertaCercana) {
             case 0:
                 juego->cambiarAPrograma = 1;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoPonchar";
                 juego->botones = true;
                 juego->instrucciones = "Bienvenido al programa mantenimiento electronico y de computadores , P1. En este minijuego tendras que memorizar la imagen de arriba que es la normativa de como conectar un cable UTP segun la norma T568B, ¡Acuerdate muy bien de donde va cada cable para que no tengas fugas de datos!";
@@ -143,10 +152,28 @@ void Informatica::ManejarEvento(sf::Event evento)
                 break; // P1
             case 1:
                 juego->cambiarAPrograma = 2;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P2
             case 2:
                 juego->cambiarAPrograma = 3;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = true;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoTangram";
                 juego->botones = true;
                 juego->instrucciones = "Ahora mismo estamos entrando a Diseno grafico por computador, P3. Agudiza tu comprension espacial para pasar el siguiente minijuego: Un Tangram. Vas a tener que organizar las piezas de tal manera que abarquen toda la figura azul sin salirse del contorno. Suerte!";
@@ -201,10 +228,21 @@ void Informatica::renderizar(sf::RenderWindow& window)
         // --- Texto encima de la P ---
         sf::Text nombreTaller;
         nombreTaller.setFont(fuente);
-        std::vector<std::string> nombresTalleres = { "Mantenimiento", "Diseno de paginas web", "Diseno grafico" };
-        nombreTaller.setString(nombresTalleres[i]);
+        std::vector<std::string> nombresTalleres = { "Mantenimiento de Computadores", "Diseño de páginas web", "Diseño gráfico" };
+        nombreTaller.setString(utf8_to_wstring(wrapTextString(nombresTalleres[i], fuente, 30, 500)));
         nombreTaller.setCharacterSize(30);
-        nombreTaller.setFillColor(sf::Color::White);
+
+        if (juego->minijuegosPasados[0] && i == 0)
+        {
+            nombreTaller.setFillColor(sf::Color(0, 102, 204));
+        } else if (juego->minijuegosPasados[1] && i == 1)
+        {
+            nombreTaller.setFillColor(sf::Color(0, 102, 204));
+        } else if (juego->minijuegosPasados[2] && i == 2)
+        {
+            nombreTaller.setFillColor(sf::Color(0, 102, 204));
+        }
+
         nombreTaller.setOutlineColor(sf::Color::Black);
         nombreTaller.setOutlineThickness(2.f);
         nombreTaller.setStyle(sf::Text::Bold);

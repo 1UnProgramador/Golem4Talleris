@@ -13,8 +13,11 @@ class minijuegoRedes : public Pantalla{
         sf::Texture texturaFlecha;
         sf::Sprite flecha1;
         sf::Sprite flecha2;
+
+        
         sf::RectangleShape fallo;
         float velocidadFallo;
+
         sf::Clock clock;
         sf::Clock tiempoRestante;
         sf::Font fuente;

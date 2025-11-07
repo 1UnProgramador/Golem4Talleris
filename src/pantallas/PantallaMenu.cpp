@@ -65,7 +65,7 @@ void PantallaMenu::ManejarEvento(sf::Event evento) {
 
                 juego->backspace = false;
                 juego->enter = false;
-                juego->esc = false;
+                juego->esc = true;
                 juego->flechas = true;
                 juego->mouse = false;
                 juego->space = false;

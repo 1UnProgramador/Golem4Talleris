@@ -5,6 +5,7 @@
 #include "../../include/pantallas/electricidad.h"
 #include "../../include/pantallas/DisenoTecnico.h"
 #include "../../include/pantallas/Metalmecanica.h" */
+#include "../../include/pantallas/pantallaCreditos.h"
 #include "../../src/logica/assetManager.h"
 #include "../../include/logica/Juego.h"
 #include <iostream>
@@ -117,15 +118,29 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
     // === Nombres de las puertas ===
     std::vector<std::string> nombres = {
-        "Informatica", "Electricidad", "Diseno Tecnico", "Metalmecanica"
+        "Informática", "Electricidad", "Diseño Técnico", "Metalmecánica"
     };
 
     textosPuertas.resize(4);
     for (int i = 0; i < 4; ++i) {
         textosPuertas[i].setFont(fuente);
-        textosPuertas[i].setString(nombres[i]);
+        textosPuertas[i].setString(utf8_to_wstring(wrapTextString(nombres[i], fuente, 30, 200)));
         textosPuertas[i].setCharacterSize(30); //tamaño texto
-        textosPuertas[i].setFillColor(sf::Color::White);
+
+        if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && i == 0)
+        {
+            textosPuertas[i].setFillColor(sf::Color(0, 102, 204));
+        } else if ((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && i == 1)
+        {
+            textosPuertas[i].setFillColor(sf::Color(255, 204, 0));
+        } else if ((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8]) && i == 2)
+        {
+            textosPuertas[i].setFillColor(sf::Color(204, 51, 153));
+        } else if ((juego->minijuegosPasados[4] && juego->minijuegosPasados[11] ) && i == 3)
+        {
+            textosPuertas[i].setFillColor(sf::Color(96, 96, 96));
+        }
+
         textosPuertas[i].setOutlineColor(sf::Color::Black);
         textosPuertas[i].setOutlineThickness(3.f);
         textosPuertas[i].setStyle(sf::Text::Bold);
@@ -156,75 +171,87 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
 
     logroDesbloqueado.setTexture(tLogroDesbloqueado);
+    logroDesbloqueado.setOrigin(logroDesbloqueado.getGlobalBounds().width / 2, logroDesbloqueado.getGlobalBounds().height / 2);
     logroDesbloqueado.setScale(5, 3);
 
-    // Posición base en la esquina inferior derecha
-    float offsetX = logroDesbloqueado.getGlobalBounds().width / 2; // Margen para el centro del sprite
-    float offsetY = logroDesbloqueado.getGlobalBounds().height / 2; // Margen para el centro del sprite
-    logroDesbloqueado.setPosition(sf::VideoMode::getDesktopMode().width - offsetX, sf::VideoMode::getDesktopMode().height - offsetY);
+    logroDesbloqueado.setPosition(sf::VideoMode::getDesktopMode().width - (logroDesbloqueado.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2));
 
 
     tituloLogro.setFont(fuente);
+    tituloLogro.setOrigin(tituloLogro.getGlobalBounds().width / 2, tituloLogro.getGlobalBounds().height / 2);
     tituloLogro.setCharacterSize(20);
 
     descripcionLogro.setFont(fuente);
-    descripcionLogro.setFont(fuente);
-
-
-    // === Lógica de desbloqueo de logro y cambio de sprite ===
-    sf::Texture* texturaLogro = nullptr;
+    descripcionLogro.setOrigin(descripcionLogro.getGlobalBounds().width / 2, descripcionLogro.getGlobalBounds().height / 2);
+    descripcionLogro.setCharacterSize(15);
 
     if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && !juego->logroDesbloqueado("Maestro del Bit Supremo"))
     {
         juego->desbloquearLogro("Maestro del Bit Supremo");
         tituloLogro.setString(wrapTextString("Maestro del Bit Supremo", fuente, 20, 172));
+        tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+        tituloLogro.setFillColor(sf::Color(0, 102, 204));
         descripcionLogro.setString(wrapTextString("Completaste el taller de informatica", fuente, 15, 172));
+        descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+        logroDesbloqueado.setTexture(tLogroInformatica);
     } else if((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && !juego->logroDesbloqueado("Senor de los Voltios"))
     {
         juego->desbloquearLogro("Senor de los Voltios");
         tituloLogro.setString(wrapTextString("Senor de los Voltios", fuente, 20, 172));
+        tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+        tituloLogro.setFillColor(sf::Color(255, 204, 0));
         descripcionLogro.setString(wrapTextString("Completaste el taller de electricidad", fuente, 15, 172));
+        descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+        logroDesbloqueado.setTexture(tLogroElectricidad);
     } else if((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8] && !juego->logroDesbloqueado("Arquitecto de los Suenos")))
     {
         juego->desbloquearLogro("Arquitecto de los Suenos");
         tituloLogro.setString(wrapTextString("Arquitecto de los Suenos", fuente, 20, 172));
-        descripcionLogro.setString(wrapTextString("Completaste el taller de diseno", fuente, 15, 172));
+        tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+        tituloLogro.setFillColor(sf::Color(204, 51, 153));
+        descripcionLogro.setString(wrapTextString("Completaste el taller de diseno", fuente, 15, 160));
+        descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+        logroDesbloqueado.setTexture(tLogroDiseno);
     } else if((juego->minijuegosPasados[4] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Forjador del Acero Eterno"))
     {
         juego->desbloquearLogro("Forjador del Acero Eterno");
         tituloLogro.setString(wrapTextString("Forjador del Acero Eterno", fuente, 20, 172));
+        tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+        tituloLogro.setFillColor(sf::Color(96, 96, 96));
         descripcionLogro.setString(wrapTextString("Completaste el taller de metalmecanica", fuente, 15, 172));
+        descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+        logroDesbloqueado.setTexture(tLogroMetalmecanica);
     }
-    // === Ajustar textura y posición si se desbloqueó un logro ===
-    if (texturaLogro != nullptr) {
-        logroDesbloqueado.setTexture(*texturaLogro, true);
-
-        // El origen DEBE ser el centro de la textura ORIGINAL para que la escala no lo desplace
-        sf::Vector2u texSize = texturaLogro->getSize();
-        logroDesbloqueado.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
-
-        // Recalcular la posición del texto según el nuevo sprite (escalado)
-        float spriteCenterX = logroDesbloqueado.getPosition().x;
-        float spriteCenterY = logroDesbloqueado.getPosition().y;
-
-        // Ajustar la posición del texto (se asume que están centrados horizontalmente en el sprite)
-        // Puedes ajustar estos valores (como +10 o -10) para afinar la posición visual.
-        tituloLogro.setPosition(spriteCenterX, spriteCenterY - logroDesbloqueado.getGlobalBounds().height / 4.f);
-        descripcionLogro.setPosition(spriteCenterX, spriteCenterY + logroDesbloqueado.getGlobalBounds().height / 4.f);
-
-        // Centrar los textos horizontalmente en el punto central (spriteCenterX)
-        sf::FloatRect tb_titulo = tituloLogro.getLocalBounds();
-        tituloLogro.setOrigin(tb_titulo.left + tb_titulo.width / 2.f, tb_titulo.top + tb_titulo.height / 2.f);
-
-        sf::FloatRect tb_desc = descripcionLogro.getLocalBounds();
-        descripcionLogro.setOrigin(tb_desc.left + tb_desc.width / 2.f, tb_desc.top + tb_desc.height / 2.f);
-    }
-    // =======================================================
+    cambioPantalla.setSize(sf::Vector2f(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+    cambioPantalla.setPosition(0, 0);
+    cambioPantalla.setFillColor(sf::Color(0, 0, 0, 0));
 }
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
-    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape)
-        juego->cambiarPantalla(std::make_unique<PantallaMenu>(juego));
+    if (evento.type == sf::Event::KeyPressed){
+        if (evento.key.code == sf::Keyboard::Escape)
+        {
+            juego->cambiarPantalla(std::make_unique<PantallaMenu>(juego));
+        } /* else if (evento.key.code == sf::Keyboard::W)
+        {
+            descripcionLogro.move(0, -1);
+        } else if (evento.key.code == sf::Keyboard::A)
+        {
+            descripcionLogro.move(-1, 0);
+        } else if (evento.key.code == sf::Keyboard::S)
+        {
+            descripcionLogro.move(0, 1);
+        } else if (evento.key.code == sf::Keyboard::D)
+        {
+            descripcionLogro.move(1, 0);
+        }
+        std::cout << "Posicion: " << std::to_string(logroDesbloqueado.getPosition().x - descripcionLogro.getPosition().x) << ", " << std::to_string(logroDesbloqueado.getPosition().y - descripcionLogro.getPosition().y) << std::endl; */
+
+    }
+
+
+
+
 
     if (ignoreInput) {
         if (evento.type == sf::Event::KeyReleased)
@@ -241,7 +268,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
 
                     juego->backspace = false;
                     juego->enter = false;
-                    juego->esc = false;
+                    juego->esc = true;
                     juego->flechas = true;
                     juego->mouse = false;
                     juego->space = false;
@@ -256,7 +283,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
 
                     juego->backspace = false;
                     juego->enter = false;
-                    juego->esc = false;
+                    juego->esc = true;
                     juego->flechas = true;
                     juego->mouse = false;
                     juego->space = false;
@@ -271,7 +298,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
 
                     juego->backspace = false;
                     juego->enter = false;
-                    juego->esc = false;
+                    juego->esc = true;
                     juego->flechas = true;
                     juego->mouse = false;
                     juego->space = false;
@@ -286,7 +313,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
 
                     juego->backspace = false;
                     juego->enter = false;
-                    juego->esc = false;
+                    juego->esc = true;
                     juego->flechas = true;
                     juego->mouse = false;
                     juego->space = false;
@@ -307,6 +334,44 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
 }
 
 void PantallaSeleccionar::actualizar() {
+    if (!logroMostrado)
+    {
+        if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height - (logroDesbloqueado.getGlobalBounds().height / 2))) /* && tituloLogro.getString() != "" */)
+        {
+            logroDesbloqueado.move(0, -3);
+        } else {
+            logroMostrado = true;
+            tiempoLogro.restart();
+            /* clock.restart(); */
+
+        }
+    } else {
+        if (!(logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2))) && tiempoLogro.getElapsedTime().asSeconds() >= 3.0f){
+            logroDesbloqueado.move(0, 2);
+            /* float totalAnimacion = 5.0f;
+            float decrementoAlpha = 255.0f / totalAnimacion;
+            float deltaTime = clock.getElapsedTime().asMilliseconds();
+            sf::Color colorActual = cambioPantalla.getFillColor();
+
+            if (colorActual.a < 255) {
+                colorActual.a += decrementoAlpha * deltaTime;
+                if (colorActual.a > 255) {
+                    colorActual.a = 255;
+                }
+                cambioPantalla.setFillColor(colorActual);
+            } */
+        }
+        /* if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2)))){
+            if((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) || (juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) || (juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8]) || (juego->minijuegosPasados[4] && juego->minijuegosPasados[11])){
+                juego->cambiarPantalla(std::make_unique<pantallaCreditos>(juego));
+            }
+        } */
+    }
+
+    tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+    descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+
+
     jugador.update(sf::VideoMode::getDesktopMode());
     int nuevaPuerta = -1;
     float mejorDist = 1e9f;
@@ -362,4 +427,5 @@ void PantallaSeleccionar::renderizar(sf::RenderWindow& window) {
         window.draw(tituloLogro);
         window.draw(descripcionLogro);
     }
+    window.draw(cambioPantalla);
 }

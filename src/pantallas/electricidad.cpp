@@ -118,30 +118,66 @@ void Electricidad::ManejarEvento(sf::Event evento)
         switch (puertaCercana) {
             case 0:
                 juego->cambiarAPrograma = 4;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoMecatronica";
                 juego->botones = true;
-                juego->instrucciones = "Algunas cosas de mecatronica (P4) se pueden aplicar muy bien a la vida cotidiana...";
+                juego->instrucciones = "Algunas cosas de mecatrónica (P4) se pueden aplicar muy bien a la vida cotidiana, ¿Sabías? El siguiente minijuego consiste en pasar por un lente algún objeto para decidir en que contenedor de reciclaje va. ¡Aprende a reciclar mientras juegas, todo por un mundo mejor!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P4
             case 1:
                 juego->cambiarAPrograma = 7;
+
+                juego->backspace = false;
+                juego->enter = true;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoAutotronica";
                 juego->botones = true;
-                juego->instrucciones = "Trivia de Autotronica (P7)...";
+                juego->instrucciones = "Vamos con una trivia, ¿Con qué reparo qué componente? Piensa muy bien tus opciones de respuesta, demuéstrate a ti mismo de que eres capaz de pensar como un estudiante del programa de Autotrónica, P7. Para reparar un componente le das click a el y a la opción que creas correcta, y le das enter.";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P7
             case 2:
                 juego->cambiarAPrograma = 10;
+
+                juego->backspace = false;
+                juego->enter = true;
+                juego->esc = true;
+                juego->flechas = true;
+                juego->mouse = false;
+                juego->space = false;
+                juego->wasd = true;
+
                 juego->seleccionado = "minijuegoElectronicaYControl";
                 juego->botones = true;
-                juego->instrucciones = "Electronica y control (P10)...";
+                juego->instrucciones = "¿Alguna vez has usado una impresora 3D? En este minijuego vas a tener que usar el puntero de la impresora para crear un modelo pre-definido (el modelo esta sombreado), y mucho cuidado, tienes que dejar la pieza tal cuál como esta, si no no estariamos en  el programa de electrónica y control, P10.";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P10
             case 3:
                 juego->cambiarAPrograma = 11;
                 juego->seleccionado = "minijuegoRedes";
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->botones = true;
-                juego->instrucciones = "Redes electricas (P11)...";
+                juego->instrucciones = "El siguiente minijuego de redes eléctricas (P11), puede ser un poco complicado así que presta atención: Va a fluir electricidad por los cables amarillos (así que cómo no pueden haber fugas de electricidad TODOS tienen que estar conectados), inicia por abajo y sale por arriba en la dirección que indica las flechas. ¡Ánimo!";
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P11
         }
@@ -187,9 +223,9 @@ void Electricidad::renderizar(sf::RenderWindow& window)
     window.draw(FondoElectricidad);
 
     std::vector<std::string> nombresTalleres = {
-        "MECATRONICA",
-        "AUTOTRONICA",
-        "Electronica y control",
+        "Mecatrónica",
+        "Autotrónica",
+        "Electrónica y control",
         "Redes electricas"
     };
 
@@ -200,9 +236,23 @@ void Electricidad::renderizar(sf::RenderWindow& window)
         // Texto encima de la "P"
         sf::Text nombreTaller;
         nombreTaller.setFont(fuente);
-        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setString(utf8_to_wstring(wrapTextString(nombresTalleres[i], fuente, 30, 500)));
         nombreTaller.setCharacterSize(30);
-        nombreTaller.setFillColor(sf::Color::White);
+
+        if (juego->minijuegosPasados[3] && i == 0)
+        {
+            nombreTaller.setFillColor(sf::Color(255, 204, 0));
+        } else if (juego->minijuegosPasados[6] && i == 1)
+        {
+            nombreTaller.setFillColor(sf::Color(255, 204, 0));
+        } else if (juego->minijuegosPasados[9] && i == 2)
+        {
+            nombreTaller.setFillColor(sf::Color(255, 204, 0));
+        } else if (juego->minijuegosPasados[10] && i == 3)
+        {
+            nombreTaller.setFillColor(sf::Color(255, 204, 0));
+        }
+
         nombreTaller.setOutlineColor(sf::Color::Black);
         nombreTaller.setOutlineThickness(2.f);
         nombreTaller.setStyle(sf::Text::Bold);

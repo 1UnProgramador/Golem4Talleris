@@ -1,6 +1,7 @@
 #include "../../include/logica/Juego.h"
 #include "../../include/minijuegoAutotronica/minijuegoAutotronica.h"
 #include "../../include/pantallas/electricidad.h"
+#include "../../include/pantallas/pantallaCarga.h"
 #include <vector>
 #include <cmath>
 #include <memory>
@@ -145,6 +146,10 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionA.sprite.setTexture(*opcionA.textura);
     opcionA.sprite.setOrigin(opcionA.sprite.getLocalBounds().width / 2, opcionA.sprite.getLocalBounds().height / 2);
     opcionA.sprite.setPosition(opcionA.cuadro.getPosition());
+    opcionA.texto.setFont(fuente);
+    opcionA.texto.setString(utf8_to_wstring(wrapTextString("Energía", fuente, 30, 100)));
+    opcionA.texto.setOrigin(opcionA.texto.getGlobalBounds().width / 2, opcionA.texto.getGlobalBounds().height / 2);
+    opcionA.texto.setPosition(opcionA.cuadro.getPosition().x - 50, opcionA.cuadro.getPosition().y + (opcionA.cuadro.getGlobalBounds().height / 2) + (separacion / 5) + (opcionA.texto.getGlobalBounds().height / 2));
 
     Opcion opcionB;
     opcionB.seleccionado = false;
@@ -157,6 +162,10 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionB.sprite.setTexture(*opcionB.textura);
     opcionB.sprite.setOrigin(opcionB.sprite.getLocalBounds().width / 2, opcionB.sprite.getLocalBounds().height / 2);
     opcionB.sprite.setPosition(opcionB.cuadro.getPosition());
+    opcionB.texto.setFont(fuente);
+    opcionB.texto.setString(utf8_to_wstring(wrapTextString("Fusible", fuente, 30, 100)));
+    opcionB.texto.setOrigin(opcionB.texto.getGlobalBounds().width / 2, opcionB.texto.getGlobalBounds().height / 2);
+    opcionB.texto.setPosition(opcionB.cuadro.getPosition().x - 50, opcionB.cuadro.getPosition().y + (opcionB.cuadro.getGlobalBounds().height / 2) + (separacion / 5) + (opcionB.texto.getGlobalBounds().height / 2));
 
     Opcion opcionC;
     opcionC.seleccionado = false;
@@ -169,6 +178,10 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionC.sprite.setTexture(*opcionC.textura);
     opcionC.sprite.setOrigin(opcionC.sprite.getLocalBounds().width / 2, opcionC.sprite.getLocalBounds().height / 2);
     opcionC.sprite.setPosition(opcionC.cuadro.getPosition());
+    opcionC.texto.setFont(fuente);
+    opcionC.texto.setString(utf8_to_wstring(wrapTextString("Llave inglesa", fuente, 30, 100)));
+    opcionC.texto.setOrigin(opcionC.texto.getGlobalBounds().width / 2, opcionC.texto.getGlobalBounds().height / 2);
+    opcionC.texto.setPosition(opcionC.cuadro.getPosition().x - 50, opcionC.cuadro.getPosition().y + (opcionC.cuadro.getGlobalBounds().height / 2) + (separacion / 5) + (opcionC.texto.getGlobalBounds().height / 2));
 
     Opcion opcionD;
     opcionD.seleccionado = false;
@@ -181,6 +194,10 @@ minijuegoAutotronica::minijuegoAutotronica(Juego* juego) : Pantalla(juego){
     opcionD.sprite.setTexture(*opcionD.textura);
     opcionD.sprite.setOrigin(opcionD.sprite.getLocalBounds().width / 2, opcionD.sprite.getLocalBounds().height / 2);
     opcionD.sprite.setPosition(opcionD.cuadro.getPosition());
+    opcionD.texto.setFont(fuente);
+    opcionD.texto.setString(utf8_to_wstring(wrapTextString("Caja de repuestos", fuente, 30, 100)));
+    opcionD.texto.setOrigin(opcionD.texto.getGlobalBounds().width / 2, opcionD.texto.getGlobalBounds().height / 2);
+    opcionD.texto.setPosition(opcionD.cuadro.getPosition().x - 50, opcionD.cuadro.getPosition().y + (opcionD.cuadro.getGlobalBounds().height / 2) + (separacion / 5) + (opcionD.texto.getGlobalBounds().height / 2));
 
     opciones.push_back(opcionA);
     opciones.push_back(opcionB);
@@ -300,17 +317,16 @@ void minijuegoAutotronica::ManejarEvento(sf::Event evento){
             i++;
         }
         i = 0;
-        /* if (evento.key.code == sf::Keyboard::Up) {
-            objetos[3].sprite.move(0, -1);
+        if (evento.key.code == sf::Keyboard::Up) {
+            opciones[1].texto.move(0, -1);
         } else if (evento.key.code == sf::Keyboard::Down) {
-            objetos[3].sprite.move(0, 1);
+            opciones[1].texto.move(0, 1);
         } else if (evento.key.code == sf::Keyboard::Left) {
-            objetos[3].sprite.move(-1, 0);
+            opciones[1].texto.move(-1, 0);
         } else if (evento.key.code == sf::Keyboard::Right) {
-            objetos[3].sprite.move(1, 0);
+            opciones[1].texto.move(1, 0);
         }
-        std::cout << "Posicion X: " << std::to_string(objetos[3].sprite.getPosition().x) << std::endl;
-        std::cout << "Posicion Y: " << std::to_string(objetos[3].sprite.getPosition().y) << std::endl; */
+        std::cout << "Posicion X: " << std::to_string(opciones[1].cuadro.getPosition().x - opciones[1].texto.getPosition().x) << std::endl;
 
     }
 }
@@ -347,6 +363,10 @@ void minijuegoAutotronica::renderizar(sf::RenderWindow& window){
             window.draw(opciones[1].sprite);
             window.draw(opciones[2].sprite);
             window.draw(opciones[3].sprite);
+            window.draw(opciones[0].texto);
+            window.draw(opciones[1].texto);
+            window.draw(opciones[2].texto);
+            window.draw(opciones[3].texto);
         }
 
         if(objeto.arreglado){

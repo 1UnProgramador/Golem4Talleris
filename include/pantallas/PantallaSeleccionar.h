@@ -20,7 +20,10 @@ private:
 
     sf::Texture tLogroDesbloqueado; // Textura original (ahora será la del logro detectado)
     sf::Sprite  logroDesbloqueado;
-
+    bool logroMostrado = false;
+    sf::Clock tiempoLogro;
+    sf::RectangleShape cambioPantalla;
+    sf::Clock clock;
 
     sf::Texture tLogroInformatica;
     sf::Texture tLogroElectricidad;
