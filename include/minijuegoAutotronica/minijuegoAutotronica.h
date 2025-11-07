@@ -18,6 +18,7 @@ class minijuegoAutotronica : public Pantalla{
             sf::Sprite sprite;
             sf::RectangleShape cuadro;
             bool seleccionado = false;
+            sf::Text texto;
         };
         sf::ConvexShape hazDeLuz;
         bool luz = false;

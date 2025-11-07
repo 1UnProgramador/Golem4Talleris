@@ -241,7 +241,11 @@ void minijuegoPonchar::actualizar(){
         for (int j = 0; j <= 7; j++)
         {
             if (cables[i].sCable.getGlobalBounds().intersects(cables[i].pObjetivo.getGlobalBounds())){
-                cables[i].pObjetivo.setFillColor(sf::Color::Green);
+                if (cables[i].conectado && !cables[i].arrastrando)
+                {
+                    cables[i].pObjetivo.setFillColor(sf::Color::Green);
+                }
+
             } else {
                 cables[i].pObjetivo.setFillColor(sf::Color::Red);
             }

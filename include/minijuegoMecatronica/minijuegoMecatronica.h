@@ -11,6 +11,17 @@ class minijuegoMecatronica : public Pantalla{
 
         bool agarrado = false;
 
+        sf::RectangleShape fallo;
+        float velocidadFallo;
+        int falloEvento = 0;
+
+        struct Corazon
+        {
+            std::shared_ptr<sf::Texture> tCorazon;
+            sf::Sprite sCorazon;
+        };
+        std::vector<Corazon> corazones;
+        int vidas = 3;
 
         sf::Texture tLente;
         sf::Sprite lente;

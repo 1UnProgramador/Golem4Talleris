@@ -115,6 +115,15 @@ void DisenoTecnico::ManejarEvento(sf::Event evento)
         switch (puertaCercana) {
             case 0:
                 juego->cambiarAPrograma = 6;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoDisenoArquitectonico";
                 juego->botones= true;
                 juego->instrucciones = "En el diseño arquitectónico, aprenderas que tienes que desarrollar un pensamiento espacial tanto mental como físicamente para desarrollar planos. ¡Adentrate en P6 mientras construyes el rompecabezas de una casa!";
@@ -122,6 +131,15 @@ void DisenoTecnico::ManejarEvento(sf::Event evento)
                 break; // P6
             case 1:
                 juego->cambiarAPrograma = 8;
+
+                juego->backspace = false;
+                juego->enter = true;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = false;
+                juego->space = false;
+                juego->wasd = false;
+
                 juego->seleccionado = "minijuegoTopografia";
                 juego->botones= true;
                 juego->instrucciones = "En el minijuego del programa de topografía (P8), vas a tener que posicionar exzactamente en las líneas guías, los elementos de nivelación para preparar el terreno.";
@@ -129,6 +147,15 @@ void DisenoTecnico::ManejarEvento(sf::Event evento)
                 break; // P8
             case 2:
                 juego->cambiarAPrograma = 9;
+
+                juego->backspace = true;
+                juego->enter = true;
+                juego->esc = true;
+                juego->flechas = true;
+                juego->mouse = false;
+                juego->space = false;
+                juego->wasd = true;
+
                 juego->seleccionado = "minijuegoDisenoComputador";
                 juego->botones= true;
                 juego->instrucciones = "En el diseño asistido por computador (P9), tendrás que diseñar a través de una pantalla, una forma determinada que se te pida en la pantalla de al lado. ¡Usa todos los conocimientos que lleves hasta ahora!";
@@ -177,9 +204,9 @@ void DisenoTecnico::renderizar(sf::RenderWindow& window)
     window.draw(FondoDiseno);
 
     std::vector<std::string> nombresTalleres = {
-        "Diseno arquitectonico",
-        "Topografia",
-        "Diseno asistido por computador"
+        "Diseño arquitectónico",
+        "Topografía",
+        "Diseño asistido por computador"
     };
 
     // Puertas + texto
@@ -189,9 +216,21 @@ void DisenoTecnico::renderizar(sf::RenderWindow& window)
         // Texto encima de la "P"
         sf::Text nombreTaller;
         nombreTaller.setFont(fuente);
-        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setString(utf8_to_wstring(wrapTextString(nombresTalleres[i], fuente, 30, 500)));
         nombreTaller.setCharacterSize(30);
-        nombreTaller.setFillColor(sf::Color::White);
+
+        if (juego->minijuegosPasados[5] && i == 0)
+        {
+            nombreTaller.setFillColor(sf::Color(204, 51, 153));
+        } else if (juego->minijuegosPasados[7] && i == 1)
+        {
+            nombreTaller.setFillColor(sf::Color(204, 51, 153));
+        } else if (juego->minijuegosPasados[8] && i == 2)
+        {
+            nombreTaller.setFillColor(sf::Color(204, 51, 153));
+        }
+
+
         nombreTaller.setOutlineColor(sf::Color::Black);
         nombreTaller.setOutlineThickness(2.f);
         nombreTaller.setStyle(sf::Text::Bold);

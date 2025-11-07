@@ -138,6 +138,15 @@ void Metalmecanica::ManejarEvento(sf::Event evento)
         switch (puertaCercana) {
             case 0:
                 juego->cambiarAPrograma = 5;
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = true;
+                juego->mouse = false;
+                juego->space = true;
+                juego->wasd = true;
+
                 juego->seleccionado = "minijuegoMecanicaIndustrial";
                 juego->instrucciones = "Binevenido al hogar de las máquinas, aquí como buen mecánico industrial (P5), vas a tener que desechar al contenedor las piezas que no coincidan con la que se muestran en la pantalla. Demuestrale a los demás tu percepción e intuición visual.";
                 juego->botones = true;
@@ -145,8 +154,17 @@ void Metalmecanica::ManejarEvento(sf::Event evento)
                 break; // P5
             case 1:
                 juego->cambiarAPrograma = 12;
-                 juego->seleccionado = "minijuegoSoldadura";
-                juego->instrucciones = "Acá nos vamos a poner un poco más calientes, porqué en el siguiente vamos a explorar los arcos eléctricos para permitirno unir piezas de metal en el programa de soldadura (P12)";
+
+                juego->backspace = false;
+                juego->enter = false;
+                juego->esc = true;
+                juego->flechas = false;
+                juego->mouse = true;
+                juego->space = false;
+                juego->wasd = false;
+
+                juego->seleccionado = "minijuegoSoldadura";
+                juego->instrucciones = "Acá nos vamos a poner un poco más calientes, porqué en el siguiente vamos a explorar los arcos eléctricos para permitirno unir piezas de metal en el programa de soldadura (P12). Ten mucho cuidado en dejar soldaduras sin pulir, a parte de que es un trabajo mal hecho no es estético";
                 juego->botones = true;
                 juego->cambiarPantalla(std::make_unique<PantallaCarga>(juego));
                 break; // P12
@@ -191,7 +209,7 @@ void Metalmecanica::renderizar(sf::RenderWindow& window)
     window.draw(FondoMetalmecanica);
 
     std::vector<std::string> nombresTalleres = {
-        "Mecanica industrial",
+        "Mecánica industrial",
         "Soldadura"
     };
 
@@ -201,9 +219,17 @@ void Metalmecanica::renderizar(sf::RenderWindow& window)
         // Texto encima de la "P"
         sf::Text nombreTaller;
         nombreTaller.setFont(fuente);
-        nombreTaller.setString(nombresTalleres[i]);
+        nombreTaller.setString(utf8_to_wstring(wrapTextString(nombresTalleres[i], fuente, 30, 500)));
         nombreTaller.setCharacterSize(30);
-        nombreTaller.setFillColor(sf::Color::White);
+
+        if (juego->minijuegosPasados[4] && i == 0)
+        {
+            nombreTaller.setFillColor(sf::Color(96, 96, 96));
+        } else if (juego->minijuegosPasados[11] && i == 1)
+        {
+            nombreTaller.setFillColor(sf::Color(96, 96, 96));
+        }
+
         nombreTaller.setOutlineColor(sf::Color::Black);
         nombreTaller.setOutlineThickness(2.f);
         nombreTaller.setStyle(sf::Text::Bold);

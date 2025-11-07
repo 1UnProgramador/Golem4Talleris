@@ -63,14 +63,14 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
     b4.setTexture(tB4);
     b4.setScale(3, 3);
 
-    float separacion = 200;
+    float separacionCanecas = 200;
     b1.setPosition(100, sf::VideoMode::getDesktopMode().height - b1.getGlobalBounds().height);
-    b2.setPosition(b1.getPosition().x + b1.getGlobalBounds().width + separacion, sf::VideoMode::getDesktopMode().height - b2.getGlobalBounds().height);
-    b3.setPosition(b2.getPosition().x + b2.getGlobalBounds().width + separacion, sf::VideoMode::getDesktopMode().height - b3.getGlobalBounds().height);
-    b4.setPosition(b3.getPosition().x + b3.getGlobalBounds().width + separacion, sf::VideoMode::getDesktopMode().height - b4.getGlobalBounds().height);
+    b2.setPosition(b1.getPosition().x + b1.getGlobalBounds().width + separacionCanecas, sf::VideoMode::getDesktopMode().height - b2.getGlobalBounds().height);
+    b3.setPosition(b2.getPosition().x + b2.getGlobalBounds().width + separacionCanecas, sf::VideoMode::getDesktopMode().height - b3.getGlobalBounds().height);
+    b4.setPosition(b3.getPosition().x + b3.getGlobalBounds().width + separacionCanecas, sf::VideoMode::getDesktopMode().height - b4.getGlobalBounds().height);
 
 
-    lente.setPosition(b2.getPosition().x + b2.getGlobalBounds().width + (separacion / 2), garra.getPosition().y + (garra.getGlobalBounds().height / 2) + (lente.getGlobalBounds().height / 2) + 50);
+    lente.setPosition(b2.getPosition().x + b2.getGlobalBounds().width + (separacionCanecas / 2), garra.getPosition().y + (garra.getGlobalBounds().height / 2) + (lente.getGlobalBounds().height / 2) + 50);
 
     std::vector<std::string> nombresObjetos = {"botella", "caja", "bateria", "cascara", "lata"};
     for (const auto& nombre : nombresObjetos) {
@@ -164,8 +164,35 @@ minijuegoMecatronica::minijuegoMecatronica(Juego* juego) : Pantalla(juego){
     tiempo.setPosition(0, 0);
     tiempoRestante.restart();
     tiempo.setString(std::to_string(tiempoInt));
+
+    std::vector<std::string> listaCorazones = {"1", "2", "3"};
+    int i = 0;
+    int separacion = 150;
+    for (const auto& corazon : listaCorazones) {
+        Corazon c;
+
+        c.tCorazon = std::make_shared<sf::Texture>();
+
+
+        if (!c.tCorazon->loadFromMemory(corazon_png, corazon_png_len)) {
+            std::cerr << "No se pudo cargar .png" << std::endl;
+        }
+        c.sCorazon.setTexture(*c.tCorazon);
+        c.sCorazon.setOrigin(c.sCorazon.getGlobalBounds().width / 2, c.sCorazon.getGlobalBounds().height / 2);
+        c.sCorazon.setScale(0.2, 0.2);
+        c.sCorazon.setPosition((c.sCorazon.getGlobalBounds().width / 2) + (c.sCorazon.getGlobalBounds().height / 2) + (separacion * i) , c.sCorazon.getGlobalBounds().height / 2);
+        corazones.push_back(c);
+        i++;
+    }
+
+    fallo.setSize(sf::Vector2f(2000, 2000));
+    fallo.setFillColor(sf::Color(255, 0, 0, 0));
+    fallo.setOrigin(fallo.getGlobalBounds().width / 2, fallo.getGlobalBounds().height / 2);
+    fallo.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
 }
 void minijuegoMecatronica::ManejarEvento(sf::Event evento){
+
+
     if(evento.type == sf::Event::MouseMoved){
         garra.setPosition(posicionEnVentana.x, garra.getPosition().y);
         palo.setPosition(posicionEnVentana.x, palo.getPosition().y);
@@ -205,11 +232,16 @@ void minijuegoMecatronica::ManejarEvento(sf::Event evento){
             }
         }
 
-    } else if(evento.key.code == sf::Keyboard::Escape){
-        juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+    } else if(evento.type == sf::Event::KeyPressed){
+        if(evento.key.code == sf::Keyboard::Escape){
+            juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+        } 
     }
 }
 void minijuegoMecatronica::actualizar(){
+    if(corazones.empty()){
+        juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+    }
     tiempo.setString(std::to_string(static_cast<int>(round(tiempoInt - tiempoRestante.getElapsedTime().asSeconds()))));
 
     posicionMouse = sf::Mouse::getPosition(juego->getWindow());
@@ -226,51 +258,86 @@ void minijuegoMecatronica::actualizar(){
                 i++;
                 objeto.reciclado = true;
                 objeto.actual = false;
-                objeto.sObjeto.setPosition(-500, -500);
+                objeto.sObjeto.setPosition(-500, 200);
+                objeto.cayendo = false;
                 objetos[i].actual = true;
                 std::cout << i;
+                falloEvento = 1;
+                fallo.setFillColor(sf::Color(0, 255, 0, 255));
                 break;
             } else if(objeto.sObjeto.getGlobalBounds().intersects(b4.getGlobalBounds()) && i == 1){
                 i++;
                 objeto.reciclado = true;
                 objeto.actual = false;
-                objeto.sObjeto.setPosition(-500, -500);
+                objeto.sObjeto.setPosition(-500, 200);
+                objeto.cayendo = false;
                 objetos[i].actual = true;
                 std::cout << i;
+                falloEvento = 1;
+                fallo.setFillColor(sf::Color(0, 255, 0, 255));
                 break;
             } else if(objeto.sObjeto.getGlobalBounds().intersects(b2.getGlobalBounds()) && i == 2){
                 i++;
                 objeto.reciclado = true;
                 objeto.actual = false;
-                objeto.sObjeto.setPosition(-500, -500);
+                objeto.sObjeto.setPosition(-500, 200);
+                objeto.cayendo = false;
                 objetos[i].actual = true;
                 std::cout << i;
+                falloEvento = 1;
+                fallo.setFillColor(sf::Color(0, 255, 0, 255));
                 break;
             } else if(objeto.sObjeto.getGlobalBounds().intersects(b1.getGlobalBounds()) && i == 3){
                 i++;
                 objeto.reciclado = true;
                 objeto.actual = false;
-                objeto.sObjeto.setPosition(-500, -500);
+                objeto.sObjeto.setPosition(-500, 200);
+                objeto.cayendo = false;
                 objetos[i].actual = true;
                 std::cout << i;
+                falloEvento = 1;
+                fallo.setFillColor(sf::Color(0, 255, 0, 255));
                 break;
             } else if(objeto.sObjeto.getGlobalBounds().intersects(b3.getGlobalBounds()) && i == 4){
 
                 objeto.reciclado = true;
                 objeto.actual = false;
-                objeto.sObjeto.setPosition(-500, -500);
+                objeto.sObjeto.setPosition(-500, 200);
+                objeto.cayendo = false;
                 juego->minijuegosPasados[3] = true;
                 juego->cambiarPantalla(std::make_unique<Electricidad>(juego));
+                fallo.setFillColor(sf::Color(0, 255, 0, 255));
                 std::cout << i;
                 break;
-            } else if(objeto.sObjeto.getGlobalBounds().top > sf::VideoMode::getDesktopMode().height){
+            } else if(objeto.sObjeto.getPosition().y + 50 > sf::VideoMode::getDesktopMode().height){
                 objeto.agarrado = false;
                 objeto.cayendo = false;
                 objeto.sObjeto.setRotation(350);
                 objeto.sObjeto.setPosition(posicionesObjetos[i]);
+                if (!corazones.empty()) {
+                    corazones.erase(corazones.end() - 1);
+                }
+                falloEvento = 1;
+                fallo.setFillColor(sf::Color(255, 0, 0, 255));
             }
             objeto.sObjeto.move(0, 12);
             objeto.sObjeto.rotate(10);
+        }
+        if (falloEvento == 1)
+        {
+            float totalAnimacion = 2.0f;
+            float decrementoAlpha = 255.0f / totalAnimacion;
+            float deltaTime = clock.restart().asSeconds();
+            sf::Color colorActual = fallo.getFillColor();
+
+            if (colorActual.a > 0) {
+                colorActual.a -= decrementoAlpha * deltaTime;
+                if (colorActual.a < 0) {
+                    colorActual.a = 0;
+                    falloEvento = 0;
+                }
+                fallo.setFillColor(colorActual); // Aplicamos el nuevo color
+            }
         }
     }
 
@@ -305,8 +372,13 @@ void minijuegoMecatronica::renderizar(sf::RenderWindow& window){
             window.draw(objeto.sObjeto);
         }
     }
+    for (auto &corazon : corazones)
+    {
+        window.draw(corazon.sCorazon);
+    }
 
     window.draw(palo);
     window.draw(garra);
     window.draw(tiempo);
+    window.draw(fallo);
 }
