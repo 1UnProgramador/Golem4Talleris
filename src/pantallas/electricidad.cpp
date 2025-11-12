@@ -13,6 +13,7 @@
 Electricidad::Electricidad(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    MusicManager::getInstancia().reproducir(musicaElectricidad_wav, musicaElectricidad_wav_len, "menu", true, 70.f);
     float width = sf::VideoMode::getDesktopMode().width;
     float height = sf::VideoMode::getDesktopMode().height;
 

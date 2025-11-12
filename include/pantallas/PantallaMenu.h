@@ -1,6 +1,7 @@
 #pragma once
 #include "../logica/Pantalla.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <functional>
 
 
@@ -10,7 +11,11 @@ class PantallaMenu : public Pantalla{
         sf::Font fuente;
         sf::Text texto;
 
+        /* sf::SoundBuffer sSonido; */
+        sf::Music sonido;
+        /* sf::Clock reloj;
 
+        bool cambioPantalla; */
         //Titulo
         sf::Texture tTitulo;
         sf::Sprite Titulo;

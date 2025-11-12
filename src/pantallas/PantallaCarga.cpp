@@ -197,6 +197,7 @@ const std::string Instrumentalizacion [] = {
 };
 
 PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
+    juego->minijuegoFacil = true;
 
     tFondo.loadFromMemory(fondo_png, fondo_png_len);
     tFondo.setRepeated(true);

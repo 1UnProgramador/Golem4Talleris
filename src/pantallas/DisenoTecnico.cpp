@@ -11,6 +11,7 @@
 DisenoTecnico::DisenoTecnico(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    MusicManager::getInstancia().reproducir(musicaDiseno_wav, musicaDiseno_wav_len, "diseno", true, 70.f);
     float width  = sf::VideoMode::getDesktopMode().width;
     float height = sf::VideoMode::getDesktopMode().height;
 

@@ -16,29 +16,59 @@ minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
     fondo.setScale(fX, fY);
 
 
-    std::vector<std::string> nombres = {"contornoWeb", "compraAzul", "compraRojo", "imagen"};
+    std::vector<std::string> nombres = {"contornoWeb", "carrito", "compraAzul", "imagen", "lupa", "menu", "texto", "titulo", "compraRojo"};
     for (const auto& nombre : nombres) {
         Pieza p;
         p.textura = std::make_shared<sf::Texture>();
 
-        if (nombre == "compraAzul")
-        {
-            if (!p.textura->loadFromMemory(compraAzul_png, compraAzul_png_len)) {
-                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
-            }
-        } else if (nombre == "compraRojo")
-        {
-            if (!p.textura->loadFromMemory(compraRojo_png, compraRojo_png_len)) {
-                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
-            }
-        } else if (nombre == "contornoWeb")
+        if (nombre == "contornoWeb")
         {
             if (!p.textura->loadFromMemory(contornoWeb_png, contornoWeb_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "carrito")
+        {
+            if (!p.textura->loadFromMemory(carrito_png, carrito_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        } else if (nombre == "compraAzul")
+        {
+            if (!p.textura->loadFromMemory(compraAzul_png, compraAzul_png_len)) {
                 std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
             }
         } else if (nombre == "imagen")
         {
             if (!p.textura->loadFromMemory(imagen_png, imagen_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        }
+        else if (nombre == "lupa")
+        {
+            if (!p.textura->loadFromMemory(lupa_png, lupa_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        }
+        else if (nombre == "menu")
+        {
+            if (!p.textura->loadFromMemory(menu_png, menu_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        }
+        else if (nombre == "texto")
+        {
+            if (!p.textura->loadFromMemory(texto_png, texto_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        }
+        else if (nombre == "titulo")
+        {
+            if (!p.textura->loadFromMemory(titulo_png, titulo_png_len)) {
+                std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
+            }
+        }
+        else if (nombre == "compraRojo")
+        {
+            if (!p.textura->loadFromMemory(compraRojo_png, compraRojo_png_len)) {
                 std::cerr << "No se pudo cargar " << nombre << ".png" << std::endl;
             }
         }
@@ -50,26 +80,49 @@ minijuegoPaginaWeb::minijuegoPaginaWeb(Juego* juego) : Pantalla(juego){
         /* p.sprite.setPosition(cintas.getPosition().x - 1107, cintas.getPosition().y); */
         piezas.push_back(p);
     }
+    int i = 0;
+    for (auto &pieza : piezas)
+    {
+        if(i != 0){
+            if (i == 1)
+            {
+                pieza.sprite.setPosition(100 + pieza.sprite.getGlobalBounds().width / 2, (pieza.sprite.getGlobalBounds().height / 2));
+                pieza.posicionInicial = pieza.sprite.getPosition();
+            } else {
+                if (i <= 4)
+                {
+                    pieza.sprite.setPosition(piezas[i - 1].sprite.getPosition().x + (piezas[i - 1].sprite.getGlobalBounds().width / 2) + 30 + (pieza.sprite.getGlobalBounds().width / 2), pieza.sprite.getGlobalBounds().height / 2);
+                    pieza.posicionInicial = pieza.sprite.getPosition();
+                } else {
+                    if (i == 5)
+                    {
+                        pieza.sprite.setPosition(100 + pieza.sprite.getGlobalBounds().width / 2, sf::VideoMode::getDesktopMode().height - (pieza.sprite.getGlobalBounds().height / 2));
+                        pieza.posicionInicial = pieza.sprite.getPosition();
+                    } else {
+                        pieza.sprite.setPosition(piezas[i - 1].sprite.getPosition().x + (piezas[i - 1].sprite.getGlobalBounds().width / 2) + 30 + (pieza.sprite.getGlobalBounds().width / 2), sf::VideoMode::getDesktopMode().height - (pieza.sprite.getGlobalBounds().height / 2));
+                        pieza.posicionInicial = pieza.sprite.getPosition();
+                    }
+                }
 
-    piezas[0].sprite.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
-    piezas[0].posicionInicial = piezas[0].sprite.getPosition();
-    piezas[0].posicionObjetivo = sf::Vector2f(-1000, -1000);
+            }
+
+        } else {
+            pieza.sprite.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+            pieza.posicionInicial = pieza.sprite.getPosition();
+        }
+        i++;
+    }
 
 
-    piezas[1].sprite.setPosition(100 + piezas[1].sprite.getGlobalBounds().width, (piezas[1].sprite.getGlobalBounds().height / 2) + 10);
-    piezas[1].posicionInicial = piezas[1].sprite.getPosition();
-    piezas[1].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x - 287, piezas[0].sprite.getPosition().y + 73.5);
-    /* piezas[1].sprite.setPosition(piezas[1].posicionObjetivo); */
+    piezas[1].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 465, piezas[0].sprite.getPosition().y - 115);
+    piezas[2].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 294, piezas[0].sprite.getPosition().y + 151);
+    piezas[3].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 293, piezas[0].sprite.getPosition().y + 35);
+    piezas[4].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 521, piezas[0].sprite.getPosition().y - 115);
+    piezas[5].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x - 532, piezas[0].sprite.getPosition().y - 122);
+    piezas[6].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x - 206, piezas[0].sprite.getPosition().y + 56);
+    piezas[7].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x - 210, piezas[0].sprite.getPosition().y - 35);
+    piezas[8].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x - 287, piezas[0].sprite.getPosition().y + 150);
 
-    piezas[2].sprite.setPosition(piezas[1].sprite.getPosition().x + piezas[1].sprite.getGlobalBounds().width + piezas[2].sprite.getGlobalBounds().width, (piezas[2].sprite.getGlobalBounds().height / 2) + 10);
-    piezas[2].posicionInicial = piezas[2].sprite.getPosition();
-    piezas[2].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 294, piezas[0].sprite.getPosition().y + 73.5);
-    /* piezas[2].sprite.setPosition(piezas[2].posicionObjetivo); */
-
-    piezas[3].sprite.setPosition(piezas[2].sprite.getPosition().x + piezas[2].sprite.getGlobalBounds().width + piezas[3].sprite.getGlobalBounds().width, (piezas[3].sprite.getGlobalBounds().height / 2) + 10);
-    piezas[3].posicionInicial = piezas[3].sprite.getPosition();
-    piezas[3].posicionObjetivo = sf::Vector2f(piezas[0].sprite.getPosition().x + 294, piezas[0].sprite.getPosition().y - 42);
-    /* piezas[3].sprite.setPosition(piezas[3].posicionObjetivo); */
 
     if (juego->minijuegoFacil)
     {
@@ -92,18 +145,18 @@ void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
             juego->cambiarPantalla(std::make_unique<Informatica>(juego));
         } else if (evento.key.code == sf::Keyboard::W)
         {
-            piezas[3].sprite.move(0, -1);
+            piezas[8].sprite.move(0, -1);
         } else if (evento.key.code == sf::Keyboard::A)
         {
-            piezas[3].sprite.move(-1, 0);
+            piezas[8].sprite.move(-1, 0);
         } else if (evento.key.code == sf::Keyboard::S)
         {
-            piezas[3].sprite.move(0, 1);
+            piezas[8].sprite.move(0, 1);
         } else if (evento.key.code == sf::Keyboard::D)
         {
-            piezas[3].sprite.move(1, 0);
+            piezas[8].sprite.move(1, 0);
         }
-        std::cout << "Posicion en: " << std::to_string(piezas[0].sprite.getPosition().x - piezas[3].sprite.getPosition().x) << ", " << std::to_string(piezas[0].sprite.getPosition().y - piezas[3].sprite.getPosition().y) << std::endl;
+        std::cout << "Posicion en: " << std::to_string(piezas[0].sprite.getPosition().x - piezas[8].sprite.getPosition().x) << ", " << std::to_string(piezas[0].sprite.getPosition().y - piezas[8].sprite.getPosition().y) << std::endl;
 
     } else if (evento.type == sf::Event::MouseButtonPressed) {
         if(evento.mouseButton.button == sf::Mouse::Left){
@@ -132,7 +185,7 @@ void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
                 {
                     float dX = p.posicionObjetivo.x - p.sprite.getPosition().x;
                     float dY = p.posicionObjetivo.y - p.sprite.getPosition().y;
-                    if (dX <= 50 && dY <= 50)
+                    if (dX <= 20 && dY <= 20)
                     {
                         p.posicionada = true;
                         p.sprite.setPosition(p.posicionObjetivo);
@@ -143,7 +196,7 @@ void minijuegoPaginaWeb::ManejarEvento(sf::Event evento){
                             {
                                 if (p.posicionada)
                                 {
-                                    if (k == 3)
+                                    if (k == 8)
                                     {
                                         juego->minijuegosPasados[1] = true;
                                         juego->cambiarPantalla(std::make_unique<Informatica>(juego));

@@ -48,7 +48,8 @@ SRC = ../src/logica/main.cpp \
       ../src/minijuegoTopografia/minijuegoTopografia.cpp \
       ../src/minijuegorandomxd/minijuegorandomxd.cpp \
       ../src/pantallas/pantallaCreditos.cpp \
-      ../src/logica/assetManager.cpp
+      ../src/logica/assetManager.cpp \
+      ../src/logica/musicManager.cpp
 
 # Recursos
 RES = recursos.res

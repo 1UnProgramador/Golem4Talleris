@@ -14,6 +14,8 @@
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 : Pantalla(juego), jugador(0, 0)
 {
+    sonidoLogro.openFromMemory(sonidoLogro_wav, sonidoLogro_wav_len);
+    MusicManager::getInstancia().reproducir(musicaHub_wav, musicaHub_wav_len, "menu", true, 70.f);
     float width = sf::VideoMode::getDesktopMode().width;
     float height = sf::VideoMode::getDesktopMode().height;
 
@@ -167,6 +169,8 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         std::cerr << "Error al cargar textura logroDiseno\n";
     if (!tLogroMetalmecanica.loadFromMemory(logroDesbloqueadometalmecanica_png, logroDesbloqueadometalmecanica_png_len))
         std::cerr << "Error al cargar textura logroMetalmecanica\n";
+    if (!tLogroGeneral.loadFromMemory(LogroDesbloqueadoGeneral_jpg, LogroDesbloqueadoGeneral_jpg_len))
+        std::cerr << "Error al cargar textura logroMetalmecanica\n";
     // ======================================
 
 
@@ -187,6 +191,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 
     if ((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && !juego->logroDesbloqueado("Maestro del Bit Supremo"))
     {
+        sonidoLogro.play();
         juego->desbloquearLogro("Maestro del Bit Supremo");
         tituloLogro.setString(wrapTextString("Maestro del Bit Supremo", fuente, 20, 172));
         tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
@@ -196,6 +201,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         logroDesbloqueado.setTexture(tLogroInformatica);
     } else if((juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) && !juego->logroDesbloqueado("Senor de los Voltios"))
     {
+        sonidoLogro.play();
         juego->desbloquearLogro("Senor de los Voltios");
         tituloLogro.setString(wrapTextString("Senor de los Voltios", fuente, 20, 172));
         tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
@@ -205,6 +211,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         logroDesbloqueado.setTexture(tLogroElectricidad);
     } else if((juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8] && !juego->logroDesbloqueado("Arquitecto de los Suenos")))
     {
+        sonidoLogro.play();
         juego->desbloquearLogro("Arquitecto de los Suenos");
         tituloLogro.setString(wrapTextString("Arquitecto de los Suenos", fuente, 20, 172));
         tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
@@ -214,6 +221,7 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
         logroDesbloqueado.setTexture(tLogroDiseno);
     } else if((juego->minijuegosPasados[4] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Forjador del Acero Eterno"))
     {
+        sonidoLogro.play();
         juego->desbloquearLogro("Forjador del Acero Eterno");
         tituloLogro.setString(wrapTextString("Forjador del Acero Eterno", fuente, 20, 172));
         tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
@@ -361,11 +369,19 @@ void PantallaSeleccionar::actualizar() {
                 cambioPantalla.setFillColor(colorActual);
             } */
         }
-        /* if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2)))){
-            if((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) || (juego->minijuegosPasados[3] && juego->minijuegosPasados[6] && juego->minijuegosPasados[9] && juego->minijuegosPasados[10]) || (juego->minijuegosPasados[5] && juego->minijuegosPasados[7] && juego->minijuegosPasados[8]) || (juego->minijuegosPasados[4] && juego->minijuegosPasados[11])){
-                juego->cambiarPantalla(std::make_unique<pantallaCreditos>(juego));
+        if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2)))){
+            if((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && (juego->minijuegosPasados[3] && juego->minijuegosPasados[4] && juego->minijuegosPasados[5] && juego->minijuegosPasados[6]) && (juego->minijuegosPasados[7] &&    juego->minijuegosPasados[8] && juego->minijuegosPasados[9]) && (juego->minijuegosPasados[10] && juego->minijuegosPasados[11])){
+                sonidoLogro.play();
+                juego->desbloquearLogro("Constructor de futuros");
+                tituloLogro.setString(wrapTextString("Constructor de futuros", fuente, 20, 172));
+                tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
+                tituloLogro.setFillColor(sf::Color(96, 96, 96));
+                descripcionLogro.setString(wrapTextString("Completaste los 4 talleres", fuente, 15, 172));
+                descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
+                logroDesbloqueado.setTexture(tLogroGeneral);
+                logroMostrado = false;
             }
-        } */
+        } 
     }
 
     tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);

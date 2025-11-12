@@ -1,9 +1,6 @@
 #include "../../include/logica/musicManager.h"
 
-// Ejemplo de cómo tendrías un include del archivo .h que contiene la música
-// (esto puede variar según cómo organices tus assets)
-#include "../../src/logica/assetManager.h"
-
+#include "assetManager.h"
 
 bool MusicManager::reproducir(const unsigned char* datos, unsigned int tamano, const std::string& id, bool loop, float volumen) {
     if (musicaActual != id) {

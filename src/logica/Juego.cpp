@@ -10,6 +10,7 @@ Juego::Juego() : window(sf::VideoMode::getDesktopMode(), "Gollem4Talleris", sf::
     logros.push_back({"Senor de los Voltios", "Completaste el taller de electricidad"});
     logros.push_back({"Arquitecto de los Suenos", "Completaste el taller de diseño"});
     logros.push_back({"Forjador del Acero Eterno", "Completaste el taller de metalmecanica"});
+    logros.push_back({"Constructor de futuros", "Completaste los 4 talleres"});
 }
 
 void Juego::desbloquearLogro(const std::string& nombre) {
