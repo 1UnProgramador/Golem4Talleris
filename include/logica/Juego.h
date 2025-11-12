@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "../../include/logica/Pantalla.h"
+#include "MusicManager.h"
 
 
 class Juego{

@@ -10,6 +10,7 @@
 Informatica::Informatica(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    MusicManager::getInstancia().reproducir(musicaInformatica_wav, musicaInformatica_wav_len, "informatica", true, 70.f);
     float width = sf::VideoMode::getDesktopMode().width;
     float height = sf::VideoMode::getDesktopMode().height;
 
@@ -152,7 +153,7 @@ void Informatica::ManejarEvento(sf::Event evento)
                 break; // P1
             case 1:
                 juego->cambiarAPrograma = 2;
-
+                juego->instrucciones = "En Páginas web (P2) vas a tener que construir dinámicaente con las herramientas proporcionadas con HTML, CSS Y JS para hacer una página de muebles funcional, mediante arrastre y solteo.";
                 juego->backspace = false;
                 juego->enter = false;
                 juego->esc = true;

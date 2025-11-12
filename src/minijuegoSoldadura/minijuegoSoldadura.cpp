@@ -313,9 +313,9 @@ minijuegoSoldadura::minijuegoSoldadura(Juego* juego)  : Pantalla(juego){
 
     if (juego->minijuegoFacil)
     {
-        tiempoInt = 50;
+        tiempoInt = 80;
     } else {
-        tiempoInt = 30;
+        tiempoInt = 50;
     }
 
     fuente.loadFromMemory(Ubuntu_Bold_ttf, Ubuntu_Bold_ttf_len);

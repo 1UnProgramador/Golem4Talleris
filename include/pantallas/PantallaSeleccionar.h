@@ -2,10 +2,12 @@
 #include "../logica/Pantalla.h"
 #include "../logica/Personaje.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 class PantallaSeleccionar : public Pantalla {
 private:
+    sf::Music sonidoLogro;
     Golem jugador;
 
     std::vector<sf::Texture> puertasTextures;
@@ -14,6 +16,7 @@ private:
 
     int puertaCercana = -1;
     bool ignoreInput = true; // evita accion inmediata tras cambiar pantalla
+    bool logroFinal = false;
 
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
@@ -29,6 +32,7 @@ private:
     sf::Texture tLogroElectricidad;
     sf::Texture tLogroDiseno;
     sf::Texture tLogroMetalmecanica;
+    sf::Texture tLogroGeneral;
 
     sf::Font fuente;
     sf::Text textoPrincipal;

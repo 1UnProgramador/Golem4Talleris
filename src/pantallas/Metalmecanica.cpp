@@ -12,6 +12,7 @@
 Metalmecanica::Metalmecanica(Juego* juego)
     : Pantalla(juego), jugador(0, 0)
 {
+    MusicManager::getInstancia().reproducir(musicaMetalmecanica_wav, musicaMetalmecanica_wav_len, "metalmecanica", true, 70.f);
     float width = sf::VideoMode::getDesktopMode().width;
     float height = sf::VideoMode::getDesktopMode().height;
 

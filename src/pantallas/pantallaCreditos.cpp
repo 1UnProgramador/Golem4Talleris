@@ -19,6 +19,7 @@
 #include "../../src/logica/assetManager.h"
 
 pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
+    MusicManager::getInstancia().reproducir(musicaCreditos_wav, musicaCreditos_wav_len, "creditos", true, 70.f);
     tFondo1.loadFromMemory(fondoInformatica_png, fondoInformatica_png_len);
     fondo1.setTexture(tFondo1);
 
@@ -73,7 +74,7 @@ pantallaCreditos::pantallaCreditos(Juego* juego) : Pantalla(juego){
     prueba.setFillColor(sf::Color::Green);
     prueba.setOrigin(prueba.getGlobalBounds().width / 2, prueba.getGlobalBounds().height / 2);
     prueba.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
-    texto.setString(utf8_to_wstring(wrapTextString("Santiago Palacio\nBinye Chindoy\nSamuel Martínez\nCamilo Carvajal\n\n11-03", fuente, 50, prueba.getGlobalBounds().width)));
+    texto.setString(utf8_to_wstring(wrapTextString("Santiago Palacio\nBinye Chindoy\nSamuel Martínez\nCamilo Carvajal\n\n11-03 P1\n\n\nMantenimiento Eletrónico y de Computadores", fuente, 50, prueba.getGlobalBounds().width)));
     texto.setOrigin(texto.getGlobalBounds().width / 2, texto.getGlobalBounds().height / 2);
     texto.setPosition(prueba.getPosition());
 }

@@ -8,6 +8,9 @@
 
 
 PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
+    MusicManager::getInstancia().reproducir(musicaHub_wav, musicaHub_wav_len, "menu", true, 70.f);
+    sonido.openFromMemory(sonido3_wav, sonido3_wav_len);
+    sonido.setVolume(100.f);
     // Fondo
     tFondoMenu.loadFromMemory(dibujoFondoMenu_jpg, dibujoFondoMenu_jpg_len);
     FondoMenu.setTexture(tFondoMenu);
@@ -52,10 +55,12 @@ void PantallaMenu::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed) {
         if (evento.key.code == sf::Keyboard::Up) {
             opcionSeleccionada--;
+            sonido.play();
             if (opcionSeleccionada < 0) opcionSeleccionada = 2;
         }
         else if (evento.key.code == sf::Keyboard::Down) {
             opcionSeleccionada++;
+            sonido.play();
             if (opcionSeleccionada > 2) opcionSeleccionada = 0;
         }
         else if (evento.key.code == sf::Keyboard::Enter) {

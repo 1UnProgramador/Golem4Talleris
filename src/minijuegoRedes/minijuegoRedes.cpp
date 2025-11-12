@@ -117,6 +117,8 @@ minijuegoRedes::minijuegoRedes(Juego* juego) : Pantalla(juego){
             } else if (c.tipo == "tipoInterseccion")
             {
                 c.textura->loadFromMemory(tipoInterseccion_png, tipoInterseccion_png_len);
+            } else if(c.tipo == "tipoInterseccionI"){
+                c.textura->loadFromMemory(tipoInterseccionI_png, tipoInterseccionI_png_len);
             } else if (c.tipo == "tipoL")
             {
                 c.textura->loadFromMemory(tipoL_png, tipoL_png_len);

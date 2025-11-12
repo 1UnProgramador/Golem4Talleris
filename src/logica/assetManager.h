@@ -94,10 +94,17 @@ extern unsigned char rojo_png[]; extern unsigned int rojo_png_len;
 extern unsigned char verdeM_png[]; extern unsigned int verdeM_png_len;
 
 // === Minijuego Paginaweb ===
+extern unsigned char carrito_png[]; extern unsigned int carrito_png_len;
 extern unsigned char compraAzul_png[]; extern unsigned int compraAzul_png_len;
-extern unsigned char compraRojo_png[]; extern unsigned int compraRojo_png_len;
 extern unsigned char contornoWeb_png[]; extern unsigned int contornoWeb_png_len;
 extern unsigned char imagen_png[]; extern unsigned int imagen_png_len;
+extern unsigned char lupa_png[]; extern unsigned int lupa_png_len;
+extern unsigned char menu_png[]; extern unsigned int menu_png_len;
+extern unsigned char texto_png[]; extern unsigned int texto_png_len;
+extern unsigned char titulo_png[]; extern unsigned int titulo_png_len;
+extern unsigned char compraRojo_png[]; extern unsigned int compraRojo_png_len;
+
+
 
 // === Minijuego Ponchar ===
 extern unsigned char azulBlanco_png[]; extern unsigned int azulBlanco_png_len;
@@ -196,3 +203,23 @@ extern unsigned char logroDesbloqueadodiseno_png[]; extern unsigned int logroDes
 extern unsigned char logroDesbloqueadoelectricidad_png[]; extern unsigned int logroDesbloqueadoelectricidad_png_len;
 extern unsigned char logroDesbloqueadoinformatica_png[]; extern unsigned int logroDesbloqueadoinformatica_png_len;
 extern unsigned char logroDesbloqueadometalmecanica_png[]; extern unsigned int logroDesbloqueadometalmecanica_png_len;
+extern unsigned char LogroDesbloqueadoGeneral_jpg[]; extern unsigned int LogroDesbloqueadoGeneral_jpg_len;
+
+// === Música y SFX ===
+extern unsigned char musicaCreditos_wav[]; extern unsigned int musicaCreditos_wav_len;
+extern unsigned char musicaDiseno_wav[]; extern unsigned int  musicaDiseno_wav_len;
+extern unsigned char musicaElectricidad_wav[]; extern unsigned int musicaElectricidad_wav_len;
+extern unsigned char musicaHub_wav[]; extern unsigned int musicaHub_wav_len;
+extern unsigned char musicaInformatica_wav[]; extern unsigned int  musicaInformatica_wav_len;
+extern unsigned char musicaMetalmecanica_wav[]; extern unsigned int musicaMetalmecanica_wav_len;
+extern unsigned char sonidoLogro_wav[]; extern unsigned int sonidoLogro_wav_len;
+extern unsigned char sonido1_wav[]; extern unsigned int sonido1_wav_len;
+extern unsigned char sonido2_wav[]; extern unsigned int sonido2_wav_len;
+extern unsigned char sonido3_wav[]; extern unsigned int sonido3_wav_len;
+extern unsigned char sonido4_wav[]; extern unsigned int sonido4_wav_len;
+extern unsigned char sonido5_wav[]; extern unsigned int sonido5_wav_len;
+extern unsigned char sonido6_wav[]; extern unsigned int sonido6_wav_len;
+extern unsigned char sonido7_wav[]; extern unsigned int sonido7_wav_len;
+extern unsigned char sonido8_mp3[]; extern unsigned int sonido8_mp3_len;
+extern unsigned char sonido9_wav[]; extern unsigned int sonido9_wav_len;
+
