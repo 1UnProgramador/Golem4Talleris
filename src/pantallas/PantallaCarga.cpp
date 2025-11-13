@@ -224,9 +224,9 @@ PantallaCarga::PantallaCarga(Juego* juego) : Pantalla(juego){
     if (juego->seleccionado == "minijuegoPonchar")
     {
         imagen.loadFromMemory(minijuegoPonchar_jpg, minijuegoPonchar_jpg_len);
-    } else if (juego->seleccionado == "minijuegoP2")
+    } else if (juego->seleccionado == "minijuegoPagina")
     {
-        /* code */
+        imagen.loadFromMemory(minijuegoPagina_jpg, minijuegoPagina_jpg_len);
     } else if (juego->seleccionado == "minijuegoTangram")
     {
         imagen.loadFromMemory(minijuegoTangram_jpg, minijuegoTangram_jpg_len);

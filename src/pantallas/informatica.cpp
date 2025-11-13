@@ -153,6 +153,7 @@ void Informatica::ManejarEvento(sf::Event evento)
                 break; // P1
             case 1:
                 juego->cambiarAPrograma = 2;
+                juego->seleccionado = "minijuegoPagina";
                 juego->instrucciones = "En Páginas web (P2) vas a tener que construir dinámicaente con las herramientas proporcionadas con HTML, CSS Y JS para hacer una página de muebles funcional, mediante arrastre y solteo.";
                 juego->backspace = false;
                 juego->enter = false;
