@@ -53,12 +53,12 @@ PantallaMenu::PantallaMenu(Juego* juego) : Pantalla(juego) {
 
 void PantallaMenu::ManejarEvento(sf::Event evento) {
     if (evento.type == sf::Event::KeyPressed) {
-        if (evento.key.code == sf::Keyboard::Up) {
+        if (evento.key.code == sf::Keyboard::Up || evento.key.code == sf::Keyboard::W) {
             opcionSeleccionada--;
             sonido.play();
             if (opcionSeleccionada < 0) opcionSeleccionada = 2;
         }
-        else if (evento.key.code == sf::Keyboard::Down) {
+        else if (evento.key.code == sf::Keyboard::Down || evento.key.code == sf::Keyboard::S) {
             opcionSeleccionada++;
             sonido.play();
             if (opcionSeleccionada > 2) opcionSeleccionada = 0;

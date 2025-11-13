@@ -147,6 +147,7 @@
 #include "../../assets/pantallaCarga/imagenInformatica.h"
 #include "../../assets/pantallaCarga/imagenMetalmecanica.h"
 #include "../../assets/pantallaCarga/minijuegoAutotronica.h"
+#include "../../assets/pantallaCarga/minijuegoPagina.h"
 #include "../../assets/pantallaCarga/minijuegoDisenoArquitectonico.h"
 #include "../../assets/pantallaCarga/minijuegoDisenoComputador.h"
 #include "../../assets/pantallaCarga/minijuegoElectronicaYControl.h"

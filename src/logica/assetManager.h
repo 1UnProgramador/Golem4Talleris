@@ -171,6 +171,7 @@ extern unsigned char minijuegoRedes_jpg[]; extern unsigned int minijuegoRedes_jp
 extern unsigned char minijuegoSoldadura_jpg[]; extern unsigned int minijuegoSoldadura_jpg_len;
 extern unsigned char minijuegoTangram_jpg[]; extern unsigned int minijuegoTangram_jpg_len;
 extern unsigned char minijuegoTopografia_jpg[]; extern unsigned int minijuegoTopografia_jpg_len;
+extern unsigned char minijuegoPagina_jpg[]; extern unsigned int minijuegoPagina_jpg_len;
 
 extern unsigned char backspace_png[]; extern unsigned int backspace_png_len;
 extern unsigned char enter_png[]; extern unsigned int enter_png_len;

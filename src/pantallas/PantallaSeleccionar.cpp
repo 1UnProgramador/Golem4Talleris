@@ -14,6 +14,19 @@
 PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
 : Pantalla(juego), jugador(0, 0)
 {
+    /* juego->minijuegosPasados[0] = true;
+    juego->minijuegosPasados[1] = true;
+    juego->minijuegosPasados[2] = true;
+    juego->minijuegosPasados[3] = true;
+    juego->minijuegosPasados[4] = true;
+    juego->minijuegosPasados[5] = true;
+    juego->minijuegosPasados[6] = true;
+    juego->minijuegosPasados[7] = true;
+    juego->minijuegosPasados[8] = true;
+    juego->minijuegosPasados[9] = true;
+    juego->minijuegosPasados[10] = true;
+    juego->minijuegosPasados[11] = true; */
+
     sonidoLogro.openFromMemory(sonidoLogro_wav, sonidoLogro_wav_len);
     MusicManager::getInstancia().reproducir(musicaHub_wav, musicaHub_wav_len, "menu", true, 70.f);
     float width = sf::VideoMode::getDesktopMode().width;
@@ -233,6 +246,8 @@ PantallaSeleccionar::PantallaSeleccionar(Juego* juego)
     cambioPantalla.setSize(sf::Vector2f(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
     cambioPantalla.setPosition(0, 0);
     cambioPantalla.setFillColor(sf::Color(0, 0, 0, 0));
+    fX = logroDesbloqueado.getGlobalBounds().width;
+    fY = logroDesbloqueado.getGlobalBounds().height;
 }
 
 void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
@@ -313,7 +328,7 @@ void PantallaSeleccionar::ManejarEvento(sf::Event evento) {
                     juego->wasd = true;
 
                     juego->seleccionado = "imagenDiseno";
-                    juego->instrucciones =  "Bienvenido a la especialidad de Metalmecánica, aca se extiende durante 3 programas: Diseño Arquitectónico (P6), Topografía (P8) y Diseño asistido por computador  (P9). El elemento central de este taller es la representación y materialización del espacio mediante herramientas tecnológicas y análisis del territorio.";
+                    juego->instrucciones =  "Bienvenido a la especialidad de Diseño, aca se extiende durante 3 programas: Diseño Arquitectónico (P6), Topografía (P8) y Diseño asistido por computador  (P9). El elemento central de este taller es la representación y materialización del espacio mediante herramientas tecnológicas y análisis del territorio.";
                     break;
                 case 3:
                     juego->cambiarAPrograma = 17;
@@ -369,19 +384,26 @@ void PantallaSeleccionar::actualizar() {
                 cambioPantalla.setFillColor(colorActual);
             } */
         }
-        if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2)))){
-            if((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && (juego->minijuegosPasados[3] && juego->minijuegosPasados[4] && juego->minijuegosPasados[5] && juego->minijuegosPasados[6]) && (juego->minijuegosPasados[7] &&    juego->minijuegosPasados[8] && juego->minijuegosPasados[9]) && (juego->minijuegosPasados[10] && juego->minijuegosPasados[11])){
+        if ((logroDesbloqueado.getPosition().y > (sf::VideoMode::getDesktopMode().height + (logroDesbloqueado.getGlobalBounds().height / 2))) && logroMostrado){
+            if((juego->minijuegosPasados[0] && juego->minijuegosPasados[1] && juego->minijuegosPasados[2]) && (juego->minijuegosPasados[3] && juego->minijuegosPasados[4] && juego->minijuegosPasados[5] && juego->minijuegosPasados[6]) && (juego->minijuegosPasados[7] &&    juego->minijuegosPasados[8] && juego->minijuegosPasados[9]) && (juego->minijuegosPasados[10] && juego->minijuegosPasados[11]) && !juego->logroDesbloqueado("Constructor de futuros")){
                 sonidoLogro.play();
                 juego->desbloquearLogro("Constructor de futuros");
                 tituloLogro.setString(wrapTextString("Constructor de futuros", fuente, 20, 172));
                 tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);
-                tituloLogro.setFillColor(sf::Color(96, 96, 96));
+                tituloLogro.setFillColor(sf::Color(120, 100, 200));
                 descripcionLogro.setString(wrapTextString("Completaste los 4 talleres", fuente, 15, 172));
                 descripcionLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y + 4);
                 logroDesbloqueado.setTexture(tLogroGeneral);
+                float fX2 = logroDesbloqueado.getGlobalBounds().width;
+                float fY2 = logroDesbloqueado.getGlobalBounds().height;
+                logroDesbloqueado.setScale(fX2 / fX, fY2 / fY);
                 logroMostrado = false;
+
             }
-        } 
+        } else if((logroDesbloqueado.getPosition().y < (sf::VideoMode::getDesktopMode().height - (logroDesbloqueado.getGlobalBounds().height / 2)))){
+            logroMostrado = true;
+
+        }
     }
 
     tituloLogro.setPosition(logroDesbloqueado.getPosition().x, logroDesbloqueado.getPosition().y - 40);

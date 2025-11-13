@@ -16,10 +16,12 @@ private:
 
     int puertaCercana = -1;
     bool ignoreInput = true; // evita accion inmediata tras cambiar pantalla
-    bool logroFinal = false;
+    float fX;
+    float fY;
 
     sf::Texture tFondoNexus;
     sf::Sprite  FondoNexus;
+    bool logroFinal;
 
     sf::Texture tLogroDesbloqueado; // Textura original (ahora será la del logro detectado)
     sf::Sprite  logroDesbloqueado;
